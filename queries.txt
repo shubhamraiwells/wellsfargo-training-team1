@@ -1,9 +1,9 @@
 1. create database obs_team1;
 2. use obs_team1;
 
-3. create table customer( cust_id INT PRIMARY KEY AUTO_INCREMENT, password VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, dob DATE NOT NULL, street VARCHAR(255) NOT NULL, city VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, pin_code VARCHAR(10) NOT NULL, email_id VARCHAR(255) NOT NULL, phone_no VARCHAR(15) NOT NULL);
 
-4. CREATE TABLE account (acc_no INT PRIMARY KEY, acc_type VARCHAR(50) NOT NULL, cust_id INT, acc_activation_date DATE NOT NULL, total_bal DECIMAL(10, 2) NOT NULL, FOREIGN KEY (cust_id) REFERENCES customer(cust_id) );
+
+4. CREATE TABLE account (acc_no INT PRIMARY KEY, acc_type VARCHAR(50) NOT NULL, cust_id INT, acc_activation_date DATE NOT NULL, total_bal DECIMAL(10, 2) NOT NULL, FOREIGN KEY (cust_id) REFERENCES customer_info(cust_id) );
 
 5. CREATE TABLE customer_info (
     cust_id INT PRIMARY KEY,
