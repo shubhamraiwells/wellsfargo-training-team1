@@ -3,9 +3,9 @@
 
 
 
-4. CREATE TABLE account (acc_no INT PRIMARY KEY, acc_type VARCHAR(50) NOT NULL, cust_id INT, acc_activation_date DATE NOT NULL, total_bal DECIMAL(10, 2) NOT NULL, FOREIGN KEY (cust_id) REFERENCES customer_info(cust_id) );
 
-5. CREATE TABLE customer_info (
+
+3. CREATE TABLE customer_info (
     cust_id INT PRIMARY KEY,
     title VARCHAR(10),
     first_name VARCHAR(255) NOT NULL,
@@ -31,8 +31,9 @@
     gross_annual_income DECIMAL(10, 2) NOT NULL
 );
 
+4. CREATE TABLE account (acc_no INT PRIMARY KEY, acc_type VARCHAR(50) NOT NULL, cust_id INT, acc_activation_date DATE NOT NULL, total_bal DECIMAL(10, 2) NOT NULL, FOREIGN KEY (cust_id) REFERENCES customer_info(cust_id) );
 
-6. CREATE TABLE transactions (
+5. CREATE TABLE transactions (
     trans_id INT AUTO_INCREMENT PRIMARY KEY,
     cust_id_from INT,
     cust_id_to INT,
