@@ -1,12 +1,11 @@
 1. create database obs_team1;
 2. use obs_team1;
 
+3. create table customer( cust_id INT PRIMARY KEY AUTO_INCREMENT, password VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, dob DATE NOT NULL, street VARCHAR(255) NOT NULL, city VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, pin_code VARCHAR(10) NOT NULL, email_id VARCHAR(255) NOT NULL, phone_no VARCHAR(15) NOT NULL);
 
+4. CREATE TABLE account (acc_no INT PRIMARY KEY AUTO_INCREMENT, acc_type VARCHAR(50) NOT NULL, cust_id VARCHAR(12), acc_activation_date DATE NOT NULL, total_bal DECIMAL(10, 2) NOT NULL, FOREIGN KEY (cust_id) REFERENCES customer_info(aadhar_card_no) );
 
-
-
-3. CREATE TABLE customer_info (
-    cust_id INT PRIMARY KEY,
+5. CREATE TABLE customer_info (
     title VARCHAR(10),
     first_name VARCHAR(255) NOT NULL,
     middle_name VARCHAR(255),
@@ -14,7 +13,7 @@
     father_name VARCHAR(255) NOT NULL,
     mobile_no VARCHAR(15) NOT NULL,
     email_id VARCHAR(255),
-    aadhar_card_no VARCHAR(12) NOT NULL,
+    aadhar_card_no VARCHAR(12) PRIMARY KEY,
     date_of_birth DATE NOT NULL,
     residential_address_line_1 VARCHAR(255) NOT NULL,
     residential_address_line_2 VARCHAR(255) NOT NULL,
@@ -31,18 +30,38 @@
     gross_annual_income DECIMAL(10, 2) NOT NULL
 );
 
-4. CREATE TABLE account (acc_no INT PRIMARY KEY, acc_type VARCHAR(50) NOT NULL, cust_id INT, acc_activation_date DATE NOT NULL, total_bal DECIMAL(10, 2) NOT NULL, FOREIGN KEY (cust_id) REFERENCES customer_info(cust_id) );
 
-5. CREATE TABLE transactions (
+6. CREATE TABLE transactions (
     trans_id INT AUTO_INCREMENT PRIMARY KEY,
-    cust_id_from INT,
-    cust_id_to INT,
+    cust_id_from VARCHAR(12),
+    cust_id_to VARCHAR(12),
     acc_no_from INT,
     acc_no_to INT,
     transaction_amount DECIMAL(10, 2),
     transaction_date DATE,
-    FOREIGN KEY (cust_id_from) REFERENCES customer_info(cust_id),
-    FOREIGN KEY (cust_id_to) REFERENCES customer_info(cust_id),
+    FOREIGN KEY (cust_id_from) REFERENCES customer_info(aadhar_card_no),
+    FOREIGN KEY (cust_id_to) REFERENCES customer_info(aadhar_card_no),
     FOREIGN KEY (acc_no_from) REFERENCES account(acc_no),
     FOREIGN KEY (acc_no_to) REFERENCES account(acc_no)
 );
+
+
+7. CREATE TABLE customers(
+    username VARCHAR(255) UNIQUE NOT NULL, 
+    password VARCHAR(60) NOT NULL, 
+    acc_no INT,
+    FOREIGN KEY (acc_no) REFERENCES account(acc_no)
+);    
+
+8. CREATE TABLE Account_Aadhar(
+   acc_no INT PRIMARY KEY,
+   aadhar_no VARCHAR(12),
+   FOREIGN KEY (acc_no) REFERENCES account(acc_no)
+);
+
+9. create table Account_Username(
+     acc_no INT unique NOT NULL,
+     aadhar_no VARCHAR(12) NOT NULL,
+     FOREIGN KEY (acc_no) REFERENCES account(acc_no),
+     FOREIGN KEY (aadhar_no) REFERENCES customer_info(aadhar_card_no)
+);  
