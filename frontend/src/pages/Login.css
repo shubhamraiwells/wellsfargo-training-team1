@@ -39,16 +39,15 @@
 }
 */
 .App {
-    text-align: center;
-    background-color: #ffffff;
-  }
-  
-  .App-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    margin-top:10px;
-  }
-  
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.App-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  margin-top:10px;
+}

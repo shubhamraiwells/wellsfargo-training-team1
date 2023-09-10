@@ -1,0 +1,34 @@
+{
+  "user": {
+    "email": "nivedhanarayanan2002@gmail.com",
+    "password": "nivi"
+  },
+  "RegisterAccount": {
+    "firstname": "q",
+    "middlename": "l",
+    "lastname": "k",
+    "fathername": "j",
+    "mobileno": "l",
+    "email": "k",
+    "aadharcardno": "j",
+    "dob": "k",
+    "residentialaddressline1": "l",
+    "residentialaddressline2": "k",
+    "residentiallandmark": "k",
+    "residentialcity": "k",
+    "residentialpincode": "k",
+    "permanentaddressline1": "l",
+    "permanentaddressline2": "k",
+    "permanentlandmark": "j",
+    "permanentcity": "k",
+    "permanentpincode": "k",
+    "occupationtype": "k",
+    "sourceofincome": "k",
+    "grossannualincome": "k"
+  },
+  "newuser": {
+    "accountnumber": "90",
+    "email": "nivedhanarayanan2002@gmail.com",
+    "password": "2"
+  }
+}
