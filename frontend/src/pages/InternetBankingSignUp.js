@@ -7,6 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import apiCall from "../apiCall/apiCall";
 
 const InternetBankingSignUp = () => {
 
@@ -23,10 +24,15 @@ const InternetBankingSignUp = () => {
         accountNo:""
     });
     const handleSubmit = async (e) => {
+        const url="http://localhost:8080/createIbAccount";
         e.preventDefault();
-        console.log(formData.username)
+        const result=await apiCall(url,"POST",formData,null);
+        alert(result.data);
+        // console.log(formData.username)
         // console.log(formData)
         ////make api call here////
+        
+
     }
     return (
         <Grid>
