@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class BankService {
@@ -26,6 +24,8 @@ public class BankService {
         String accNo="aa";
         accNo = generateUniqueNo();
         CustomerInfo customerInfo = custInfoReqToCustInfo.toCustomerInfo(customerInfoRequestModel);
+        if(!checkInfo(customerInfo))
+            return "An account with the given Aadhar Number already exists";
         customerInfoRepository.save(customerInfo);
         List<CustomerInfo> customerInfoList = new ArrayList<>();
        System.out.println("Size of List:"+customerInfoList.size());
@@ -36,5 +36,11 @@ public class BankService {
     private String generateUniqueNo(){
         String uuid = UUID.randomUUID().toString().replace("-","");
         return uuid;
+    }
+    private Boolean checkInfo(CustomerInfo customerInfo){
+        List<CustomerInfo> customerInfoList = customerInfoRepository.findAll();
+        HashMap<String, Boolean> map= new HashMap<>();
+        customerInfoList.stream().filter(x-> Objects.nonNull(x)).forEach(x-> map.put(x.getAadhar_card_no(), Boolean.TRUE));
+        return Objects.isNull(map.get(customerInfo.getAadhar_card_no()));
     }
 }
