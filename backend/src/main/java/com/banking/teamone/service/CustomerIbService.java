@@ -1,8 +1,6 @@
 package com.banking.teamone.service;
 
-import com.banking.teamone.converter.CustomerConverter;
-import com.banking.teamone.dto.CustomerIbRequestModel;
-import com.banking.teamone.model.CustomerIbModel;
+import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.repository.CustomerIbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,20 +11,16 @@ public class CustomerIbService {
     @Autowired
     private CustomerIbRepository customerIbRepository;
 
-    @Autowired
-    private CustomerConverter customerConverter;
-
-    public CustomerIbModel getCustomerByUsername(String username){
+    public CustomerIb getCustomerByUsername(String username){
         return customerIbRepository.findById(username).isPresent() ?customerIbRepository.findById(username).get():null;
     }
 
-    public CustomerIbModel getCustomerByAccountNo(Integer accountNo){
+    public CustomerIb getCustomerByAccountNo(Integer accountNo){
         return customerIbRepository.findByAccountNo(accountNo);
     }
-    public void createCustomerIb(CustomerIbRequestModel customerIbRequestModel){
-        CustomerIbModel customerIbModel = customerConverter.customerIdRequestModelToCustomerIdModel(customerIbRequestModel);
+    public void createCustomerIb(CustomerIb customerIb){
         try {
-            customerIbRepository.save(customerIbModel);
+            customerIbRepository.save(customerIb);
         }catch(Exception e){
             System.out.println(e.toString());
         }
