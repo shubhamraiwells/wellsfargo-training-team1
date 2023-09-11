@@ -1,0 +1,19 @@
+Password-requirements
+
+^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$
+
+At least one uppercase letter.
+At least one lowercase letter.
+At least one digit.
+At least one special character (you can customize the set of special characters).
+A minimum length of 12 characters.
+
+
+Username-requirements
+
+^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$
+
+Usernames cannot contain consecutive periods (..).
+Usernames cannot end with a period.
+Usernames can only consist of letters (both uppercase and lowercase), numbers, underscores, and periods.
+Usernames must be between 8 and 20 characters in length.
