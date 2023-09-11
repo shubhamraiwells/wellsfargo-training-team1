@@ -1,128 +1,92 @@
 package com.banking.teamone.model;
 
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
+@Setter
 @Entity
-@Data
-@Table(name = "customer_info")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="customerInfo")
 public class CustomerInfo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name="account_type")
+    private String accountType;
+
+    @Column(name = "aadhar_card_no", length = 12, unique = true)
+    private String aadharCardNo;
+
+    @Column(name = "title", length = 10)
     private String title;
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    @Column(name = "first_name", length = 255, nullable = false)
+    private String firstName;
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
+    @Column(name = "middle_name", length = 255)
+    private String middleName;
 
-    public void setMiddle_name(String middle_name) {
-        this.middle_name = middle_name;
-    }
+    @Column(name = "last_name", length = 255, nullable = false)
+    private String lastName;
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
+    @Column(name = "father_name", length = 255, nullable = false)
+    private String fatherName;
 
-    public void setFather_name(String father_name) {
-        this.father_name = father_name;
-    }
+    @Column(name = "mobile_no", length = 15, nullable = false)
+    private String mobileNo;
 
-    public void setMobile_no(String mobile_no) {
-        this.mobile_no = mobile_no;
-    }
+    @Column(name = "email_id", length = 255)
+    private String emailId;
 
-    public void setEmail_id(String email_id) {
-        this.email_id = email_id;
-    }
+    @Column(name = "date_of_birth", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date dateOfBirth;
 
-    public void setAadhar_card_no(String aadhar_card_no) {
-        this.aadhar_card_no = aadhar_card_no;
-    }
+    @Column(name = "residential_address_line_1", length = 255, nullable = false)
+    private String residentialAddressLine1;
 
-    public void setDate_of_birth(Date date_of_birth) {
-        this.date_of_birth = date_of_birth;
-    }
+    @Column(name = "residential_address_line_2", length = 255, nullable = false)
+    private String residentialAddressLine2;
 
-    public void setResidential_address_line_1(String residential_address_line_1) {
-        this.residential_address_line_1 = residential_address_line_1;
-    }
+    @Column(name = "residential_landmark", length = 255)
+    private String residentialLandmark;
 
-    public void setResidential_address_line_2(String residential_address_line_2) {
-        this.residential_address_line_2 = residential_address_line_2;
-    }
+    @Column(name = "residential_city", length = 255, nullable = false)
+    private String residentialCity;
 
-    public void setResidential_landmark(String residential_landmark) {
-        this.residential_landmark = residential_landmark;
-    }
+    @Column(name = "residential_pincode", length = 10, nullable = false)
+    private String residentialPincode;
 
-    public void setResidential_city(String residential_city) {
-        this.residential_city = residential_city;
-    }
+    @Column(name = "permanent_address_line_1", length = 255)
+    private String permanentAddressLine1;
 
-    public void setResidential_pincode(String residential_pincode) {
-        this.residential_pincode = residential_pincode;
-    }
+    @Column(name = "permanent_address_line_2", length = 255)
+    private String permanentAddressLine2;
 
-    public void setPermanent_address_line_1(String permanent_address_line_1) {
-        this.permanent_address_line_1 = permanent_address_line_1;
-    }
+    @Column(name = "permanent_landmark", length = 255)
+    private String permanentLandmark;
 
-    public void setPermanent_address_line_2(String permanent_address_line_2) {
-        this.permanent_address_line_2 = permanent_address_line_2;
-    }
+    @Column(name = "permanent_city", length = 255)
+    private String permanentCity;
 
-    public void setPermanent_landmark(String permanent_landmark) {
-        this.permanent_landmark = permanent_landmark;
-    }
+    @Column(name = "permanent_pincode", length = 10)
+    private String permanentPincode;
 
-    public void setPermanent_city(String permanent_city) {
-        this.permanent_city = permanent_city;
-    }
+    @Column(name = "occupation_type", length = 50, nullable = false)
+    private String occupationType;
 
-    public void setPermanent_pincode(String permanent_pincode) {
-        this.permanent_pincode = permanent_pincode;
-    }
+    @Column(name = "source_of_income", length = 50, nullable = false)
+    private String sourceOfIncome;
 
-    public void setOccupation_type(String occupation_type) {
-        this.occupation_type = occupation_type;
-    }
+    @Column(name = "gross_annual_income", precision = 10, scale = 2, nullable = false)
+    private BigDecimal grossAnnualIncome;
 
-    public void setSource_of_income(String source_of_income) {
-        this.source_of_income = source_of_income;
-    }
-
-    public void setGross_annual_income(Double gross_annual_income) {
-        this.gross_annual_income = gross_annual_income;
-    }
-
-    private String first_name;
-    private String middle_name;
-    private String last_name;
-    private String father_name;
-    private String mobile_no;
-    private String email_id;
-    @Id
-    @NotNull
-    private String aadhar_card_no;
-    private Date date_of_birth;
-    private String residential_address_line_1;
-    private String residential_address_line_2;
-    private String residential_landmark;
-    private String residential_city;
-    private String residential_pincode;
-    private String permanent_address_line_1;
-    private String permanent_address_line_2;
-    private String permanent_landmark;
-    private String permanent_city;
-    private String permanent_pincode;
-    private String occupation_type;
-    private String source_of_income;
-    private Double gross_annual_income;
+    // Constructors, getters, and setters go here
 }
