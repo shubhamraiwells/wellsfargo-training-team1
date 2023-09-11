@@ -19,11 +19,9 @@ public class CustomerIbService {
         return customerIbRepository.findByAccountNo(accountNo);
     }
     public void createCustomerIb(CustomerIb customerIb){
-        try {
+
             customerIbRepository.save(customerIb);
-        }catch(Exception e){
-            System.out.println(e.toString());
-        }
+
     }
 
 //    private Boolean checkIfAccountAlreadyLinked(Integer accountNo,String username){
