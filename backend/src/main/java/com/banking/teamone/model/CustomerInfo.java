@@ -13,6 +13,9 @@ public class CustomerInfo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(name="account_type")
+    private String accountType;
+
 
     @Column(name = "aadhar_card_no", length = 12, unique = true)
     private String aadharCardNo;
