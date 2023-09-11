@@ -15,7 +15,7 @@ public class CustomerIbService {
         return customerIbRepository.findById(username).isPresent() ?customerIbRepository.findById(username).get():null;
     }
 
-    public CustomerIb getCustomerByAccountNo(Integer accountNo){
+    public CustomerIb getCustomerByAccountNo(String accountNo){
         return customerIbRepository.findByAccountNo(accountNo);
     }
     public void createCustomerIb(CustomerIb customerIb){

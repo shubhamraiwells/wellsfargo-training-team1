@@ -31,10 +31,11 @@ public class CustomerIb {
         this.password = password;
     }
 
-    public void setAccount_no(Integer account_no) {
+    public void setAccount_no(String account_no) {
         this.accountNo = account_no;
     }
+
    @Pattern(regexp = "^\\d{9,18}$")
     @Column(name="acc_no",nullable = false)
-    private Integer accountNo;
+    private String accountNo;
 }

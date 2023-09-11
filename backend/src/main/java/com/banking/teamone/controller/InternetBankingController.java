@@ -49,7 +49,7 @@ Logger logger= LoggerFactory.getLogger(InternetBankingController.class);
 
     @GetMapping("/getIbAccountByAccountNo")
     @CrossOrigin
-    public ResponseEntity<CustomerIb>getAccountIbByAccountNo(@RequestParam Integer accountNo){
+    public ResponseEntity<CustomerIb>getAccountIbByAccountNo(@RequestParam String accountNo){
         CustomerIb customerIb=customerIbService.getCustomerByAccountNo(accountNo);
         return new ResponseEntity<>(customerIb,HttpStatus.OK);
     }

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerIbRepository extends JpaRepository<CustomerIb,String> {
-     CustomerIb findByAccountNo(Integer accountNo);
+     CustomerIb findByAccountNo(String accountNo);
 }
