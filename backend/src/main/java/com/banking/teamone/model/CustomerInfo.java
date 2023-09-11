@@ -1,107 +1,18 @@
 package com.banking.teamone.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.Setter;
+import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Getter
 @Entity
 @Data
 @Table(name = "customer_info")
 public class CustomerInfo {
     private String title;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public String getMiddle_name() {
-        return middle_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public String getFather_name() {
-        return father_name;
-    }
-
-    public String getMobile_no() {
-        return mobile_no;
-    }
-
-    public String getEmail_id() {
-        return email_id;
-    }
-
-    public String getAadhar_card_no() {
-        return aadhar_card_no;
-    }
-
-    public Date getDate_of_birth() {
-        return date_of_birth;
-    }
-
-    public String getResidential_address_line_1() {
-        return residential_address_line_1;
-    }
-
-    public String getResidential_address_line_2() {
-        return residential_address_line_2;
-    }
-
-    public String getResidential_landmark() {
-        return residential_landmark;
-    }
-
-    public String getResidential_city() {
-        return residential_city;
-    }
-
-    public String getResidential_pincode() {
-        return residential_pincode;
-    }
-
-    public String getPermanent_address_line_1() {
-        return permanent_address_line_1;
-    }
-
-    public String getPermanent_address_line_2() {
-        return permanent_address_line_2;
-    }
-
-    public String getPermanent_landmark() {
-        return permanent_landmark;
-    }
-
-    public String getPermanent_city() {
-        return permanent_city;
-    }
-
-    public String getPermanent_pincode() {
-        return permanent_pincode;
-    }
-
-    public String getOccupation_type() {
-        return occupation_type;
-    }
-
-    public String getSource_of_income() {
-        return source_of_income;
-    }
-
-    public Double getGross_annual_income() {
-        return gross_annual_income;
-    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -198,6 +109,7 @@ public class CustomerInfo {
     private String mobile_no;
     private String email_id;
     @Id
+    @NotNull
     private String aadhar_card_no;
     private Date date_of_birth;
     private String residential_address_line_1;
