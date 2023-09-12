@@ -11,14 +11,14 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 export default function Login() {
-const[email,emailUpdate] = useState('');
+const[username,usernameUpdate] = useState('');
 const[password,passwordUpdate] = useState('');
   const handleSubmit = (event) => {
     let result=validate();
     if(result){
    event.preventDefault();
-   let obj = {email,password};
-   fetch('http://localhost:8000/user/',{
+   let obj = {username,password};
+   fetch('http://localhost:8080/loginIbAccount/',{
     method:"POST",
     headers:{'content-type':'application/json'},
     body:JSON.stringify(obj)
@@ -35,9 +35,9 @@ const[password,passwordUpdate] = useState('');
   };
 const validate=()=>{
   let result = true;
-  if(email==='' || email === null){
+  if(username==='' || username === null){
     result = false;
-    console.log("Email is empty");
+    console.log("username is empty");
   }
   if(password==='' || password === null){
     result = false;
@@ -73,12 +73,12 @@ const validate=()=>{
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            value={email}
-            onChange={e=>emailUpdate(e.target.value)}
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            value={username}
+            onChange={e=>usernameUpdate(e.target.value)}
             autoFocus
           />
           <TextField
