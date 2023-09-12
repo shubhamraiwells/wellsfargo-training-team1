@@ -1,5 +1,7 @@
 package com.banking.teamone.controller.auth;
 
+import com.banking.teamone.model.CRole;
+import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.payload.request.LoginRequestIb;
 import com.banking.teamone.payload.request.SignUpRequestIb;
 import com.banking.teamone.payload.response.JwtResponse;
@@ -54,12 +56,19 @@ System.out.println(jwt);
         return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
     }
 
-//    @PostMapping("/signup")
-//    public ResponseEntity<?>registeredUser(@Valid @RequestBody SignUpRequestIb signUpRequestIb){
-//        if(customerIbService.getCustomerByUsername(signUpRequestIb.getUsername())!=null){
-//            return new ResponseEntity<>("Username is already taken", HttpStatus.BAD_REQUEST);
-//        }
-//
-//    }
+    @PostMapping("/signup")
+    public ResponseEntity<?>registeredUser(@Valid @RequestBody SignUpRequestIb signUpRequestIb){
+        if(customerIbService.getCustomerByUsername(signUpRequestIb.getUsername())!=null){
+            return new ResponseEntity<>("Username is already taken", HttpStatus.BAD_REQUEST);
+        }
+        CustomerIb customerIb= new CustomerIb();
+        customerIb.setUsername(signUpRequestIb.getUsername());
+        customerIb.setAccount_no(signUpRequestIb.getAccountNo());
+        customerIb.setPassword(passwordEncoder.encode(signUpRequestIb.getPassword()));
+        customerIb.setRole(CRole.ROLE_CUSTOMER);
+        customerIbService.createCustomerIb(customerIb);
+        return new ResponseEntity<>("User Created successfully",HttpStatus.OK);
+
+    }
 
 }

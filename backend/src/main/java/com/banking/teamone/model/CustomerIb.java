@@ -24,8 +24,12 @@ public class CustomerIb {
     private String password;
 
 
+    public void setRole(CRole role) {
+        this.role = role;
+    }
+
     @Enumerated(EnumType.STRING)
-    CRole role;
+    private CRole role;
 
     public void setUsername(String username) {
         this.username = username;
