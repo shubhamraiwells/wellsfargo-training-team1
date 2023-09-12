@@ -1,6 +1,8 @@
 import React, { Component, useState } from "react";
 
-import "./Login.css";
+import validator from 'validator';
+
+import "./Style.css";
 
 import Button from "@mui/material/Button";
 
@@ -68,7 +70,7 @@ const [sourceofincome , sourceofincomeUpdate] = useState('');
 
 const [grossannualincome , grossannualincomeUpdate] =  useState('');
 
- 
+ const [isincomeEmpty,isincomeEmptyUpdate] = useState(false);
 
  
 
@@ -105,6 +107,10 @@ else{
   };
 
 const validate=()=>{
+let emailid = toString(emailUpdate);
+    if (!(validator.isEmail(emailid))) {
+      alert('Enter a valid Email');
+    } 
 
   let result = true;
 
@@ -149,7 +155,7 @@ if(fathername==='' || fathername === null){
   }
 
 if(email==='' || email === null){
-
+   
     result = false;
 
     console.log("email is empty");
@@ -280,6 +286,8 @@ if(grossannualincome==='' || grossannualincome === null){
 
     result = false;
 
+//isincomeEmptyUpdate(true);
+    
     console.log("grossannualincome is empty");
 
   }
@@ -291,13 +299,14 @@ return result;
 
   return (
 
-  
+    <div className="container">
+    
 
-    <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="lg"  className="container">
 
       <div className="App-header">
 
-          <Typography  component="h1" variant="h5" style={{marginTop:4}}>
+      <Typography component="h1" variant="h5" className="title">
 
         User Registration Details
 
@@ -310,9 +319,9 @@ return result;
       
 
         sx={{
+            boxShadow: 3,
 
-
-            borderRadius: 2,
+            borderRadius: 5,
 
             px: 1,
 
@@ -323,7 +332,7 @@ return result;
             flexDirection: "column",
 
             alignItems: "center",
-
+            background : "white",
           }}
 
         >
@@ -334,9 +343,7 @@ return result;
 
         sx={{
 
-          boxShadow: 3,
-
-          borderRadius: 2,
+         
 
           px: 4,
 
@@ -358,7 +365,7 @@ return result;
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -378,7 +385,7 @@ return result;
             autoFocus
 
           /><TextField
-
+          className="input"
             margin="normal"
 
             required
@@ -398,7 +405,7 @@ return result;
             autoFocus
 
           /><TextField
-
+          className="input"
             margin="normal"
 
             required
@@ -418,7 +425,7 @@ return result;
             autoFocus
 
           /><TextField
-
+          className="input"
             margin="normal"
 
             required
@@ -442,7 +449,7 @@ return result;
           />
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -455,7 +462,7 @@ return result;
 
             name="mobileno"
 
-          
+            inputProps={{ maxLength: 10 }}
 
             value={mobileno}
 
@@ -466,7 +473,7 @@ return result;
           />
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -482,7 +489,6 @@ return result;
             id="email"
 
             value={email}
-
             onChange={e=>emailUpdate(e.target.value)}
 
           
@@ -490,7 +496,7 @@ return result;
           />
 
      <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -505,6 +511,9 @@ return result;
 
             value={aadharcardno}
 
+            inputProps={{ maxLength: 12 }}
+           
+
             onChange={e=>aadharcardnoUpdate(e.target.value)}
 
           
@@ -512,7 +521,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -521,13 +530,11 @@ return result;
 
             name="dob"
 
-            label="Date of Birth"
-
-        
-
             id="dob"
 
             value={dob}
+
+            type='date'
 
             onChange={e=>dobUpdate(e.target.value)}
 
@@ -536,7 +543,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -566,7 +573,7 @@ return result;
      
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -590,7 +597,7 @@ return result;
           />
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -614,7 +621,7 @@ return result;
           />
 
     <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -638,7 +645,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -649,7 +656,7 @@ return result;
 
             label="residential pincode"
 
- 
+            inputProps={{ maxLength: 6 }}
 
             id="residentialpincode"
 
@@ -662,7 +669,7 @@ return result;
           />
 
      <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -686,7 +693,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -710,7 +717,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -734,7 +741,7 @@ return result;
           />   
 
      <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -758,7 +765,7 @@ return result;
           /> 
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -769,7 +776,7 @@ return result;
 
             label="permanent pincode"
 
- 
+            inputProps={{ maxLength: 6 }}
 
             id="permanentpincode"
 
@@ -782,7 +789,7 @@ return result;
           /> 
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -806,7 +813,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -830,7 +837,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -841,32 +848,34 @@ return result;
 
             label="gross annual income"
 
- 
-
             id="grossannualincome"
 
             value={grossannualincome}
 
-            onChange={e=>grossannualincomeUpdate(e.target.value)}
-
-         
-
+            onChange={(e)=>{
+                if(e.target.value=='' || e.target.value===null){
+                    isincomeEmptyUpdate(true);
+                }
+                else{
+                isincomeEmptyUpdate(false);
+                }
+                console.log(isincomeEmpty);
+                grossannualincomeUpdate(e.target.value);
+                
+            }}
+            error={isincomeEmpty}
+           
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
           />    
-<Button
-
-type="submit"
-
-
-
-variant="contained"
-
-sx={{ mt: 3, mb: 2 }}
-
->
-
-Submit
-
-</Button>
+ <Button 
+            className="button"
+            type="submit"
+          
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Submit
+            </Button>
         </Box>
 
         </Box>
@@ -874,7 +883,7 @@ Submit
         </Box>
     </Container>
 
- 
+ </div>
 
    
 

@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import "./Login.css";
+import "./Style.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -9,79 +9,99 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import apiCall from "../apiCall/apiCall";
 
-export default function Login() {
-const[email,emailUpdate] = useState('');
+//const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
+//const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+
+
+const Login = () => {
+const[username,usernameUpdate] = useState('');
 const[password,passwordUpdate] = useState('');
-  const handleSubmit = (event) => {
-    let result=validate();
-    if(result){
-   event.preventDefault();
-   let obj = {email,password};
-   fetch('http://localhost:8000/user/',{
-    method:"POST",
-    headers:{'content-type':'application/json'},
-    body:JSON.stringify(obj)
-   }).then((res)=>{
-    console.log("Registered Successfully")
-   }).catch((err)=>{
-    console.log(err.message)
-   });
-   alert("Successfully logged in");
+const [isusernameEmpty,isusernameEmptyUpdate] = useState(false);
+const [ispasswordEmpty,ispasswordEmptyUpdate] = useState(false);
+const obj = {username,password};
+
+const handleSubmit = async (e) => {
+  const url="http://localhost:8080/loginIbAccount";
+  e.preventDefault();
+
+  if(validate()){
+
+  const result=await apiCall(url,"POST",obj,null);
+  alert("Logged in successfully");
+  }else{
+      alert("Not logged in, some fields are empty");
   }
-  else{
-    alert("Some fields are empty");
-  }
-  };
+}
 const validate=()=>{
   let result = true;
-  if(email==='' || email === null){
+  if(username==='' || username === null){
     result = false;
-    console.log("Email is empty");
   }
   if(password==='' || password === null){
     result = false;
-    console.log("password is empty");
   }
   return result;
 }
+
+const style = {"& label.Mui-focused":{
+  borderColor : 'rgba(34,193,195,0.7)'
+}}
   return (
-   
-    <Container component="main" maxWidth="sm">
-      <div className="App-header">
-          <Typography  component="h1" variant="h5">
-          Welcome to WF NetBanking
-        </Typography>
-        </div>
+  <div className="container">
+    <Container component="main" maxWidth="sm" 
+   className="container"
+    >
+  
       <Box 
+     
         sx={{
           boxShadow: 3,
-          borderRadius: 2,
+          borderRadius: 5,
           px: 4,
           py: 6,
           marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+      background : "white",
+      
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" className="title">
           Sign in
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
+          sx={style}
+          className="input"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            value={email}
-            onChange={e=>emailUpdate(e.target.value)}
-            autoFocus
+            id="username"
+            label="username"
+            name="username"
+            autoComplete="username"
+            value={username}
+            onChange={(e)=>{
+              if(e.target.value=='' || e.target.value===null){
+                  isusernameEmptyUpdate(true);
+              }
+              else{
+              isusernameEmptyUpdate(false);
+              }
+              console.log(isusernameEmpty);
+              usernameUpdate(e.target.value);
+              
+          }}
+          error={isusernameEmpty}
           />
+          <p hidden={isusernameEmpty?false:true}>username cannot be empty!</p>
+         
           <TextField
+          sx={style}
+            className="input"
             margin="normal"
             required
             fullWidth
@@ -90,14 +110,27 @@ const validate=()=>{
             type="password"
             id="password"
             value={password}
-            onChange={e=>passwordUpdate(e.target.value)}
-            autoComplete="current-password"
+            
+            onChange={(e)=>{
+              if(e.target.value=='' || e.target.value===null){
+                  ispasswordEmptyUpdate(true);
+              }
+              else{
+              ispasswordEmptyUpdate(false);
+              }
+              console.log(ispasswordEmpty);
+              passwordUpdate(e.target.value);
+              
+          }}
+          error={ispasswordEmpty}
           />
-          <FormControlLabel
+          <p hidden={ispasswordEmpty?false:true}>Password cannot be empty!</p>
+          <FormControlLabel 
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
           <Button 
+            className="button"
             type="submit"
             fullWidth
             variant="contained"
@@ -106,13 +139,13 @@ const validate=()=>{
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
+            <Grid item>
+              <Link href="#" variant="body2" style={{textDecoration:"none"}}>
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/SignUp" variant="body2">
+              <Link href="/SignUp" variant="body2" style={{textDecoration:"none",marginLeft:150}}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
@@ -120,7 +153,7 @@ const validate=()=>{
         </Box>
       </Box>
     </Container>
-  
-   
+    </div>
   );
 }
+export default Login;
