@@ -58,7 +58,8 @@ Logger logger= LoggerFactory.getLogger(CustomerIbController.class);
         return new ResponseEntity<>(customerIb,HttpStatus.OK);
     }
 
-    @PostMapping(value="/savings_account_signup")
+    @PostMapping(value="/createSavingsAccount")
+    @CrossOrigin
     public String createSavingsAccount(@Valid @RequestBody CustomerInfoRequestModel customerInfoRequestModel){
 
         return customerIbService.createSavingsAccount(customerInfoRequestModel);
