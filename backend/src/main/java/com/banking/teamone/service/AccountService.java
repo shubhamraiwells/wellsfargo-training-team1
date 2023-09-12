@@ -15,8 +15,6 @@ public class AccountService {
     public Optional<Account> getAccountById(String Id){
         return accountRepository.findById(Id);
     }
-
-
     public  Account createAccount(Account obj){
         return accountRepository.save(obj);
     }
