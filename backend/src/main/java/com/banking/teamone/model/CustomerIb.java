@@ -23,6 +23,10 @@ public class CustomerIb {
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{12,}$")
     private String password;
 
+
+    @Enumerated(EnumType.STRING)
+    CRole role;
+
     public void setUsername(String username) {
         this.username = username;
     }
