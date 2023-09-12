@@ -81,6 +81,7 @@ const handleSubmit = async (e) => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         <TextField
+          className="input"
             margin="normal"
             required
             fullWidth
@@ -102,8 +103,9 @@ const handleSubmit = async (e) => {
           }}
           error={isaccntnoEmpty}
           />
-            <p hidden={isaccntnoEmpty?false:true}>Account number cannot be empty!</p>
+            <p style={{color:"red", textAlign:"left", marginTop:2}} hidden={isaccntnoEmpty?false:true}>Account number cannot be empty!</p>
           <TextField
+            className="input"
             margin="normal"
             required
             fullWidth
@@ -126,11 +128,12 @@ const handleSubmit = async (e) => {
           error={isusernameEmpty}
           autoFocus
           />
-            <p hidden={isusernameEmpty?false:true}>Username cannot be empty!</p>
+            <p style={{color:"red", textAlign:"left", marginTop:2}}  hidden={isusernameEmpty?false:true}>Username cannot be empty!</p>
 
           
           
           <TextField
+            className="input"
             margin="normal"
             required
             fullWidth
@@ -153,7 +156,7 @@ const handleSubmit = async (e) => {
           error={ispasswordEmpty}
           autoComplete="current-password"
           />
-          <p hidden={ispasswordEmpty?false:true}>Password cannot be empty!</p>
+          <p style={{color:"red", textAlign:"left", marginTop:2}} hidden={ispasswordEmpty?false:true}>Password cannot be empty!</p>
 
        
       

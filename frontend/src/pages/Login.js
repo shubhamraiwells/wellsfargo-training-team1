@@ -50,13 +50,12 @@ const style = {"& label.Mui-focused":{
 }}
   return (
   <div className="container">
-    <Container component="main" maxWidth="sm" 
-   className="container"
+    <Container maxWidth="sm" 
+   className="container" 
     >
-  
       <Box 
-     
         sx={{
+       
           boxShadow: 3,
           borderRadius: 5,
           px: 4,
@@ -97,7 +96,7 @@ const style = {"& label.Mui-focused":{
           }}
           error={isusernameEmpty}
           />
-          <p hidden={isusernameEmpty?false:true}>username cannot be empty!</p>
+          <p style={{color:"red", textAlign:"left", marginTop:2}} hidden={isusernameEmpty?false:true}>username cannot be empty!</p>
          
           <TextField
           sx={style}
@@ -124,7 +123,7 @@ const style = {"& label.Mui-focused":{
           }}
           error={ispasswordEmpty}
           />
-          <p hidden={ispasswordEmpty?false:true}>Password cannot be empty!</p>
+          <p style={{color:"red", textAlign:"left", marginTop:2}} hidden={ispasswordEmpty?false:true}>Password cannot be empty!</p>
           <FormControlLabel 
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"

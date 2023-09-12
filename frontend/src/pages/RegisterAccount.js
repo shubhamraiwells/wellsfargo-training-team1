@@ -22,6 +22,7 @@ import Typography from "@mui/material/Typography";
 
 import Container from "@mui/material/Container";
 
+import Modal from '@mui/material/Modal';
  
 
 export default function RegisterAccount() {
@@ -70,9 +71,21 @@ const [sourceofincome , sourceofincomeUpdate] = useState('');
 
 const [grossannualincome , grossannualincomeUpdate] =  useState('');
 
- const [isincomeEmpty,isincomeEmptyUpdate] = useState(false);
+const [open, setOpen] = useState(false);
+const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
 
- 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
 
   const handleSubmit = (event) => {
@@ -109,7 +122,7 @@ else{
 const validate=()=>{
 let emailid = toString(emailUpdate);
     if (!(validator.isEmail(emailid))) {
-      alert('Enter a valid Email');
+      console.log('Enter a valid Email');
     } 
 
   let result = true;
@@ -292,7 +305,8 @@ if(grossannualincome==='' || grossannualincome === null){
 
   }
 if(!result)
-{alert("Some fields are empty");}  
+{setOpen(true);
+    console.log("Some fields are empty");}  
 return result;
 
 }
@@ -342,8 +356,6 @@ return result;
       <Box
 
         sx={{
-
-         
 
           px: 4,
 
@@ -852,18 +864,7 @@ return result;
 
             value={grossannualincome}
 
-            onChange={(e)=>{
-                if(e.target.value=='' || e.target.value===null){
-                    isincomeEmptyUpdate(true);
-                }
-                else{
-                isincomeEmptyUpdate(false);
-                }
-                console.log(isincomeEmpty);
-                grossannualincomeUpdate(e.target.value);
-                
-            }}
-            error={isincomeEmpty}
+            onChange={e=>grossannualincomeUpdate(e.target.value)}
            
             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
           />    
@@ -877,6 +878,21 @@ return result;
             Submit
             </Button>
         </Box>
+        <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+        >
+<Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+        Alert!
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          Some fields are empty
+          </Typography>
+        </Box>
+        </Modal>
 
         </Box>
         
