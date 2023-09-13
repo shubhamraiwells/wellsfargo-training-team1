@@ -1,6 +1,8 @@
 package com.banking.teamone.controller;
 
 
+import com.banking.teamone.dto.CustomerIbRequestModel;
+import com.banking.teamone.dto.CustomerInfoRequestModel;
 import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.service.AccountService;
 import com.banking.teamone.service.CustomerIbService;
@@ -11,9 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
-public class InternetBankingController {
-Logger logger= LoggerFactory.getLogger(InternetBankingController.class);
+public class CustomerIbController {
+Logger logger= LoggerFactory.getLogger(CustomerIbController.class);
 
     @Autowired
     private AccountService accountService;
@@ -24,14 +28,14 @@ Logger logger= LoggerFactory.getLogger(InternetBankingController.class);
 
     @PostMapping("/createIbAccount")
     @CrossOrigin
-    public ResponseEntity<String>createIbAccount(@RequestBody CustomerIb customerIb){
-       CustomerIb customerIb1=customerIbService.getCustomerByUsername(customerIb.getUsername());
-       CustomerIb customerIb2=customerIbService.getCustomerByAccountNo(customerIb.getAccountNo());
+    public ResponseEntity<String>createIbAccount(@RequestBody CustomerIbRequestModel customerIbRequestModel){
+       CustomerIb customerIb1=customerIbService.getCustomerByUsername(customerIbRequestModel.getUsername());
+       CustomerIb customerIb2=customerIbService.getCustomerByAccountNo(customerIbRequestModel.getAccountNo());
        if(customerIb1!=null || customerIb2!=null){
            return new ResponseEntity<>("username or account number already registered", HttpStatus.OK);
        }else{
            try {
-               customerIbService.createCustomerIb(customerIb);
+               customerIbService.createCustomerIb(customerIbRequestModel);
            }catch (Exception e){
                logger.error(e.getMessage());
                return new ResponseEntity<>("Something went wrong check your details",HttpStatus.BAD_REQUEST);
@@ -53,6 +57,4 @@ Logger logger= LoggerFactory.getLogger(InternetBankingController.class);
         CustomerIb customerIb=customerIbService.getCustomerByAccountNo(accountNo);
         return new ResponseEntity<>(customerIb,HttpStatus.OK);
     }
-
-
 }

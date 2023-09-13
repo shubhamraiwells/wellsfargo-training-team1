@@ -1,21 +1,25 @@
 package com.banking.teamone.model;
 
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "customer_info")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="customerInfo")
 public class CustomerInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name="account_type")
     private String accountType;
-
 
     @Column(name = "aadhar_card_no", length = 12, unique = true)
     private String aadharCardNo;
@@ -85,6 +89,4 @@ public class CustomerInfo {
     private BigDecimal grossAnnualIncome;
 
     // Constructors, getters, and setters go here
-
 }
-

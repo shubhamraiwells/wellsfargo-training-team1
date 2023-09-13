@@ -1,12 +1,18 @@
 package com.banking.teamone.service;
 
+import com.banking.teamone.converter.CustomerConverter;
+import com.banking.teamone.dto.CustomerIbRequestModel;
 import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.repository.CustomerIbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class CustomerIbService {
+
+    @Autowired
+    CustomerConverter customerConverter;
 
     @Autowired
     private CustomerIbRepository customerIbRepository;
@@ -18,10 +24,14 @@ public class CustomerIbService {
     public CustomerIb getCustomerByAccountNo(String accountNo){
         return customerIbRepository.findByAccountNo(accountNo);
     }
+    public void createCustomerIb(CustomerIbRequestModel customerIbRequestModel){
+        CustomerIb customerIb = customerConverter.customerIbRequestModelToCustomerIb(customerIbRequestModel);
+        customerIbRepository.save(customerIb);
+
+    }
+
     public void createCustomerIb(CustomerIb customerIb){
-
-            customerIbRepository.save(customerIb);
-
+        customerIbRepository.save(customerIb);
     }
 
 //    private Boolean checkIfAccountAlreadyLinked(Integer accountNo,String username){

@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import "./Login.css";
+import "./Style.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -10,96 +10,130 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Home from "./Home.js";
+import apiCall from "../apiCall/apiCall";
+
+const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
+const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+
+
 export default function SignUp() {
-    const[accountnumber,accountnumberUpdate] = useState('');
-const[email,emailUpdate] = useState('');
-const[password,passwordUpdate] = useState('');
-  const handleSubmit = (event) => {
-    let result=validate();
-    if(result){
-   event.preventDefault();
-   let obj = {accountnumber,email,password};
-   fetch('http://localhost:8000/newuser/',{
-    method:"POST",
-    headers:{'content-type':'application/json'},
-    body:JSON.stringify(obj)
-   }).then((res)=>{
-    console.log("Registered Successfully")
-   }).catch((err)=>{
-    console.log(err.message)
-   });
-   alert("Successfully Registered");
+
+ 
+  const [formData,setFormData]=useState({
+    username:"",
+    password:"",
+    accountNo:""
+});
+const [isaccntnoEmpty,isaccntnoEmptyUpdate] = useState(false);
+const [isusernameEmpty,isusernameEmptyUpdate] = useState(false);
+const [ispasswordEmpty,ispasswordEmptyUpdate] = useState(false);
+
+
+const handleSubmit = async (e) => {
+    const url="http://localhost:8080/createIbAccount";
+    e.preventDefault();
+    const checkUsername=userNameRegex.test(formData.username);
+    const checkPassword=passwordRegex.test(formData.password);
+    const checkAccountNo=formData.accountNo.length>0?true:false;
+
+    if(checkUsername && checkPassword && checkAccountNo){
+
+    const result=await apiCall(url,"POST",formData,null);
+    alert(result.data);
+    }else{
+        var res="";
+        console.log(checkUsername+" "+checkPassword+" "+checkAccountNo)
+        if(checkUsername===false){
+            res=res.concat("invalid username\n");
+        }
+        if(checkPassword===false){
+            res=res.concat("invalid password");
+        }
+        if(checkAccountNo===false){
+            res=res.concat("invalid account number");
+        }
+        alert(res);
+    }
   }
-  else{
-    alert("Some fields are empty");
-  }
-  };
-const validate=()=>{
-  let result = true;
-  if(email==='' || email === null){
-    result = false;
-    console.log("Email is empty");
-  }
-  if(password==='' || password === null){
-    result = false;
-    console.log("password is empty");
-  }
-  if(accountnumber==='' || accountnumber === null){
-    result = false;
-    console.log("Account Number is empty");
-  }
-  return result;
-}
+
   return (
   
-    <Container component="main" maxWidth="sm">
-       
-      <div className="App-header">
-          <Typography  component="h1" variant="h5">
-          Welcome to WF NetBanking
-        </Typography>
-        </div>
+    <div className="container">
+    <Container component="main" maxWidth="sm" 
+   className="container"
+    >
+
       <Box 
         sx={{
           boxShadow: 3,
-          borderRadius: 2,
+          borderRadius: 5,
           px: 4,
           py: 6,
           marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+      background : "white",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" className="title">
           Sign Up
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         <TextField
+          className="input"
             margin="normal"
             required
             fullWidth
             name="accoutnnumber"
             label="Account Number"
-            type="number"
+          
             id="accountnumber"
-            value={accountnumber}
-            onChange={e=>accountnumberUpdate(e.target.value)}
-
+            value={formData.accountNo}
+            onChange={(e)=>{
+              if(e.target.value=='' || e.target.value===null){
+                  isaccntnoEmptyUpdate(true);
+              }
+              else{
+              isaccntnoEmptyUpdate(false);
+              }
+              console.log(isaccntnoEmpty);
+              setFormData({...formData,accountNo:e.target.value})
+              
+          }}
+          error={isaccntnoEmpty}
           />
+            <p style={{color:"red", textAlign:"left", marginTop:2}} hidden={isaccntnoEmpty?false:true}>Account number cannot be empty!</p>
           <TextField
+            className="input"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            value={email}
-            onChange={e=>emailUpdate(e.target.value)}
-            autoFocus
+            id="username"
+            label="username"
+            name="username"
+            autoComplete="username"
+            value={formData.username}
+            onChange={(e)=>{
+              if(e.target.value=='' || e.target.value===null){
+                  isusernameEmptyUpdate(true);
+              }
+              else{
+              isusernameEmptyUpdate(false);
+              }
+              console.log(isusernameEmpty);
+              setFormData({...formData,username:e.target.value})
+              
+          }}
+          error={isusernameEmpty}
+          autoFocus
           />
+            <p style={{color:"red", textAlign:"left", marginTop:2}}  hidden={isusernameEmpty?false:true}>Username cannot be empty!</p>
+
+          
+          
           <TextField
+            className="input"
             margin="normal"
             required
             fullWidth
@@ -107,12 +141,28 @@ const validate=()=>{
             label="Password"
             type="password"
             id="password"
-            value={password}
-            onChange={e=>passwordUpdate(e.target.value)}
-            autoComplete="current-password"
+            value={formData.password}
+            onChange={(e)=>{
+              if(e.target.value=='' || e.target.value===null){
+                  ispasswordEmptyUpdate(true);
+              }
+              else{
+              ispasswordEmptyUpdate(false);
+              }
+              console.log(ispasswordEmpty);
+              setFormData({...formData,password:e.target.value})}
+              
+          }
+          error={ispasswordEmpty}
+          autoComplete="current-password"
           />
+          <p style={{color:"red", textAlign:"left", marginTop:2}} hidden={ispasswordEmpty?false:true}>Password cannot be empty!</p>
+
+       
+      
       
           <Button 
+            className="button"
             type="submit"
             fullWidth
             variant="contained"
@@ -123,7 +173,7 @@ const validate=()=>{
           <Grid container>
           
             <Grid item >
-              <Link href="/Login" variant="body2">
+              <Link href="/Login" variant="body2"  style={{textDecoration:"none", marginLeft:120}}>
                 {"Already have an account? Sign In"}
               </Link>
             </Grid>
@@ -131,7 +181,7 @@ const validate=()=>{
         </Box>
       </Box>
     </Container>
-  
+  </div>
    
   );
 }

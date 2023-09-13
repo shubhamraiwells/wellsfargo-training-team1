@@ -1,6 +1,8 @@
 import React, { Component, useState } from "react";
 
-import "./Login.css";
+import validator from 'validator';
+
+import "./Style.css";
 
 import Button from "@mui/material/Button";
 
@@ -20,83 +22,81 @@ import Typography from "@mui/material/Typography";
 
 import Container from "@mui/material/Container";
 
- 
+import Modal from '@mui/material/Modal'; 
+import apiCall from "../apiCall/apiCall";
 
 export default function RegisterAccount() {
 
  
 
-const [firstname, firstnameUpdate] = useState('');
+const [firstName, firstNameUpdate] = useState('');
 
-const [middlename , middlenameUpdate] = useState('');
+const [middleName , middleNameUpdate] = useState('');
 
-const [lastname, lastnameUpdate] = useState('');
+const [lastName, lastNameUpdate] = useState('');
 
-const [fathername, fathernameUpdate] = useState(''); 
+const [fatherName, fatherNameUpdate] = useState(''); 
 
-const [mobileno, mobilenoUpdate] = useState('');
+const [mobileNo, mobileNoUpdate] = useState('');
 
-const [email, emailUpdate] = useState('');
+const [emailId, emailIdUpdate] = useState('');
 
-const [aadharcardno, aadharcardnoUpdate] = useState('');
+const [aadharCardNo, aadharCardNoUpdate] = useState('');
 
-const [dob, dobUpdate] = useState('');
+const [dateOfBirth, dateOfBirthUpdate] = useState('');
 
-const [residentialaddressline1, residentialaddressline1Update] =  useState('');
+const [residentialAddressLine1, residentialAddressLine1Update] =  useState('');
 
-const [residentialaddressline2, residentialaddressline2Update] = useState('');
+const [residentialAddressLine2, residentialAddressLine2Update] = useState('');
 
-const [residentiallandmark , residentiallandmarkUpdate] = useState('');
+const [residentialLandmark , residentialLandmarkUpdate] = useState('');
 
-const [residentialcity , residentialcityUpdate] = useState('');
+const [residentialCity , residentialCityUpdate] = useState('');
 
-const [residentialpincode , residentialpincodeUpdate] = useState('');
+const [residentialPincode , residentialPincodeUpdate] = useState('');
 
-const [permanentaddressline1 , permanentaddressline1Update] =  useState('');
+const [permanentAddressLine1 , permanentAddressLine1Update] =  useState('');
 
-const [permanentaddressline2 , permanentaddressline2Update] = useState('');
+const [permanentAddressLine2 , permanentAddressLine2Update] = useState('');
 
-const [permanentlandmark , permanentlandmarkUpdate] = useState('');
+const [permanentLandmark , permanentLandmarkUpdate] = useState('');
 
-const [permanentcity  , permanentcityUpdate] = useState('');
+const [permanentCity  , permanentCityUpdate] = useState('');
 
-const [permanentpincode  , permanentpincodeUpdate] = useState('');
+const [permanentPincode  , permanentPincodeUpdate] = useState('');
 
-const [occupationtype , occupationtypeUpdate] = useState('');
+const [occupationType , occupationTypeUpdate] = useState('');
 
-const [sourceofincome , sourceofincomeUpdate] = useState('');
+const [sourceOfIncome , sourceOfIncomeUpdate] = useState('');
 
-const [grossannualincome , grossannualincomeUpdate] =  useState('');
+const [grossAnnualIncome , grossAnnualIncomeUpdate] =  useState('');
 
- 
+const [open, setOpen] = useState(false);
+const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
 
- 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async  (event) => {
 
    event.preventDefault();
+   console.log(event.target)
 let result = validate();
 if(result){
-   let obj = {firstname,middlename,lastname,fathername,mobileno,email,aadharcardno,dob,residentialaddressline1,residentialaddressline2,residentiallandmark,residentialcity,residentialpincode,permanentaddressline1,permanentaddressline2,permanentlandmark,permanentcity,permanentpincode,occupationtype,sourceofincome, grossannualincome};
-
-   fetch('http://localhost:8000/RegisterAccount/',{
-
-    method:"POST",
-
-    headers:{'content-type':'application/json'},
-
-    body:JSON.stringify(obj)
-
-   }).then((res)=>{
-
-    console.log("Registered Successfully")
-
-   }).catch((err)=>{
-
-    console.log(err.message)
-
-   });
+   let obj = {firstName,middleName,lastName,fatherName,mobileNo,emailId,aadharCardNo,dateOfBirth,residentialAddressLine1,residentialAddressLine2,residentialLandmark,residentialCity,residentialPincode,permanentAddressLine1,permanentAddressLine2,permanentLandmark,permanentCity,permanentPincode,occupationType,sourceOfIncome, grossAnnualIncome};
+    result= await apiCall("http://localhost:8080/createSavingsAccount","POST",obj,null);
+    console.log(obj)
+    console.log(result)
    alert("Registered Successfully");
 }
 else{
@@ -105,199 +105,207 @@ else{
   };
 
 const validate=()=>{
+let emailid = toString(emailIdUpdate);
+    if (!(validator.isEmail(emailid))) {
+      console.log('Enter a valid Email');
+    } 
 
   let result = true;
 
-  if(firstname==='' || firstname === null){
+  if(firstName==='' || firstName === null){
 
     result = false;
 
-    console.log("firstname is empty");
+    console.log("firstName is empty");
 
   }
 
-if(middlename==='' || middlename === null){
+if(middleName==='' || middleName === null){
 
     result = false;
 
-    console.log("middlename is empty");
+    console.log("middleName is empty");
 
   }
 
-if(lastname==='' || lastname === null){
+if(lastName==='' || lastName === null){
 
    result = false;
 
-    console.log("lastname is empty");
+    console.log("lastName is empty");
 
   }
 
-if(fathername==='' || fathername === null){
+if(fatherName==='' || fatherName === null){
 
     result = false;
 
-    console.log("fathername is empty");
+    console.log("fatherName is empty");
 
   }
 
-  if(mobileno==='' || mobileno === null){
+  if(mobileNo==='' || mobileNo === null){
 
     result = false;
 
-    console.log("mobileno is empty");
+    console.log("mobileNo is empty");
 
   }
 
-if(email==='' || email === null){
-
+if(emailId==='' || emailId === null){
+   
     result = false;
 
     console.log("email is empty");
 
   }
 
-if(aadharcardno==='' || aadharcardno === null){
+if(aadharCardNo==='' || aadharCardNo === null){
 
     result = false;
 
-    console.log("aadharcardno is empty");
+    console.log("aadharCardNo is empty");
 
   }
 
-if(dob==='' || dob === null){
+if(dateOfBirth==='' || dateOfBirth === null){
 
     result = false;
 
-    console.log("dob is empty");
+    console.log("dateOfBirth is empty");
 
   }
 
-if(mobileno==='' || mobileno === null){
+if(mobileNo==='' || mobileNo === null){
 
     result = false;
 
-    console.log("mobileno is empty");
+    console.log("mobileNo is empty");
 
   }
 
-if(residentialaddressline1==='' || residentialaddressline1 === null){
+if(residentialAddressLine1==='' || residentialAddressLine1 === null){
 
     result = false;
 
-    console.log("residentialaddressline1 is empty");
+    console.log("residentialAddressLine1 is empty");
 
   }
 
-if(residentialaddressline2==='' || residentialaddressline2 === null){
+if(residentialAddressLine2==='' || residentialAddressLine2 === null){
 
     result = false;
 
-    console.log("residentialaddressline2 is empty");
+    console.log("residentialAddressLine2 is empty");
 
   }
 
-if(residentiallandmark==='' || residentiallandmark === null){
+if(residentialLandmark==='' || residentialLandmark === null){
 
     result = false;
 
-    console.log("residentiallandmark is empty");
+    console.log("residentialLandmark is empty");
 
   }
 
-if(residentialcity==='' || residentialcity === null){
+if(residentialCity==='' || residentialCity === null){
 
     result = false;
 
-    console.log("residentialcity is empty");
+    console.log("residentialCity is empty");
 
   }
 
-if(residentialpincode==='' || residentialpincode === null){
+if(residentialPincode==='' || residentialPincode === null){
 
     result = false;
 
-    console.log("residentialpincode is empty");
+    console.log("residentialPincode is empty");
 
   }
 
-if(permanentaddressline1==='' || permanentaddressline1 === null){
+if(permanentAddressLine1==='' || permanentAddressLine1 === null){
 
     result = false;
 
-    console.log("residentialpincode is empty");
+    console.log("residentialPincode is empty");
 
   }
 
-if(permanentaddressline2==='' || permanentaddressline2 === null){
+if(permanentAddressLine2==='' || permanentAddressLine2 === null){
 
     result = false;
 
-    console.log("permanentaddressline2 is empty");
+    console.log("permanentAddressLine2 is empty");
 
   }
 
-if(permanentlandmark==='' || permanentlandmark === null){
+if(permanentLandmark==='' || permanentLandmark === null){
 
     result = false;
 
-    console.log("permanentlandmark is empty");
+    console.log("permanentLandmark is empty");
 
   }
 
-if(permanentcity==='' || permanentcity === null){
+if(permanentCity==='' || permanentCity === null){
 
     result = false;
 
-    console.log("permanentcity is empty");
+    console.log("permanentCity is empty");
 
   }
 
-if(permanentpincode==='' || permanentpincode === null){
+if(permanentPincode==='' || permanentPincode === null){
 
     result = false;
 
-    console.log("permanentpincode is empty");
+    console.log("permanentPincode is empty");
 
   }
 
-if(occupationtype==='' || occupationtype === null){
+if(occupationType==='' || occupationType === null){
 
     result = false;
 
-    console.log("occupationtype is empty");
+    console.log("occupationType is empty");
 
   }
 
-if(sourceofincome==='' || sourceofincome === null){
+if(sourceOfIncome==='' || sourceOfIncome === null){
 
     result = false;
 
-    console.log("sourceofincome is empty");
+    console.log("sourceOfIncome is empty");
 
   }
 
-if(grossannualincome==='' || grossannualincome === null){
+if(grossAnnualIncome==='' || grossAnnualIncome === null){
 
     result = false;
 
+//isincomeEmptyUpdate(true);
+    
     console.log("grossannualincome is empty");
 
   }
 if(!result)
-{alert("Some fields are empty");}  
+{setOpen(true);
+    console.log("Some fields are empty");}  
 return result;
 
 }
 
   return (
 
-  
+    <div className="container">
+    
 
-    <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="lg"  className="container">
 
       <div className="App-header">
 
-          <Typography  component="h1" variant="h5" style={{marginTop:4}}>
+      <Typography component="h1" variant="h5" className="title">
 
         User Registration Details
 
@@ -310,9 +318,9 @@ return result;
       
 
         sx={{
+            boxShadow: 3,
 
-
-            borderRadius: 2,
+            borderRadius: 5,
 
             px: 1,
 
@@ -323,7 +331,7 @@ return result;
             flexDirection: "column",
 
             alignItems: "center",
-
+            background : "white",
           }}
 
         >
@@ -333,10 +341,6 @@ return result;
       <Box
 
         sx={{
-
-          boxShadow: 3,
-
-          borderRadius: 2,
 
           px: 4,
 
@@ -354,11 +358,10 @@ return result;
 
       >
 
-
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -371,14 +374,14 @@ return result;
 
             name="fname"
 
-            value={firstname}
+            value={firstName}
 
-            onChange={e=>firstnameUpdate(e.target.value)}
+            onChange={e=>firstNameUpdate(e.target.value)}
 
             autoFocus
 
           /><TextField
-
+          className="input"
             margin="normal"
 
             required
@@ -391,14 +394,14 @@ return result;
 
             name="mname"
 
-            value={middlename}
+            value={middleName}
 
-            onChange={e=>middlenameUpdate(e.target.value)}
+            onChange={e=>middleNameUpdate(e.target.value)}
 
             autoFocus
 
           /><TextField
-
+          className="input"
             margin="normal"
 
             required
@@ -411,149 +414,148 @@ return result;
 
             name="lname"
 
-            value={lastname}
+            value={lastName}
 
-            onChange={e=>lastnameUpdate(e.target.value)}
+            onChange={e=>lastNameUpdate(e.target.value)}
 
             autoFocus
 
           /><TextField
-
+          className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            id="fathername"
+            id="fatherName"
 
             label="Father's Name"
 
-            name="fathername"
+            name="fatherName"
 
            
 
-            value={fathername}
+            value={fatherName}
 
-            onChange={e=>fathernameUpdate(e.target.value)}
+            onChange={e=>fatherNameUpdate(e.target.value)}
 
             autoFocus
 
           />
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            id="mobileno"
+            id="mobileNo"
 
             label="Mobile Number"
 
-            name="mobileno"
+            name="mobileNo"
 
-          
+            inputProps={{ maxLength: 10 }}
 
-            value={mobileno}
+            value={mobileNo}
 
-            onChange={e=>mobilenoUpdate(e.target.value)}
+            onChange={e=>mobileNoUpdate(e.target.value)}
 
             autoFocus
 
           />
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="email"
+            name="emailId"
 
             label="Email"
 
             type="email"
 
-            id="email"
+            id="emailId"
 
-            value={email}
-
-            onChange={e=>emailUpdate(e.target.value)}
+            value={emailId}
+            onChange={e=>emailIdUpdate(e.target.value)}
 
           
 
           />
 
      <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="aadharcardno"
+            name="aadharCardNo"
 
             label="Aadhar Number"
 
-            id="aadharcardno"
+            id="aadharCardNo"
 
-            value={aadharcardno}
+            value={aadharCardNo}
 
-            onChange={e=>aadharcardnoUpdate(e.target.value)}
-
+            inputProps={{ maxLength: 12 }}
+            onChange={e=>aadharCardNoUpdate(e.target.value)}
           
 
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="dob"
+            name="dateOfBirth"
 
             label="Date of Birth"
 
         
 
-            id="dob"
+            id="dateOfBirth"
 
-            value={dob}
+            value={dateOfBirth}
 
-            onChange={e=>dobUpdate(e.target.value)}
-
+            onChange={e=>dateOfBirthUpdate(e.target.value)}
+            
           
 
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="residentialaddressline1"
+            name="residentialAddressLine1"
 
             label="residential addressline 1"
 
           
 
-            id="residentialaddressline1"
+            id="residentialAddressLine1"
 
-            value={residentialaddressline1}
+            value={residentialAddressLine1}
 
-            onChange={e=>residentialaddressline1Update(e.target.value)}
+            onChange={e=>residentialAddressLine1Update(e.target.value)}
 
           
 
@@ -566,315 +568,324 @@ return result;
      
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            id="residentialaddressline2"
+            id="residentialAddressLine2"
 
             label="residential addressline 2"
 
-            name="residentialaddressline2"
+            name="residentialAddressLine2"
 
            
 
-            value={residentialaddressline2}
+            value={residentialAddressLine2}
 
-            onChange={e=>residentialaddressline2Update(e.target.value)}
+            onChange={e=>residentialAddressLine2Update(e.target.value)}
 
             autoFocus
 
           />
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="residentiallandmark"
+            name="residentialLandmark"
 
             label="residential landmark"
 
  
 
-            id="residentiallandmark"
+            id="residentialLandmark"
 
-            value={residentiallandmark}
+            value={residentialLandmark}
 
-            onChange={e=>residentiallandmarkUpdate(e.target.value)}
+            onChange={e=>residentialLandmarkUpdate(e.target.value)}
 
          
 
           />
 
     <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="residentialcity"
+            name="residentialCity"
 
             label="residential city"
 
  
 
-            id="residentialcity"
+            id="residentialCity"
 
-            value={residentialcity}
+            value={residentialCity}
 
-            onChange={e=>residentialcityUpdate(e.target.value)}
+            onChange={e=>residentialCityUpdate(e.target.value)}
 
          
 
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="residentialpincode"
+            name="residentialPincode"
 
             label="residential pincode"
 
- 
+            inputProps={{ maxLength: 6 }}
 
-            id="residentialpincode"
+            id="residentialPincode"
 
-            value={residentialpincode}
+            value={residentialPincode}
 
-            onChange={e=>residentialpincodeUpdate(e.target.value)}
+            onChange={e=>residentialPincodeUpdate(e.target.value)}
 
          
 
           />
 
      <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="permanentaddressline1"
+            name="permanentAddressLine1"
 
             label="permanent addressline 1"
 
  
 
-            id="permanentaddressline1"
+            id="permanentAddressLine1"
 
-            value={permanentaddressline1}
+            value={permanentAddressLine1}
 
-            onChange={e=>permanentaddressline1Update(e.target.value)}
+            onChange={e=>permanentAddressLine1Update(e.target.value)}
 
          
 
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="permanentaddressline2"
+            name="permanentAddressLine2"
 
             label="permanent addressline 2"
 
  
 
-            id="permanentaddressline2"
+            id="permanentAddressLine2"
 
-            value={permanentaddressline2}
+            value={permanentAddressLine2}
 
-            onChange={e=>permanentaddressline2Update(e.target.value)}
+            onChange={e=>permanentAddressLine2Update(e.target.value)}
 
          
 
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="permanentlandmark"
+            name="permanentLandmark"
 
             label="permanent landmark"
 
  
 
-            id="permanentlandmark"
+            id="permanentLandmark"
 
-            value={permanentlandmark}
+            value={permanentLandmark}
 
-            onChange={e=>permanentlandmarkUpdate(e.target.value)}
+            onChange={e=>permanentLandmarkUpdate(e.target.value)}
 
          
 
           />   
 
      <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="permanentcity"
+            name="permanentCity"
 
             label="permanent city"
 
  
 
-            id="permanentcity"
+            id="permanentCity"
 
-            value={permanentcity}
+            value={permanentCity}
 
-            onChange={e=>permanentcityUpdate(e.target.value)}
+            onChange={e=>permanentCityUpdate(e.target.value)}
 
          
 
           /> 
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="permanentpincode"
+            name="permanentPincode"
 
             label="permanent pincode"
 
- 
+            inputProps={{ maxLength: 6 }}
 
-            id="permanentpincode"
+            id="permanentPincode"
 
-            value={permanentpincode}
+            value={permanentPincode}
 
-            onChange={e=>permanentpincodeUpdate(e.target.value)}
+            onChange={e=>permanentPincodeUpdate(e.target.value)}
 
          
 
           /> 
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="occupationtype"
+            name="occupationType"
 
             label="occupation type"
 
  
 
-            id="occupationtype"
+            id="occupationType"
 
-            value={occupationtype}
+            value={occupationType}
 
-            onChange={e=>occupationtypeUpdate(e.target.value)}
+            onChange={e=>occupationTypeUpdate(e.target.value)}
 
          
 
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="sourceofincome"
+            name="sourceOfIncome"
 
             label="source of income"
 
  
 
-            id="sourceofincome"
+            id="sourceOfIncome"
 
-            value={sourceofincome}
+            value={sourceOfIncome}
 
-            onChange={e=>sourceofincomeUpdate(e.target.value)}
+            onChange={e=>sourceOfIncomeUpdate(e.target.value)}
 
          
 
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
 
             fullWidth
 
-            name="grossannualincome"
+            name="grossAnnualIncome"
 
             label="gross annual income"
 
- 
 
-            id="grossannualincome"
+            id="grossAnnualIncome"
 
-            value={grossannualincome}
+            value={grossAnnualIncome}
 
-            onChange={e=>grossannualincomeUpdate(e.target.value)}
+            onChange={e=>grossAnnualIncomeUpdate(e.target.value)}
 
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
          
 
           />    
-<Button
-
-type="submit"
-
-
-
-variant="contained"
-
-sx={{ mt: 3, mb: 2 }}
-
->
-
-Submit
-
-</Button>
+ <Button 
+            className="button"
+            type="submit"
+          
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Submit
+            </Button>
         </Box>
+        <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+        >
+<Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+        Alert!
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          Some fields are empty
+          </Typography>
+        </Box>
+        </Modal>
 
         </Box>
         
         </Box>
     </Container>
 
- 
+ </div>
 
    
 
