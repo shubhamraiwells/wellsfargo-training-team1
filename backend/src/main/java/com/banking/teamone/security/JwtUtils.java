@@ -1,24 +1,21 @@
-package com.banking.teamone.security.jwt;
+package com.banking.teamone.security;
 
-import com.banking.teamone.model.CustomerIb;
-import com.banking.teamone.service.CustomerIbService;
-import com.banking.teamone.service.auth.CustomerIbDetailsImpl;
+import com.banking.teamone.service.CustomerIbDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 
 
 @Component
+
 public class JwtUtils {
     private static final Logger logger=LoggerFactory.getLogger(JwtUtils.class);
     @Value("${teamone.onlinebanking.jwtSecret}")
@@ -39,12 +36,15 @@ public class JwtUtils {
     }
 
     public String getUserNameFromJwt(String token){
+//        logger.debug("Jwt token called in getusername"+" "+token);
         return Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken){
+
         try{
-           Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
+            System.out.println("Printing token in "+authToken);
+           Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken);
            return true;
         }catch(MalformedJwtException e){
             logger.error("Invalid Jwt token: {}", e.getMessage());
