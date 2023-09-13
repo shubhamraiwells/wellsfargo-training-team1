@@ -1,4 +1,4 @@
-package com.banking.teamone.security.jwt;
+package com.banking.teamone.security;
 
 
 import org.slf4j.Logger;

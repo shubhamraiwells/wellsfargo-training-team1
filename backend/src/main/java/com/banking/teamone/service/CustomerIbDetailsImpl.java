@@ -1,4 +1,4 @@
-package com.banking.teamone.service.auth;
+package com.banking.teamone.service;
 
 import com.banking.teamone.model.CustomerIb;
 import com.fasterxml.jackson.annotation.JsonIgnore;

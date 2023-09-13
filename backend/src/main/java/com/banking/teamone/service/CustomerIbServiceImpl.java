@@ -1,12 +1,12 @@
-package com.banking.teamone.service.auth;
+package com.banking.teamone.service;
 
 import com.banking.teamone.model.CustomerIb;
+import com.banking.teamone.service.CustomerIbDetailsImpl;
 import com.banking.teamone.service.CustomerIbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
