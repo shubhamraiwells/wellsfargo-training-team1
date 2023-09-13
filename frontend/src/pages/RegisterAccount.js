@@ -1,6 +1,8 @@
 import React, { Component, useState } from "react";
 
-import "./Login.css";
+import validator from 'validator';
+
+import "./Style.css";
 
 import Button from "@mui/material/Button";
 
@@ -19,8 +21,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import Container from "@mui/material/Container";
+
+import Modal from '@mui/material/Modal'; 
 import apiCall from "../apiCall/apiCall";
- 
 
 export default function RegisterAccount() {
 
@@ -68,9 +71,21 @@ const [sourceOfIncome , sourceOfIncomeUpdate] = useState('');
 
 const [grossAnnualIncome , grossAnnualIncomeUpdate] =  useState('');
 
- 
+const [open, setOpen] = useState(false);
+const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
 
- 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
   const handleSubmit = async  (event) => {
 
@@ -90,6 +105,10 @@ else{
   };
 
 const validate=()=>{
+let emailid = toString(emailUpdate);
+    if (!(validator.isEmail(emailid))) {
+      console.log('Enter a valid Email');
+    } 
 
   let result = true;
 
@@ -134,7 +153,7 @@ if(fatherName==='' || fatherName === null){
   }
 
 if(email==='' || email === null){
-
+   
     result = false;
 
     console.log("email is empty");
@@ -265,24 +284,28 @@ if(grossAnnualIncome==='' || grossAnnualIncome === null){
 
     result = false;
 
-    console.log("grossAnnualIncome is empty");
+//isincomeEmptyUpdate(true);
+    
+    console.log("grossannualincome is empty");
 
   }
 if(!result)
-{alert("Some fields are empty");}  
+{setOpen(true);
+    console.log("Some fields are empty");}  
 return result;
 
 }
 
   return (
 
-  
+    <div className="container">
+    
 
-    <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="lg"  className="container">
 
       <div className="App-header">
 
-          <Typography  component="h1" variant="h5" style={{marginTop:4}}>
+      <Typography component="h1" variant="h5" className="title">
 
         User Registration Details
 
@@ -295,8 +318,9 @@ return result;
       
 
         sx={{
+            boxShadow: 3,
 
-            borderRadius: 2,
+            borderRadius: 5,
 
             px: 1,
 
@@ -307,7 +331,7 @@ return result;
             flexDirection: "column",
 
             alignItems: "center",
-
+            background : "white",
           }}
 
         >
@@ -317,10 +341,6 @@ return result;
       <Box
 
         sx={{
-
-          boxShadow: 3,
-
-          borderRadius: 2,
 
           px: 4,
 
@@ -341,7 +361,7 @@ return result;
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -361,7 +381,7 @@ return result;
             autoFocus
 
           /><TextField
-
+          className="input"
             margin="normal"
 
             required
@@ -381,7 +401,7 @@ return result;
             autoFocus
 
           /><TextField
-
+          className="input"
             margin="normal"
 
             required
@@ -401,7 +421,7 @@ return result;
             autoFocus
 
           /><TextField
-
+          className="input"
             margin="normal"
 
             required
@@ -425,7 +445,7 @@ return result;
           />
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -438,7 +458,7 @@ return result;
 
             name="mobileNo"
 
-          
+            inputProps={{ maxLength: 10 }}
 
             value={mobileNo}
 
@@ -449,7 +469,7 @@ return result;
           />
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -465,7 +485,6 @@ return result;
             id="email"
 
             value={email}
-
             onChange={e=>emailUpdate(e.target.value)}
 
           
@@ -473,7 +492,7 @@ return result;
           />
 
      <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -488,14 +507,14 @@ return result;
 
             value={aadharCardNo}
 
+            inputProps={{ maxLength: 12 }}
             onChange={e=>aadharCardNoUpdate(e.target.value)}
-
           
 
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -513,13 +532,15 @@ return result;
             value={dateOfBirth}
 
             onChange={e=>dateOfBirthUpdate(e.target.value)}
+            type='date'
 
+            onChange={e=>dateOfBirthUpdate(e.target.value)}
           
 
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -549,7 +570,7 @@ return result;
      
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -573,7 +594,7 @@ return result;
           />
 
           <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -597,7 +618,7 @@ return result;
           />
 
     <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -621,7 +642,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -632,7 +653,7 @@ return result;
 
             label="residential pincode"
 
- 
+            inputProps={{ maxLength: 6 }}
 
             id="residentialPincode"
 
@@ -645,7 +666,7 @@ return result;
           />
 
      <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -669,7 +690,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -693,7 +714,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -717,7 +738,7 @@ return result;
           />   
 
      <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -741,7 +762,7 @@ return result;
           /> 
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -752,7 +773,7 @@ return result;
 
             label="permanent pincode"
 
- 
+            inputProps={{ maxLength: 6 }}
 
             id="permanentPincode"
 
@@ -765,7 +786,7 @@ return result;
           /> 
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -789,7 +810,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -813,7 +834,7 @@ return result;
           />
 
 <TextField
-
+  className="input"
             margin="normal"
 
             required
@@ -824,7 +845,6 @@ return result;
 
             label="gross annual income"
 
- 
 
             id="grossAnnualIncome"
 
@@ -832,31 +852,42 @@ return result;
 
             onChange={e=>grossAnnualIncomeUpdate(e.target.value)}
 
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
          
 
           />    
-<Button
-
-type="submit"
-
-
-variant="contained"
-
-sx={{ mt: 3, mb: 2 }}
-
->
-
-Submit
-
-</Button>
+ <Button 
+            className="button"
+            type="submit"
+          
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Submit
+            </Button>
         </Box>
+        <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+        >
+<Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+        Alert!
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          Some fields are empty
+          </Typography>
+        </Box>
+        </Modal>
 
         </Box>
         
         </Box>
     </Container>
 
- 
+ </div>
 
    
 
