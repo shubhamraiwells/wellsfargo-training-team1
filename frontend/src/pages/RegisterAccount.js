@@ -39,7 +39,7 @@ const [fatherName, fatherNameUpdate] = useState('');
 
 const [mobileNo, mobileNoUpdate] = useState('');
 
-const [email, emailUpdate] = useState('');
+const [emailId, emailIdUpdate] = useState('');
 
 const [aadharCardNo, aadharCardNoUpdate] = useState('');
 
@@ -93,7 +93,7 @@ const style = {
    console.log(event.target)
 let result = validate();
 if(result){
-   let obj = {firstName,middleName,lastName,fatherName,mobileNo,email,aadharCardNo,dateOfBirth,residentialAddressLine1,residentialAddressLine2,residentialLandmark,residentialCity,residentialPincode,permanentAddressLine1,permanentAddressLine2,permanentLandmark,permanentCity,permanentPincode,occupationType,sourceOfIncome, grossAnnualIncome};
+   let obj = {firstName,middleName,lastName,fatherName,mobileNo,emailId,aadharCardNo,dateOfBirth,residentialAddressLine1,residentialAddressLine2,residentialLandmark,residentialCity,residentialPincode,permanentAddressLine1,permanentAddressLine2,permanentLandmark,permanentCity,permanentPincode,occupationType,sourceOfIncome, grossAnnualIncome};
     result= await apiCall("http://localhost:8080/createSavingsAccount","POST",obj,null);
     console.log(obj)
     console.log(result)
@@ -105,7 +105,7 @@ else{
   };
 
 const validate=()=>{
-let emailid = toString(emailUpdate);
+let emailid = toString(emailIdUpdate);
     if (!(validator.isEmail(emailid))) {
       console.log('Enter a valid Email');
     } 
@@ -152,7 +152,7 @@ if(fatherName==='' || fatherName === null){
 
   }
 
-if(email==='' || email === null){
+if(emailId==='' || emailId === null){
    
     result = false;
 
@@ -476,16 +476,16 @@ return result;
 
             fullWidth
 
-            name="email"
+            name="emailId"
 
             label="Email"
 
             type="email"
 
-            id="email"
+            id="emailId"
 
-            value={email}
-            onChange={e=>emailUpdate(e.target.value)}
+            value={emailId}
+            onChange={e=>emailIdUpdate(e.target.value)}
 
           
 
@@ -532,9 +532,7 @@ return result;
             value={dateOfBirth}
 
             onChange={e=>dateOfBirthUpdate(e.target.value)}
-            type='date'
-
-            onChange={e=>dateOfBirthUpdate(e.target.value)}
+            
           
 
           />
