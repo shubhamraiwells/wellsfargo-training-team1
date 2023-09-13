@@ -5,15 +5,16 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import RegisterAccount from './pages/RegisterAccount';
 import SignUp from "./pages/SignUp";
-import { ProSidebarProvider } from "react-pro-sidebar";
+import NavBar from "./pages/NavBar";
 export default function App() {
   
    return (
-    <ProSidebarProvider>
+    
 <div className="App">
   
   <BrowserRouter>
   <Routes>
+  <Route path='/' element={<NavBar/>}></Route>
   <Route path='/' element={<Home/>}></Route>
   <Route path='/SignUp' element={<SignUp/>}></Route>
   <Route path='/RegisterAccount' element={<RegisterAccount/>}></Route>
@@ -22,6 +23,6 @@ export default function App() {
   </Routes>
   </BrowserRouter>
   </div>
-  </ProSidebarProvider>
+ 
    );
 }

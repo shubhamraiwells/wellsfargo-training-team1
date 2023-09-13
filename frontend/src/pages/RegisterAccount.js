@@ -7,6 +7,7 @@ import "./Style.css";
 import Button from "@mui/material/Button";
 
 import TextField from "@mui/material/TextField";
+import InputLabel from '@mui/material/InputLabel';
 
 import FormControlLabel from "@mui/material/FormControlLabel";
 
@@ -24,6 +25,10 @@ import Container from "@mui/material/Container";
 
 import Modal from '@mui/material/Modal'; 
 import apiCall from "../apiCall/apiCall";
+import NavBar from "./NavBar";
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 export default function RegisterAccount() {
 
@@ -71,6 +76,11 @@ const [sourceOfIncome , sourceOfIncomeUpdate] = useState('');
 
 const [grossAnnualIncome , grossAnnualIncomeUpdate] =  useState('');
 
+const [accountType, accountTypeUpdate] = React.useState('');
+
+const handleChange = (event) => {
+    accountTypeUpdate(event.target.value);
+};
 const [open, setOpen] = useState(false);
 const handleOpen = () => setOpen(true);
 const handleClose = () => setOpen(false);
@@ -289,6 +299,10 @@ if(grossAnnualIncome==='' || grossAnnualIncome === null){
     console.log("grossannualincome is empty");
 
   }
+  if(accountType==='' || accountType === null){
+
+    result = false;
+    console.log("accountType is empty");}
 if(!result)
 {setOpen(true);
     console.log("Some fields are empty");}  
@@ -300,16 +314,12 @@ return result;
 
     <div className="container">
     
-
-    <Container component="main" maxWidth="lg"  className="container">
+    <NavBar/>
+    <Container component="main" maxWidth="md"  className="container">
 
       <div className="App-header">
 
-      <Typography component="h1" variant="h5" className="title">
-
-        User Registration Details
-
-        </Typography>
+     
 
         </div>
 
@@ -335,7 +345,7 @@ return result;
           }}
 
         >
-            
+          
     
 
       <Box
@@ -346,7 +356,7 @@ return result;
 
           py: 6,
 
-          marginTop: 8,
+      
 
           display: "flex",
 
@@ -357,7 +367,11 @@ return result;
         }}
 
       >
+  <Typography component="h1" variant="h5" className="title">
 
+User Registration Details
+
+</Typography> 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
 <TextField
@@ -532,9 +546,9 @@ return result;
             value={dateOfBirth}
 
             onChange={e=>dateOfBirthUpdate(e.target.value)}
-            type='date'
+        
 
-            onChange={e=>dateOfBirthUpdate(e.target.value)}
+            
           
 
           />
@@ -855,7 +869,28 @@ return result;
             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
          
 
+    
           />    
+          <FormControl fullWidth>
+  <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
+  <Select
+  style={{alignItems:'right'}}
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={accountType}
+    label="Account Type"
+    onChange={handleChange}
+    className="input"
+  >
+    <MenuItem value={10}>Savings Account</MenuItem>
+    <MenuItem value={20}>Checking Account</MenuItem>
+    <MenuItem value={30}>Money Market Account</MenuItem>
+    <MenuItem value={40}>Joint Account</MenuItem>
+    <MenuItem value={50}>Student Account</MenuItem>
+    <MenuItem value={60}>Custodial Account</MenuItem>
+
+  </Select>
+</FormControl>
  <Button 
             className="button"
             type="submit"

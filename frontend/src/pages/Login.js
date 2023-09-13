@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import apiCall from "../apiCall/apiCall";
-
+import NavBar from "./NavBar";
 //const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 //const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
@@ -50,6 +50,7 @@ const style = {"& label.Mui-focused":{
 }}
   return (
   <div className="container">
+    <NavBar/>
     <Container maxWidth="sm" 
    className="container" 
     >
