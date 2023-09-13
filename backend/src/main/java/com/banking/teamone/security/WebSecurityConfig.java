@@ -59,7 +59,8 @@ public class WebSecurityConfig {
   http.csrf(AbstractHttpConfigurer::disable).exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)).
           sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
          authorizeRequests().antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
-          .antMatchers(HttpMethod.GET, "/api/auth/**").permitAll().anyRequest().authenticated();
+          .antMatchers(HttpMethod.GET, "/api/auth/**").permitAll().
+        anyRequest().authenticated();
 
   http.authenticationProvider(authenticationProvider());
   http.addFilterBefore(authJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

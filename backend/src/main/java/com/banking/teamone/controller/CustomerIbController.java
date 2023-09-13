@@ -16,8 +16,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+<<<<<<< HEAD:backend/src/main/java/com/banking/teamone/controller/CustomerIbController.java
 public class CustomerIbController {
 Logger logger= LoggerFactory.getLogger(CustomerIbController.class);
+=======
+@RequestMapping("/api/test")
+public class InternetBankingController {
+Logger logger= LoggerFactory.getLogger(InternetBankingController.class);
+>>>>>>> 7d09c18 (debug jwt):backend/src/main/java/com/banking/teamone/controller/InternetBankingController.java
 
     @Autowired
     private AccountService accountService;
