@@ -12,7 +12,7 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    TransactionDto getTransactionById(String Id){
+    TransactionDto getTransactionById(Integer Id){
         Transaction transaction=transactionRepository.findById(Id).isPresent()?transactionRepository.findById(Id).get():null;
         assert transaction != null;
         return new TransactionDto(transaction.getId(),transaction.getFromAccountNo(),transaction.getToAccountNo(),transaction.getTransactionAmount(),transaction.getTransactionDate());
