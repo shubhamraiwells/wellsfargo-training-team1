@@ -13,6 +13,7 @@ import apiCall from "../apiCall/apiCall";
 import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 import {Context} from '../context/AuthContext';
+import NavBar from "./NavBar";
 //const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 //const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
@@ -55,6 +56,7 @@ const style = {"& label.Mui-focused":{
 }}
   return (
   <div className="container">
+    <NavBar/>
     <Container maxWidth="sm" 
    className="container" 
     >

@@ -10,7 +10,7 @@ import { Context as UserContex, Provider as UserProvider } from './context/AuthC
 const App = () => {
 
   return (
-    <ProSidebarProvider>
+    // <ProSidebarProvider>
       <div className="App">
 
         <BrowserRouter>
@@ -23,7 +23,7 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </div>
-    </ProSidebarProvider>
+    // </ProSidebarProvider>
   );
 }
 
