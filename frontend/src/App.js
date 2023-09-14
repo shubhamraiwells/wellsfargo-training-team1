@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import RegisterAccount from './pages/RegisterAccount';
 import SignUp from "./pages/SignUp";
 import NavBar from "./pages/NavBar";
+import Account from "./pages/Account";
 export default function App() {
   
    return (
@@ -18,8 +19,8 @@ export default function App() {
   <Route path='/' element={<Home/>}></Route>
   <Route path='/SignUp' element={<SignUp/>}></Route>
   <Route path='/RegisterAccount' element={<RegisterAccount/>}></Route>
-    <Route path='/Login' element={<Login/>}></Route>
-    
+  <Route path='/Login' element={<Login/>}></Route>
+  <Route path="/Account" element ={<Account/>}></Route>  
   </Routes>
   </BrowserRouter>
   </div>

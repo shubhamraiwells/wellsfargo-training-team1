@@ -28,6 +28,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonIcon from '@mui/icons-material/Person';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { 
     useState, 
@@ -263,6 +264,29 @@ Home
                   }}
                 >
              <NavLink to="/Login"><Button><PersonIcon style={{color:"black"}}/></Button></NavLink> 
+               
+ </ListItemIcon>
+ <ListItemText><NavLink to="/Login" style={{textDecoration:'None',color:'black'}}>
+ Login
+      </NavLink></ListItemText>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                 
+                  }}
+                >
+             <NavLink to="/Account"><Button><AccountCircleIcon style={{color:"black"}}/></Button></NavLink> 
                
  </ListItemIcon>
  <ListItemText><NavLink to="/Login" style={{textDecoration:'None',color:'black'}}>
