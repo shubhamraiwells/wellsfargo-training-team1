@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Entity
 @Table(name="Transaction")
-@Transactional
 @Getter
 @Setter
 public class Transaction {
@@ -26,14 +25,13 @@ public class Transaction {
     @Column(nullable = false)
     private String fromAccountNo;
 
-    @Column(nullable = false)
-
+    @Column
     private String toAccountNo;
-    @Column(nullable = false)
 
+    @Column(nullable = false)
     private BigDecimal transactionAmount;
 
-    @Column(nullable = false)
+    @Column
     private final LocalDateTime transactionDate= LocalDateTime.now();
 
 
