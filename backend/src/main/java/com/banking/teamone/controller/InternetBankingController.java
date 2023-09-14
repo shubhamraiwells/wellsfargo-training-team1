@@ -16,14 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-<<<<<<< HEAD:backend/src/main/java/com/banking/teamone/controller/CustomerIbController.java
-public class CustomerIbController {
-Logger logger= LoggerFactory.getLogger(CustomerIbController.class);
-=======
-@RequestMapping("/api/test")
+//@RequestMapping("/api/test")
 public class InternetBankingController {
-Logger logger= LoggerFactory.getLogger(InternetBankingController.class);
->>>>>>> 7d09c18 (debug jwt):backend/src/main/java/com/banking/teamone/controller/InternetBankingController.java
+    Logger logger = LoggerFactory.getLogger(InternetBankingController.class);
 
     @Autowired
     private AccountService accountService;
@@ -32,23 +27,23 @@ Logger logger= LoggerFactory.getLogger(InternetBankingController.class);
 
 
 
-    @PostMapping("/createIbAccount")
-    @CrossOrigin
-    public ResponseEntity<String>createIbAccount(@RequestBody CustomerIbRequestModel customerIbRequestModel){
-       CustomerIb customerIb1=customerIbService.getCustomerByUsername(customerIbRequestModel.getUsername());
-       CustomerIb customerIb2=customerIbService.getCustomerByAccountNo(customerIbRequestModel.getAccountNo());
-       if(customerIb1!=null || customerIb2!=null){
-           return new ResponseEntity<>("username or account number already registered", HttpStatus.OK);
-       }else{
-           try {
-               customerIbService.createCustomerIb(customerIbRequestModel);
-           }catch (Exception e){
-               logger.error(e.getMessage());
-               return new ResponseEntity<>("Something went wrong check your details",HttpStatus.BAD_REQUEST);
-           }
-           return new ResponseEntity<>("User registered for Internet banking",HttpStatus.CREATED);
-       }
-    }
+//    @PostMapping("/createIbAccount")
+//    @CrossOrigin
+//    public ResponseEntity<String> createIbAccount(@RequestBody CustomerIbRequestModel customerIbRequestModel) {
+//        CustomerIb customerIb1 = customerIbService.getCustomerByUsername(customerIbRequestModel.getUsername());
+//        CustomerIb customerIb2 = customerIbService.getCustomerByAccountNo(customerIbRequestModel.getAccountNo());
+//        if (customerIb1 != null || customerIb2 != null) {
+//            return new ResponseEntity<>("username or account number already registered", HttpStatus.OK);
+//        } else {
+//            try {
+//                customerIbService.createCustomerIb(customerIbRequestModel);
+//            } catch (Exception e) {
+//                logger.error(e.getMessage());
+//                return new ResponseEntity<>("Something went wrong check your details", HttpStatus.BAD_REQUEST);
+//            }
+//            return new ResponseEntity<>("User registered for Internet banking", HttpStatus.CREATED);
+//        }
+//    }
 
     @GetMapping("/getIbAccountByUsername")
     @CrossOrigin

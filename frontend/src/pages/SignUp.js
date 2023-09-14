@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState,useContext } from "react";
 import "./Style.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,14 +11,15 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Home from "./Home.js";
 import apiCall from "../apiCall/apiCall";
+import {Context} from "../context/AuthContext";
 
 const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
 
 export default function SignUp() {
-
- 
+  
+  const {signUp}=useContext(Context)
   const [formData,setFormData]=useState({
     username:"",
     password:"",
@@ -30,7 +31,7 @@ const [ispasswordEmpty,ispasswordEmptyUpdate] = useState(false);
 
 
 const handleSubmit = async (e) => {
-    const url="http://localhost:8080/createIbAccount";
+    const url="http://localhost:8080/api/auth/signup";
     e.preventDefault();
     const checkUsername=userNameRegex.test(formData.username);
     const checkPassword=passwordRegex.test(formData.password);
@@ -38,8 +39,9 @@ const handleSubmit = async (e) => {
 
     if(checkUsername && checkPassword && checkAccountNo){
 
-    const result=await apiCall(url,"POST",formData,null);
-    alert(result.data);
+    // const result=await apiCall(url,"POST",formData,null);
+    const result= await signUp(formData,url);
+    console.log(result)
     }else{
         var res="";
         console.log(checkUsername+" "+checkPassword+" "+checkAccountNo)

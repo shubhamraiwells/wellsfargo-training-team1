@@ -24,11 +24,11 @@ public class CustomerIbService {
     public CustomerIb getCustomerByAccountNo(String accountNo){
         return customerIbRepository.findByAccountNo(accountNo);
     }
-    public void createCustomerIb(CustomerIbRequestModel customerIbRequestModel){
-        CustomerIb customerIb = customerConverter.customerIbRequestModelToCustomerIb(customerIbRequestModel);
-        customerIbRepository.save(customerIb);
-
-    }
+//    public void createCustomerIb(CustomerIbRequestModel customerIbRequestModel){
+//        CustomerIb customerIb = customerConverter.customerIbRequestModelToCustomerIb(customerIbRequestModel);
+//        customerIbRepository.save(customerIb);
+//
+//    }
 
     public void createCustomerIb(CustomerIb customerIb){
         customerIbRepository.save(customerIb);

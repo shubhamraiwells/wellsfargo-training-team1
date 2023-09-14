@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState ,useContext} from "react";
 import "./Style.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,26 +10,31 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import apiCall from "../apiCall/apiCall";
-
+import jwtDecode from "jwt-decode";
+import Cookies from "js-cookie";
+import {Context} from '../context/AuthContext';
 //const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 //const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
 
 const Login = () => {
+  const {signIn}=useContext(Context);
 const[username,usernameUpdate] = useState('');
 const[password,passwordUpdate] = useState('');
 const [isusernameEmpty,isusernameEmptyUpdate] = useState(false);
 const [ispasswordEmpty,ispasswordEmptyUpdate] = useState(false);
 const obj = {username,password};
+// console.log(jwtDecode('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaHViaGFtcmFpIiwiaWF0IjoxNjk0NjE4OTgxLCJleHAiOjE2OTQ2MjM5ODF9.9vQkEkTPfGsK72afYPIpQm59ar3L9Ah2Kuq4kRJAeVo'));
 
 const handleSubmit = async (e) => {
-  const url="http://localhost:8080/loginIbAccount";
+  const url="http://localhost:8080/api/auth/signinIb";
   e.preventDefault();
 
   if(validate()){
 
-  const result=await apiCall(url,"POST",obj,null);
-  alert("Logged in successfully");
+  // const result=await apiCall(url,"POST",obj,null);
+  const result=await signIn(obj,url);
+  console.log(result);
   }else{
       alert("Not logged in, some fields are empty");
   }

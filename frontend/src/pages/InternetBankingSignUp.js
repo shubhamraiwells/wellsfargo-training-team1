@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Grid, Paper, Avatar, Typography, TextField, Button } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -8,8 +8,8 @@ import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import apiCall from "../apiCall/apiCall";
-
-
+import {Context} from "../context/AuthContext";
+import Cookies from "js-cookie";
 const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
@@ -20,6 +20,7 @@ const InternetBankingSignUp = () => {
     const headerstyle = { margin: 0 }
     const avatarStyle = { backgroundColor: '#1bb7e' }
     const marginTop = { marginTop: 5 }
+    const {signUp}=useContext(Context)
     // const [username, setUsername] = useState(null);
     // const [password, setPassword] = useState(null);
     // const [AccountNo, setAccountNo] = useState(null);

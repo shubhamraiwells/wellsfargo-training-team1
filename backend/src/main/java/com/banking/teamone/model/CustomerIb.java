@@ -14,13 +14,17 @@ import java.util.List;
 @Entity
 @Table(name="customerIb")
 public class CustomerIb {
+    // TODO Auto-generated method stub
+    @Getter
     @Id
     @Column(nullable = false,name = "username")
     @Pattern(regexp = "^(?!.*\\.\\.)(?!.*\\.$)[A-Za-z0-9_.]{8,20}$")
     private String username;
 
+    // TODO Auto-generated method stub
+    @Getter
     @Column(nullable = false,name = "password")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{12,}$")
+//    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{12,}$")
     private String password;
 
 
@@ -47,12 +51,4 @@ public class CustomerIb {
     @Column(name="acc_no",nullable = false)
     private String accountNo;
 
-    public String getUsername() {  
-        // TODO Auto-generated method stub
-        return username;
-    }
-    public String getPassword() {
-        // TODO Auto-generated method stub
-        return password;
-    }
 }

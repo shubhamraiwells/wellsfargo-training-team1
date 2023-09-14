@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -41,8 +42,9 @@ public class InternetBanking {
     JwtUtils jwtUtils;
 
     @PostMapping("/signinIb")
-    public ResponseEntity<?>authenicateUser(@Valid @RequestBody LoginRequestIb loginRequest){
-//        System.out.println(loginRequest.getUsername()+" "+loginRequest.getPassword());
+    @CrossOrigin
+    public ResponseEntity<?>authenicateUser(@RequestBody LoginRequestIb loginRequest){
+        System.out.println(loginRequest.getUsername()+" "+loginRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(),loginRequest.getPassword()
         ));
@@ -55,14 +57,23 @@ public class InternetBanking {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?>registeredUser(@Valid @RequestBody SignUpRequestIb signUpRequestIb){
-        if(customerIbService.getCustomerByUsername(signUpRequestIb.getUsername())!=null){
-            return new ResponseEntity<>("Username is already taken", HttpStatus.BAD_REQUEST);
+    @CrossOrigin
+    public ResponseEntity<String>registeredUser(@RequestBody SignUpRequestIb signUpRequestIb){
+//        System.out.println(signUpRequestIb.getAccountNo()+" "+signUpRequestIb.getUsername()+" "+signUpRequestIb.getPassword()+" "+signUpRequestIb.getRole());
+//             System.out.println(signUpRequestIb.getAccountNo()+" "+signUpRequestIb.getUsername()+" "+signUpRequestIb.getPassword()+" "+signUpRequestIb.getRole());
+       String username=signUpRequestIb.getUsername();
+       String password=signUpRequestIb.getPassword();
+       String accountNo=signUpRequestIb.getAccountNo();
+        if(customerIbService.getCustomerByUsername(username)!=null){
+            return new ResponseEntity<>("Username is already taken", HttpStatus.OK);
+        }
+        if(customerIbService.getCustomerByAccountNo(accountNo)!=null){
+            return new ResponseEntity<>("Account already registered",HttpStatus.OK);
         }
         CustomerIb customerIb= new CustomerIb();
-        customerIb.setUsername(signUpRequestIb.getUsername());
-        customerIb.setAccount_no(signUpRequestIb.getAccountNo());
-        customerIb.setPassword(passwordEncoder.encode(signUpRequestIb.getPassword()));
+        customerIb.setUsername(username);
+        customerIb.setAccountNo(accountNo);
+        customerIb.setPassword(passwordEncoder.encode(password));
         customerIb.setRole(CRole.ROLE_CUSTOMER);
         customerIbService.createCustomerIb(customerIb);
         return new ResponseEntity<>("User Created successfully",HttpStatus.OK);
