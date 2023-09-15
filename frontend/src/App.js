@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import RegisterAccount from './pages/RegisterAccount';
 import SignUp from "./pages/SignUp";
 import NavBar from "./pages/NavBar";
-import Account from "./pages/Account";
+import Services from "./pages/Services";
 export default function App() {
   
    return (
@@ -20,7 +20,7 @@ export default function App() {
   <Route path='/SignUp' element={<SignUp/>}></Route>
   <Route path='/RegisterAccount' element={<RegisterAccount/>}></Route>
   <Route path='/Login' element={<Login/>}></Route>
-  <Route path="/Account" element ={<Account/>}></Route>  
+  <Route path="/Services" element ={<Services/>}></Route>  
   </Routes>
   </BrowserRouter>
   </div>
