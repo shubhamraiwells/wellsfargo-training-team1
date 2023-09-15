@@ -5,10 +5,12 @@ import com.banking.teamone.dto.TransactionDto;
 import com.banking.teamone.dto.TransactionRequestDto;
 import com.banking.teamone.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -20,6 +22,12 @@ public class TransactionsController {
 
     @GetMapping("/getTransactions")
     public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam String accountNo){
+        List<TransactionDto>res=transactionService.getAllTransactionByAccountNo(accountNo);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTransactionsByDate")
+    public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam("accountNo") String accountNo, @RequestParam(value="fromDate") @DateTimeFormat(pattern="MMddyyyy") Date fromDate,@RequestParam(value="fromDate") Date toDate){
         List<TransactionDto>res=transactionService.getAllTransactionByAccountNo(accountNo);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
