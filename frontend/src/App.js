@@ -7,19 +7,21 @@ import RegisterAccount from './pages/RegisterAccount';
 import SignUp from "./pages/SignUp";
 import { ProSidebarProvider } from "react-pro-sidebar";
 import { Context as UserContex, Provider as UserProvider } from './context/AuthContext';
+import Services from "./pages/Services";
+import Navbar from "./pages/NavBar";
 const App = () => {
 
   return (
     // <ProSidebarProvider>
       <div className="App">
-
+         
         <BrowserRouter>
           <Routes>
-            <Route path='/' element={<Home />}></Route>
+            <Route path='/' element={<Navbar/>}></Route>
             <Route path='/SignUp' element={<SignUp />}></Route>
             <Route path='/RegisterAccount' element={<RegisterAccount />}></Route>
             <Route path='/Login' element={<Login />}></Route>
-
+            <Route path='/Services' element={<Services/>}></Route>
           </Routes>
         </BrowserRouter>
       </div>
