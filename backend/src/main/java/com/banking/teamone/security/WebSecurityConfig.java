@@ -63,7 +63,7 @@ public class WebSecurityConfig {
   http.cors().configurationSource(option->corsConfigurationSource()).and().csrf(AbstractHttpConfigurer::disable).exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)).
           sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
          authorizeRequests().antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
-          .antMatchers(HttpMethod.GET, "/api/auth/**").permitAll().
+          .antMatchers(HttpMethod.GET, "/api/auth/**").permitAll().antMatchers(HttpMethod.POST,"/api/savingAccount/**").permitAll().
         anyRequest().authenticated();
 
   http.authenticationProvider(authenticationProvider());

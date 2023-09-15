@@ -12,12 +12,9 @@ import java.util.List;
 public class AccountOwner {
 
     @Id
-    private Integer  acc_no;
+    private String  acc_no;
 
     @Column(name="cust_id",nullable = false)
     private Integer cust_id;
-
-
-
 
 }

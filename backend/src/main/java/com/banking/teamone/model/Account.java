@@ -1,6 +1,8 @@
 package com.banking.teamone.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -10,14 +12,21 @@ import java.util.Date;
 @Getter
 @Entity
 @Table(name = "account")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private String id;
 
     @Column(name = "acc_type", length = 50, nullable = false,columnDefinition = "varchar(50) default 'saving'")
     private String accountType;
+
+
+    @Column
+    private Integer ownerId;
+
+
 
 
     @Column(name = "acc_activation_date", nullable = false)
@@ -28,7 +37,7 @@ public class Account{
     private BigDecimal totalBalance;
 
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
