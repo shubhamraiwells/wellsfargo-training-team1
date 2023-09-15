@@ -27,8 +27,8 @@ public class TransactionsController {
     }
 
     @GetMapping("/getTransactionsByDate")
-    public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam("accountNo") String accountNo, @RequestParam(value="fromDate") @DateTimeFormat(pattern="MMddyyyy") Date fromDate,@RequestParam(value="fromDate") Date toDate){
-        List<TransactionDto>res=transactionService.getAllTransactionByAccountNo(accountNo);
+    public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam("accountNo") String accountNo, @RequestParam(value="fromDate") @DateTimeFormat(pattern="dd-MM-yyyy") Date fromDate,@RequestParam(value="fromDate")  @DateTimeFormat(pattern="dd-MM-yyyy") Date toDate){
+        List<TransactionDto>res=transactionService.getAllTransactionByAccountNoAndDate(accountNo,fromDate,toDate);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

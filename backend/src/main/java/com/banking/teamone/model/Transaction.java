@@ -32,7 +32,7 @@ public class Transaction {
     private BigDecimal transactionAmount;
 
     @Column
-    private final LocalDateTime transactionDate= LocalDateTime.now();
+    private final Date transactionDate= new Date();
 
 
 

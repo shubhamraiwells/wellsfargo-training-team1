@@ -9,6 +9,7 @@ import com.banking.teamone.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,14 +38,28 @@ public class TransactionService {
 
     }
 
+
+
    public List<TransactionDto> getAllTransactionByAccountNo(String accountNo){
         return transactionRepository.findAllByFromAccountNo(accountNo).stream().map(el->new TransactionDto(el.getId(),el.getFromAccountNo(),el.getToAccountNo(),el.getTransactionAmount(),el.getTransactionDate())).collect(Collectors.toList());
     }
+
+
+    public List<TransactionDto> getAllTransactionByAccountNoAndDate(String accountNo, Date dateStart, Date dateEnd){
+        return transactionRepository.findAllByFromAccountNo(accountNo).stream().filter(el->(el.getTransactionDate().after(dateStart) && el.getTransactionDate().before(dateEnd)) ).map(el->new TransactionDto(el.getId(),el.getFromAccountNo(),el.getToAccountNo(),el.getTransactionAmount(),el.getTransactionDate())).collect(Collectors.toList());
+    }
+
+
+
+
   public String createTransaction(TransactionRequestDto transactionRequest){
       Account accFrom= accountService.getAccountById(transactionRequest.getFromAccountNo()).isPresent()?accountService.getAccountById(transactionRequest.getFromAccountNo()).get():null;
    Account toAccount=    accountService.getAccountById(transactionRequest.getToAccountNo()).isPresent()?accountService.getAccountById(transactionRequest.getToAccountNo()).get():null;
 
        if(accFrom!=null && toAccount !=null){
+           if(!accFrom.getIsActive() || !toAccount.getIsActive()){
+               return "Some of the accounts are not active";
+           }
            if(accFrom.getTotalBalance().compareTo(transactionRequest.getTransactionAmount())>0){
                accFrom.setTotalBalance(accFrom.getTotalBalance().subtract(transactionRequest.getTransactionAmount()));
                toAccount.setTotalBalance(toAccount.getTotalBalance().add(transactionRequest.getTransactionAmount()));

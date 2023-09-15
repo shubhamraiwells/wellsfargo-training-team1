@@ -41,7 +41,7 @@ public class SavingsAccountService {
             return "An account with the given Aadhar Number already exists";
        CustomerInfo createdCust= customerInfoRepository.save(customerInfo);
        //CREATING ACCOUNT
-        accountService.createAccount(new Account(accNo,createdCust.getAccountType(),createdCust.getId(),new Date(),new BigDecimal(0)));
+        accountService.createAccount(new Account(accNo,createdCust.getAccountType(),createdCust.getId(),true,new Date(),new BigDecimal(0)));
         List<CustomerInfo> customerInfoList = new ArrayList<>();
         System.out.println("Size of List:"+customerInfoList.size());
         customerInfoList = customerInfoRepository.findAll();
