@@ -7,6 +7,7 @@ import RegisterAccount from './pages/RegisterAccount';
 import SignUp from "./pages/SignUp";
 import { ProSidebarProvider } from "react-pro-sidebar";
 import { Context as UserContex, Provider as UserProvider } from './context/AuthContext';
+import TransactionalHistory from "./pages/TransactionalHistory";
 const App = () => {
 
   return (
@@ -19,7 +20,7 @@ const App = () => {
             <Route path='/SignUp' element={<SignUp />}></Route>
             <Route path='/RegisterAccount' element={<RegisterAccount />}></Route>
             <Route path='/Login' element={<Login />}></Route>
-
+            <Route path='/TransactionalHistory' element={<TransactionalHistory/>}></Route>
           </Routes>
         </BrowserRouter>
       </div>

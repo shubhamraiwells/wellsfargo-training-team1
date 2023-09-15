@@ -9,6 +9,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import HistoryIcon from "@mui/icons-material/History"
 import "./Style.css";
 
 export default function Home() {
@@ -35,6 +36,7 @@ export default function Home() {
           <MenuItem icon={<HomeOutlinedIcon />}><NavLink to="/RegisterAccount" style={{textDecoration:"none"}}>Open Savings Account</NavLink>Open Savings Account</MenuItem>
           <MenuItem icon={<PeopleOutlinedIcon />}><NavLink to="/SignUp" style={{textDecoration:"none"}}>Register for Net Banking</NavLink></MenuItem>
           <MenuItem icon={<ContactsOutlinedIcon />}><NavLink to="/Login" style={{textDecoration:"none"}}>Login to the portal</NavLink></MenuItem>
+          <MenuItem icon={<HistoryIcon />}><NavLink to="/TransactionalHistory" style={{textDecoration:"none"}}>View transaction history</NavLink></MenuItem>
         
         </Menu>
         </Sidebar>
