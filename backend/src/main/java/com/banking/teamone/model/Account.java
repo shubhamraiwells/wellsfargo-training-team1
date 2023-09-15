@@ -27,7 +27,8 @@ public class Account{
     private Integer ownerId;
 
 
-
+    @Column
+    private Boolean isActive=true;
 
     @Column(name = "acc_activation_date", nullable = false)
     @Temporal(TemporalType.DATE)

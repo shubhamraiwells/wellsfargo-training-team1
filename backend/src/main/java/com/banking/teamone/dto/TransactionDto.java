@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -29,5 +30,5 @@ public class TransactionDto {
     private BigDecimal transactionAmount;
 
 
-    private  LocalDateTime transactionDate= LocalDateTime.now();
+    private Date transactionDate= new Date();
 }
