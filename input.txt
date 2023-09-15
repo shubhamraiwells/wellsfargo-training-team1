@@ -1,0 +1,28 @@
+{
+    "title": "testing",
+    "firstName": "satya",
+    "middleName": "kumar",
+    "lastName": "tester",
+    "fatherName": "another tester",
+    "mobileNo": "8988117876",
+    "emailId": "saranshabc@yahoo.in",
+    "aadharCardNo": "985429162434",
+    "dateOfBirth": "14/05/1988",
+    "residentialAddressLine1": "B-802, lansum eden gardens",
+    "residentialAddressLine2": "CMC Enclave",
+    "residentialCity": "Hyderabad",
+    "residentialLandmark": "Masjid Banda",
+    "residentialPincode": "500084",
+    "permanentAddressLine1": "B-802, lansum eden gardens",
+    "permanentAddressLine2": "CMC Enclave",
+    "permanentCity": "Hyderabad",
+    "permanentLandmark": "Masjid Banda",
+    "permanentPincode": "500084",
+    "occupationType": "software engineer",
+    "sourceOfIncome": "job",
+    "grossAnnualIncome": 10000.00,
+    "accountType": "savings"
+
+}
+
+

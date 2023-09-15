@@ -12,9 +12,10 @@ import Container from "@mui/material/Container";
 import apiCall from "../apiCall/apiCall";
 import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
-import { Context } from '../context/AuthContext';
-//const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
-//const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+import {Context} from '../context/AuthContext';
+import NavBar from "./NavBar";
+const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
+const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
 
 const Login = () => {
@@ -24,7 +25,7 @@ const Login = () => {
   const [isusernameEmpty, isusernameEmptyUpdate] = useState(false);
   const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
   const obj = { username, password };
-  // console.log(jwtDecode('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaHViaGFtcmFpIiwiaWF0IjoxNjk0NjE4OTgxLCJleHAiOjE2OTQ2MjM5ODF9.9vQkEkTPfGsK72afYPIpQm59ar3L9Ah2Kuq4kRJAeVo'));
+  console.log(jwtDecode('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaHViaGFtcmFpIiwiaWF0IjoxNjk0NjE4OTgxLCJleHAiOjE2OTQ2MjM5ODF9.9vQkEkTPfGsK72afYPIpQm59ar3L9Ah2Kuq4kRJAeVo'));
 
   const handleSubmit = async (e) => {
     const url = "http://localhost:8080/api/auth/signinIb";
@@ -56,10 +57,12 @@ const Login = () => {
     }
   }
   return (
-    <div className="container">
-      <Container maxWidth="sm"
-        className="container"
-      >
+  <div className="container">
+    <NavBar/>
+    <Container maxWidth="sm" 
+   className="container" 
+    >
+      
         <Box
           sx={{
 

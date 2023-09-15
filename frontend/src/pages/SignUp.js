@@ -13,6 +13,7 @@ import Home from "./Home.js";
 import apiCall from "../apiCall/apiCall";
 import {Context} from "../context/AuthContext";
 
+import NavBar from "./NavBar";
 const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
@@ -61,6 +62,7 @@ const handleSubmit = async (e) => {
   return (
   
     <div className="container">
+      <NavBar/>
     <Container component="main" maxWidth="sm" 
    className="container"
     >

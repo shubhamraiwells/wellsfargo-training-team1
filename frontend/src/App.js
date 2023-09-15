@@ -11,7 +11,7 @@ import TransactionalHistory from "./pages/TransactionalHistory";
 const App = () => {
 
   return (
-    <ProSidebarProvider>
+    // <ProSidebarProvider>
       <div className="App">
 
         <BrowserRouter>
@@ -24,7 +24,7 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </div>
-    </ProSidebarProvider>
+    // </ProSidebarProvider>
   );
 }
 
