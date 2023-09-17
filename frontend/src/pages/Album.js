@@ -20,6 +20,7 @@ import Withdrawal from './Withdrawal';
 import Deposit from './Deposit';
 import { Component ,useContext} from "react";
 import DangerousIcon from '@mui/icons-material/Dangerous';
+import TransactionalHistory from './TransactionalHistory';
 
 function Copyright() {
   return (
@@ -53,6 +54,15 @@ const defaultTheme = createTheme();
 
   const [isWithdrawalModalOpen, setIsWithdrawalModelOpen] = useState(false);
   const [isDepositModalOpen, setIsDepositModelOpen] = useState(false);
+  const [isTransactionalHistoryModalOpen, setIsTransactionalHistoryModalOpen] = useState(false);
+
+  const handleOpenTransactionalHistoryModal = () => {
+    setIsTransactionalHistoryModalOpen(true);
+  };
+
+  const handleCloseTransactionalHistoryModal = () => {
+    setIsTransactionalHistoryModalOpen(false);
+  };
   const [accountNumbers, setAccountNumbers] = useState(['Account 1', 'Account 2', 'Account 3']);
 
   const handleWithdraw = () => {
@@ -155,7 +165,8 @@ const defaultTheme = createTheme();
                     </Typography>
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
-                    <Button size="large" variant="contained" onClick={viewTransactions}>View</Button>
+                    <Button size="large" variant="contained" onClick={handleOpenTransactionalHistoryModal}>View</Button>
+                    <TransactionalHistory isOpen={isTransactionalHistoryModalOpen} handleClose={handleCloseTransactionalHistoryModal} />
                   </CardActions>
                 </Card>
               </Grid>
