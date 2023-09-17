@@ -8,16 +8,15 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import './Withdrawal.css';
 
-
-const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
+const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
   const [selectedAccount, setSelectedAccount] = useState('');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleWithdraw = async () => {
+  const handleDeposit = async () => {
     setIsLoading(true);
 
-    // Make an API call to perform the withdrawal here
+    // Make an API call to perform the deposit here
     try {
       // Your API call here (replace with actual API call)
     //   await fetch('your-api-endpoint', {
@@ -32,7 +31,7 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
     //   });
 
       // Call the callback function to indicate success
-      onWithdraw();
+      onDeposit();
     } catch (error) {
       console.error('Error:', error);
     }
@@ -51,7 +50,7 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
         <Card className="modal-card">
           <CardContent>
             <Typography variant="h5" gutterBottom>
-              Withdraw Money
+              Deposit Money
             </Typography>
             <TextField
               select
@@ -99,10 +98,10 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleWithdraw}
+                onClick={handleDeposit}
                 disabled={!selectedAccount || !amount || isLoading}
               >
-                Withdraw
+                Deposit
               </Button>
               <Button
                 variant="outlined"
@@ -119,4 +118,4 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
   );
 };
 
-export default Withdrawal;
+export default Deposit;
