@@ -10,13 +10,14 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import "./Style.css";
+import { useToken } from "../context/TokenContext";
 
 export default function Home() {
   
-    
+    const {token,role,username}=useToken();
 
   const { collapseSidebar } = useProSidebar();
-
+console.log(token,role,username);
   return (
     <div className="container">
     <div id="app" style={({ height: "100vh" }, { display: "flex" })}>
