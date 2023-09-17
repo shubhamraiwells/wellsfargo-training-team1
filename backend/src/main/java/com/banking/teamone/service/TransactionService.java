@@ -75,4 +75,7 @@ public class TransactionService {
 
 
   }
+  public List<Transaction>getAllTransactions(){
+       return transactionRepository.findAll();
+  }
 }
