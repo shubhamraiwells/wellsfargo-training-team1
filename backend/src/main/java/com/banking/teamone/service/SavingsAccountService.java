@@ -2,6 +2,7 @@ package com.banking.teamone.service;
 
 import com.banking.teamone.converter.CustomerConverter;
 import com.banking.teamone.dto.CustomerInfoRequestModel;
+import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.CustomerInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,11 @@ public class SavingsAccountService {
         customerInfoList.stream().filter(x-> Objects.nonNull(x)).forEach(x-> map.put(x.getAadharCardNo(), Boolean.TRUE));
         return Objects.isNull(map.get(customerInfo.getAadharCardNo()));
     }
+    public List<?> getAllCustomersBySpecificColumn(){
+        return customerInfoRepository.findAllByColumn();
+    }
+    public CustomerInfo getCustomerByFirstName(String firstName){
+        return customerInfoRepository.findByFirstName(firstName)!=null ?customerInfoRepository.findByFirstName(firstName):null;
 
+    }
 }

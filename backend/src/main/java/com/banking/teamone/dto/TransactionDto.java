@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TransactionDto {
 
-    private Integer id;
+    private String id;
 
 
 
