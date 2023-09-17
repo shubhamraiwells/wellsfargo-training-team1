@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -21,18 +23,21 @@ public class TransactionsController {
     private  TransactionService transactionService;
 
     @GetMapping("/getTransactions")
+    @Secured({"ROLE_USER","ROLE_ADMIN"})
     public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam String accountNo){
         List<TransactionDto>res=transactionService.getAllTransactionByAccountNo(accountNo);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @GetMapping("/getTransactionsByDate")
+    @Secured({"ROLE_USER","ROLE_ADMIN"})
     public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam("accountNo") String accountNo, @RequestParam(value="fromDate") @DateTimeFormat(pattern="dd-MM-yyyy") Date fromDate,@RequestParam(value="fromDate")  @DateTimeFormat(pattern="dd-MM-yyyy") Date toDate){
         List<TransactionDto>res=transactionService.getAllTransactionByAccountNoAndDate(accountNo,fromDate,toDate);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @PostMapping("/createTransaction")
+    @Secured("ROLE_USER")
     public ResponseEntity<String>createTransaction(@RequestBody TransactionRequestDto transaction){
         try{
             System.out.println(transaction.getTransactionAmount()+transaction.getFromAccountNo()+" "+transaction.getToAccountNo());
@@ -42,6 +47,8 @@ public class TransactionsController {
             return new ResponseEntity<>("Error performing transaction",HttpStatus.BAD_REQUEST);
         }
     }
+
+
 
 
 

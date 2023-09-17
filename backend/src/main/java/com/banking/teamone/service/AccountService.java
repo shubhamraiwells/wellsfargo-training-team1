@@ -6,6 +6,7 @@ import com.banking.teamone.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +26,8 @@ public class AccountService {
     public  Account createAccount(Account obj){
         return accountRepository.save(obj);
     }
-
+    public List<Account> getAllAccount(){
+        return accountRepository.findAll();
+    }
 
 }

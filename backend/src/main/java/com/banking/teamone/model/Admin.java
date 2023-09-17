@@ -1,20 +1,29 @@
 package com.banking.teamone.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "admin")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Admin {
     @Id
     @Column(nullable = false)
-    private String emailId;
+    private String username;
 
 
     @Column(nullable = false)
     private String password;
 
+
+    @Enumerated(EnumType.STRING)
+    private CRole role;
 }
