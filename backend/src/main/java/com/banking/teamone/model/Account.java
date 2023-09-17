@@ -14,7 +14,8 @@ public class Account{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    //id refers account number
+    private String id;
 
     @Column(name = "acc_type", length = 50, nullable = false,columnDefinition = "varchar(50) default 'saving'")
     private String accountType;
@@ -28,7 +29,7 @@ public class Account{
     private BigDecimal totalBalance;
 
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -7,6 +7,8 @@ import com.banking.teamone.repository.CustomerIbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class CustomerIbService {
@@ -24,6 +26,7 @@ public class CustomerIbService {
     public CustomerIb getCustomerByAccountNo(String accountNo){
         return customerIbRepository.findByAccountNo(accountNo);
     }
+
 //    public void createCustomerIb(CustomerIbRequestModel customerIbRequestModel){
 //        CustomerIb customerIb = customerConverter.customerIbRequestModelToCustomerIb(customerIbRequestModel);
 //        customerIbRepository.save(customerIb);
