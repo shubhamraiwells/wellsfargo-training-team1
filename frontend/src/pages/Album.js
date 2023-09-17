@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -15,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Withdrawal from './Withdrawal';
 
 function Copyright() {
   return (
@@ -38,9 +40,6 @@ const viewBal = () =>{
 const viewTransactions = () =>{
   alert("Your previous transactions are: 1. *** 2. **");
 }
-const withdrawMoney = () =>{
-  alert("Withdrawing Money");
-}
 const depositMoney = () =>{
   alert("Adding Money");
 }
@@ -52,6 +51,14 @@ const transferMoney = () =>{
 const defaultTheme = createTheme();
 
 export default function Album() {
+  const [isBankingModalOpen, setIsBankingModalOpen] = useState(false);
+  const withdrawMoney = () =>{
+    setIsBankingModalOpen(true);
+  }
+  const closeBankingModal = () => {
+    setIsBankingModalOpen(false);
+  };
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -163,6 +170,7 @@ export default function Album() {
                     </Typography>
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
+                    <Withdrawal isOpen={isBankingModalOpen} onClose={closeBankingModal} />
                     <Button size="large" variant="contained" onClick={withdrawMoney}>View</Button>
                   </CardActions>
                 </Card>
