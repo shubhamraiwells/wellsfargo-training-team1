@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -15,7 +16,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Component, useState ,useContext} from "react";
+import Withdrawal from './Withdrawal';
+import Deposit from './Deposit';
+import { Component ,useContext} from "react";
 import DangerousIcon from '@mui/icons-material/Dangerous';
 
 function Copyright() {
@@ -30,10 +33,9 @@ function Copyright() {
     </Typography>
   );
 }
-export default function Album() {
-  
 
-const [viewBal, setViewBal] = useState(false);
+export default function Album() {
+  const [viewBal, setViewBal] = useState(false);
 const cards = [1, 2, 3, 4];
 const checkBal = () =>{
   setViewBal(true);
@@ -42,19 +44,28 @@ const checkBal = () =>{
 const viewTransactions = () =>{
   alert("Your previous transactions are: 1. *** 2. **");
 }
-const withdrawMoney = () =>{
-  alert("Withdrawing Money");
-}
-const depositMoney = () =>{
-  alert("Adding Money");
-}
 
 const transferMoney = () =>{
   alert("Transferring Money");
 }
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
-  return (
+
+  const [isWithdrawalModalOpen, setIsWithdrawalModelOpen] = useState(false);
+  const [isDepositModalOpen, setIsDepositModelOpen] = useState(false);
+  const [accountNumbers, setAccountNumbers] = useState(['Account 1', 'Account 2', 'Account 3']);
+
+  const handleWithdraw = () => {
+    // Add logic here to handle the successful withdrawal
+    console.log('Withdrawal successful');
+  };
+
+  const handleDeposit = () => {
+    // Add logic here to handle the successful withdrawal
+    console.log('Deposit successful');
+  };
+
+    return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <main>
@@ -168,7 +179,11 @@ const defaultTheme = createTheme();
                     </Typography>
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
-                    <Button size="large" variant="contained" onClick={withdrawMoney}>View</Button>
+                    <Button size="large" variant="contained" onClick={() => setIsWithdrawalModelOpen(true)}>View</Button>
+                    <Withdrawal isOpen={isWithdrawalModalOpen}
+                      onClose={() => setIsWithdrawalModelOpen(false)}
+                      accountNumbers={accountNumbers}
+                      onWithdraw={handleWithdraw} />
                   </CardActions>
                 </Card>
               </Grid>
@@ -192,7 +207,11 @@ const defaultTheme = createTheme();
                     </Typography>
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
-                    <Button size="large" variant="contained" onClick={depositMoney}>View</Button>
+                    <Button size="large" variant="contained" onClick={() => setIsDepositModelOpen(true)}>View</Button>
+                    <Deposit isOpen={isDepositModalOpen}
+                      onClose={() => setIsDepositModelOpen(false)}
+                      accountNumbers={accountNumbers}
+                      onDeposit={handleDeposit} />
                   </CardActions>
                 </Card>
               </Grid>
