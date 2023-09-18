@@ -14,8 +14,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -66,6 +68,25 @@ public class TransactionsController {
             return new ResponseEntity<>("Error performing transaction",HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/withdrawl")
+    @Secured("ROLE_USER")
+    public ResponseEntity<String>withdrawamount(@RequestBody Map<String,String> withDrawBody){
+        try{
+            String username=withDrawBody.get("username");
+            BigDecimal amount=new BigDecimal(withDrawBody.get("amount"));
+            CustomerIb customer=customerIbService.getCustomerByUsername(username);
+            
+
+            return new ResponseEntity<>("Transaction Registered",HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>("Error performing transaction",HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
+
 
 
 

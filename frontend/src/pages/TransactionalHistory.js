@@ -13,7 +13,7 @@ import { Context } from "../context/AuthContext";
 import BankingTransactionsTable from "./BankingTransactionsTable";
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-
+import { useToken } from "../context/TokenContext";
 const usernameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 
 const dummyTransactions = [
@@ -79,7 +79,7 @@ const dummyTransactions = [
 
 export default function TransactionalHistory(props) {
   const { isOpen, handleClose } = props;
-  
+  const {token,role,username,isTokenValid}=useToken()
   const [isAccountNoEmpty, isAccountNoEmptyUpdate] = useState(false);
   const [isUsernameEmpty, isUsernameEmptyUpdate] = useState(false);
   const [isStartingDateEmpty,isStartingDateEmptyUpdate] = useState(false);
@@ -148,7 +148,7 @@ export default function TransactionalHistory(props) {
     const defaultTheme = createTheme();
     
       return (
-        <Dialog open={isOpen} onClose={handleClose}>
+       <Dialog open={isOpen} onClose={handleClose}>
         <DialogContent>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
       <TextField
