@@ -10,7 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class BalanceDto {
-	
+
+	private String username;
 	    private String  acc_no;
 	   
 	    private String accountType;
