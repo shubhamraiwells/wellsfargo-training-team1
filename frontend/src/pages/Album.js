@@ -21,6 +21,7 @@ import Deposit from './Deposit';
 import { Component ,useContext} from "react";
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import TransactionalHistory from './TransactionalHistory';
+import Transfer from './Transfer';
 
 function Copyright() {
   return (
@@ -55,6 +56,7 @@ const defaultTheme = createTheme();
   const [isWithdrawalModalOpen, setIsWithdrawalModelOpen] = useState(false);
   const [isDepositModalOpen, setIsDepositModelOpen] = useState(false);
   const [isTransactionalHistoryModalOpen, setIsTransactionalHistoryModalOpen] = useState(false);
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
 
   const handleOpenTransactionalHistoryModal = () => {
     setIsTransactionalHistoryModalOpen(true);
@@ -74,6 +76,10 @@ const defaultTheme = createTheme();
     // Add logic here to handle the successful withdrawal
     console.log('Deposit successful');
   };
+
+  const handleTransfer = () => {
+    console.log('Transfer successful');
+  }
 
     return (
     <ThemeProvider theme={defaultTheme}>
@@ -246,7 +252,11 @@ const defaultTheme = createTheme();
                     </Typography>
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
-                    <Button size="large" variant="contained" onClick={transferMoney}>View</Button>
+                    <Button size="large" variant="contained" onClick={() => setIsTransferModalOpen(true)}>View</Button>
+                    <Transfer isOpen={isTransferModalOpen}
+                      onClose={() => setIsTransferModalOpen(false)}
+                      accountNumbers={accountNumbers}
+                      onTransfer={handleTransfer} />
                   </CardActions>
                 </Card>
               </Grid>

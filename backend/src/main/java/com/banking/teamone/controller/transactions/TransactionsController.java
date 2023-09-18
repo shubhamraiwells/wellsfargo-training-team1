@@ -65,9 +65,19 @@ public class TransactionsController {
 
     @PostMapping("/createTransaction")
     @Secured({"ROLE_USER","ROLE_ADMIN"})
-    public ResponseEntity<String>createTransaction(@RequestBody TransactionRequestDto transaction){
+    public ResponseEntity<String>createTransaction(@RequestBody Map<String, String> transferBody){
         try{
-            System.out.println(transaction.getTransactionAmount()+transaction.getFromAccountNo()+" "+transaction.getToAccountNo());
+            BigDecimal transactionAmount = new BigDecimal(transferBody.get("amount"));
+            String username = transferBody.get("username");
+            CustomerIb customer=customerIbService.getCustomerByUsername(username);
+            String accountNo=customer.getAccountNo();
+            String toAccountNumber = transferBody.get("toAccountNo");
+            System.out.println(transactionAmount + " " + username+" "+toAccountNumber);
+            TransactionRequestDto transaction = TransactionRequestDto.builder()
+                    .fromAccountNo(accountNo)
+                    .toAccountNo(toAccountNumber)
+                    .transactionAmount(transactionAmount)
+                    .build();
             transactionService.createTransaction(transaction);
             return new ResponseEntity<>("Transaction Registered",HttpStatus.OK);
         }catch(Exception e){
