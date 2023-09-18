@@ -11,10 +11,12 @@ import com.banking.teamone.service.SavingsAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.banking.teamone.dto.AdminSignUpDto;
+import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.payload.response.JwtResponse;
 import com.banking.teamone.security.JwtUtils;
 import com.banking.teamone.service.AdminDetailImpl;
 import com.banking.teamone.service.AdminService;
+import com.banking.teamone.service.SavingsAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +69,30 @@ public class AdminController {
             return new ResponseEntity<>(customerInfo1, HttpStatus.OK);
         }
     }
+
+
+
+    @Autowired
+    private SavingsAccountService savingsAccountService;
+
+
+    @PostMapping(   "/fetchUsers")
+    @CrossOrigin
+    public ResponseEntity<List<?>>fetchAllUsers(){
+        List<?> customerInfo1=savingsAccountService.getAllCustomersBySpecificColumn();
+        return new ResponseEntity<>(customerInfo1,HttpStatus.OK);
+    }
+    @PostMapping(   "/search")
+    @CrossOrigin
+    public ResponseEntity<?>search(@RequestBody String firstName) {
+        CustomerInfo customerInfo1 = savingsAccountService.getCustomerByFirstName(firstName);
+        if (customerInfo1 == null) {
+            return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(customerInfo1, HttpStatus.OK);
+        }
+    }
+
 
 
   @PostMapping("/signUpAdmin")

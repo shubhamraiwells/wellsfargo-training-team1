@@ -13,6 +13,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="Transaction")
+@Transactional
 @Getter
 @Setter
 public class Transaction {
@@ -24,10 +25,11 @@ public class Transaction {
     @Column(nullable = false)
     private String fromAccountNo;
 
-    @Column
-    private String toAccountNo;
-
     @Column(nullable = false)
+
+    private String toAccountNo;
+    @Column(nullable = false)
+
     private BigDecimal transactionAmount;
 
     @Column
