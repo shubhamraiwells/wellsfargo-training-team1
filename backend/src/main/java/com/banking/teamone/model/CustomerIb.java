@@ -51,4 +51,7 @@ public class CustomerIb {
     @Column(name="acc_no",nullable = false)
     private String accountNo;
 
+    @Column
+    private Boolean isActive=true;
+
 }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,11 +29,11 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
  @Autowired
- private CustomerIbServiceImpl customerIbService;
+ private CustomerIbServiceImpl customerIbServiceImpl;
 
 
  @Autowired
@@ -44,7 +45,7 @@ public class WebSecurityConfig {
  @Bean
  public DaoAuthenticationProvider authenticationProvider(){
   DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
-  daoAuthenticationProvider.setUserDetailsService(customerIbService);
+  daoAuthenticationProvider.setUserDetailsService(customerIbServiceImpl);
   daoAuthenticationProvider.setPasswordEncoder(passWordEncoder());
   return daoAuthenticationProvider;
  }
@@ -63,7 +64,7 @@ public class WebSecurityConfig {
   http.cors().configurationSource(option->corsConfigurationSource()).and().csrf(AbstractHttpConfigurer::disable).exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)).
           sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
          authorizeRequests().antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
-          .antMatchers(HttpMethod.GET, "/api/auth/**").permitAll().
+          .antMatchers(HttpMethod.GET, "/api/auth/**").permitAll().antMatchers(HttpMethod.POST,"/api/savingAccount/**").permitAll().
         anyRequest().authenticated();
 
   http.authenticationProvider(authenticationProvider());

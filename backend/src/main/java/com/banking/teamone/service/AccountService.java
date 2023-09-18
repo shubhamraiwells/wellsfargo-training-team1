@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -31,11 +33,14 @@ public class AccountService {
         return accountRepository.save(obj);
     }
 
-    public List<AccountDto> fetchAccountByOwnerId(Integer ownerId){
+    public List<Account> getAllAccount(){
+        return accountRepository.findAll();
+    }
+
+  public List<AccountDto> fetchAccountByOwnerId(Integer ownerId){
         Collection<Account> accountList = accountRepository.findByOwnerId(ownerId);
         List<AccountDto> accountDtoList = accountList.stream().filter(x-> Objects.nonNull(x)).map( x-> accountConverter.AccountToAccountDto(x)).collect(Collectors.toList());
         return accountDtoList;
     }
-
 
 }
