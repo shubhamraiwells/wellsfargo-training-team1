@@ -100,6 +100,7 @@ public class TransactionsController {
          Account account=accountService.getAccountById(accountNo);
          if(account.getIsActive()) {
              if (account.getTotalBalance().compareTo(amount) > 0) {
+                 transactionService.createTransaction(new TransactionRequestDto(accountNo,accountNo,amount.negate()));
                  accountService.createAccount(new Account(accountNo, account.getAccountType(), account.getOwnerId(), account.getIsActive(), account.getAccountActivationDate(), account.getTotalBalance().subtract(amount)));
                  return new ResponseEntity<>("Transaction Registered", HttpStatus.OK);
              }
@@ -123,7 +124,9 @@ public class TransactionsController {
             Account account=accountService.getAccountById(accountNo);
             if(account.getIsActive()) {
 //                if (account.getTotalBalance().compareTo(amount) > 0) {
-                    accountService.createAccount(new Account(accountNo, account.getAccountType(), account.getOwnerId(), account.getIsActive(), account.getAccountActivationDate(), account.getTotalBalance().add(amount)));
+                transactionService.createTransaction(new TransactionRequestDto(accountNo,accountNo,amount));
+
+                accountService.createAccount(new Account(accountNo, account.getAccountType(), account.getOwnerId(), account.getIsActive(), account.getAccountActivationDate(), account.getTotalBalance().add(amount)));
                     return new ResponseEntity<>("Amount deposited", HttpStatus.OK);
 //                }
 //                return new ResponseEntity<>("Unsufficient fund to withdraw", HttpStatus.OK);

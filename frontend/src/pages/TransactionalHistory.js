@@ -1,4 +1,4 @@
-import React, { Component, useState, useContext } from "react";
+import React, { Component, useState, useContext, useEffect } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,7 +14,7 @@ import BankingTransactionsTable from "./BankingTransactionsTable";
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { useToken } from "../context/TokenContext";
-const usernameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
+const usernameRegex = /^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 
 const dummyTransactions = [
   {
@@ -79,270 +79,81 @@ const dummyTransactions = [
 
 export default function TransactionalHistory(props) {
   const { isOpen, handleClose } = props;
-  const {token,role,username,isTokenValid}=useToken()
+  const { token, role, username, isTokenValid } = useToken()
   const [isAccountNoEmpty, isAccountNoEmptyUpdate] = useState(false);
   const [isUsernameEmpty, isUsernameEmptyUpdate] = useState(false);
-  const [isStartingDateEmpty,isStartingDateEmptyUpdate] = useState(false);
-  const [isEndingDateEmpty,isEndingDateEmptyUpdate] = useState(false);
-  const [isBankingTransactionTableOpen, setIsBankingTransactionTableOpen] = useState(false);
+  const [isStartingDateEmpty, isStartingDateEmptyUpdate] = useState(false);
+  const [isEndingDateEmpty, isEndingDateEmptyUpdate] = useState(false);
+  const [isBankingTransactionTableOpen, setIsBankingTransactionTableOpen] = useState(true);
   const [show, setShow] = useState(false);
   const handleCloseBankingTransactionTable = () => {
     setIsBankingTransactionTableOpen(false);
   }
+  const [dummyData, setDummyData] = useState([])
+  const [formData, setFormData] = useState({
+    // username:"",
+    // accountNo:"",
+    // startingDate:"",
+    // endingDate:""
+  })
 
-    const [formData, setFormData] = useState({
-        username:"",
-        accountNo:"",
-        startingDate:"",
-        endingDate:""
-    })
+  // const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-    // const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const handleSubmit = async (e) => {
+    const url = "http://localhost:8080/history";
+    e.preventDefault();
 
-    const handleSubmit = async (e) => {
-        const url = "http://localhost:8080/history";
-        e.preventDefault();
-        const checkUsername=usernameRegex.test(formData.accountNumber);
-        const checkAccountNo=formData.accountNo.length>4?true:false;
+    handleShow();
+  }
 
-        if(checkUsername && checkAccountNo) {
-            // const result = await apiCall(url, "GET", formData, null);
-            setIsBankingTransactionTableOpen(true);
-            // console.log(result);
-        } else {
-            var res = "";
-            if(!checkUsername) {
-                res = res.concat("Invalid username\n");
-            }
-            if (!checkAccountNo) {
-                res = res.concat("Invalid account number");
-            }
-            alert(res);
-        }
-
-        handleShow();
+  useEffect((e) => {
+    if (isTokenValid() == false) {
+      return;
     }
-
-    function convertDate(inputFormat) {
-        function pad(s) { return (s < 10) ? '0' + s : s; }
-        var d = new Date(inputFormat)
-        return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/')
+    (async () => {
+      if(username!=null){
+      const res = await apiCall('http://localhost:8080/api/transactions/getTransactionsByUsername?username=' + username, "GET", {}, token);
+      console.log(res)
+      setDummyData(res.data)
       }
+      // console
+    })()
+  },[])
 
-    function Copyright(props) {
-      return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-          {'Copyright © '}
-          <Link color="inherit" href="https://mui.com/">
-            Your Website
-          </Link>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-        </Typography>
-      );
-    }
-    
-    // TODO remove, this demo shouldn't need to reset the theme.
-    
-    const defaultTheme = createTheme();
-    
-      return (
-       <Dialog open={isOpen} onClose={handleClose}>
-        <DialogContent>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-      <TextField
-        className='input'
-        margin="normal"
-        required
-        fullWidth
-        name="username"
-        label="Username"
-        type="text"
-        id="username"
-        onChange={(e) => {
-          if(e.target.value == '' || e.target.value === null) {
-              isUsernameEmptyUpdate(true);
-          } else {
-              isUsernameEmptyUpdate(false);
-          }
-          setFormData({...formData, username: e.target.value})
-        }}
-        error={isUsernameEmpty}
-      />
-      <TextField
-        className='input'
-        margin="normal"
-        required
-        fullWidth
-        name="accountNo"
-        label="Account Number"
-        type="text"
-        id="accountNo"
-        onChange={(e) => {
-          if(e.target.value == '' || e.target.value === null) {
-              isAccountNoEmptyUpdate(true);
-          } else {
-              isAccountNoEmptyUpdate(false);
-          }
-          setFormData({...formData, accountNo: e.target.value})
-        }}
-        error={isAccountNoEmpty}
-      />
-      <TextField
-        className='input'
-        margin="normal"
-        required
-        fullWidth
-        name="startingDate"
-        label="Starting Date"
-        type="date"
-        id="startingDate"
-        onChange={(e) => {
-          if(e.target.value == '' || e.target.value === null) {
-              isStartingDateEmptyUpdate(true);
-          } else {
-              isStartingDateEmptyUpdate(false);
-          }
-          console.log(isStartingDateEmpty)
-          var date = convertDate(new Date(e.target.value.toString()))
-          setFormData({...formData, startingDate: date})
-        }}
-        error={isStartingDateEmpty}
-      />
-      <TextField
-        className='input'
-        margin="normal"
-        required
-        fullWidth
-        name="endingDate"
-        label="Ending Date"
-        type="date"
-        id="endingDate"
-        onChange={(e) => {
-          if(e.target.value == '' || e.target.value === null) {
-              isEndingDateEmptyUpdate(true);
-          } else {
-              isEndingDateEmptyUpdate(false);
-          }
-          console.log(isEndingDateEmpty)
-          var date = convertDate(new Date(e.target.value.toString()))
-          setFormData({...formData, endingDate: date})
-        }}
-        error={isEndingDateEmpty}
-      />
-      <BankingTransactionsTable transactions={dummyTransactions} isOpen={isBankingTransactionTableOpen} handleClose={handleCloseBankingTransactionTable} />
-    </Box>
-        </DialogContent>
-        </Dialog>
+  function convertDate(inputFormat) {
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    var d = new Date(inputFormat)
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/')
+  }
 
-      );
+  function Copyright(props) {
+    return (
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" href="https://mui.com/">
+          Your Website
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
+
+  // TODO remove, this demo shouldn't need to reset the theme.
+
+  const defaultTheme = createTheme();
+
+  return (
+    isTokenValid()  ?
+      <Box >
+        <BankingTransactionsTable transactions={dummyData} isOpen={isOpen} handleClose={handleClose} />
+      </Box> : <h1>unauthorized</h1>
+
+
+  );
 }
 
 
 
 
-{/* <ThemeProvider theme={defaultTheme}>
-<Container component="main" maxWidth="xs">
-  <CssBaseline />
-  <Box
-    sx={{
-      marginTop: 8,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    }}
-  >
-    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-      {/* <LockOutlinedIcon />s */}
-//     </Avatar>
-//     <Typography component="h1" variant="h5">
-//       Transactional History
-//     </Typography>
-//     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-//       <TextField
-//         className='input'
-//         margin="normal"
-//         required
-//         fullWidth
-//         name="username"
-//         label="Username"
-//         type="text"
-//         id="username"
-//         onChange={(e) => {
-//           if(e.target.value == '' || e.target.value === null) {
-//               isUsernameEmptyUpdate(true);
-//           } else {
-//               isUsernameEmptyUpdate(false);
-//           }
-//           setFormData({...formData, username: e.target.value})
-//         }}
-//         error={isUsernameEmpty}
-//       />
-//       <TextField
-//         className='input'
-//         margin="normal"
-//         required
-//         fullWidth
-//         name="accountNo"
-//         label="Account Number"
-//         type="text"
-//         id="accountNo"
-//         onChange={(e) => {
-//           if(e.target.value == '' || e.target.value === null) {
-//               isAccountNoEmptyUpdate(true);
-//           } else {
-//               isAccountNoEmptyUpdate(false);
-//           }
-//           setFormData({...formData, accountNo: e.target.value})
-//         }}
-//         error={isAccountNoEmpty}
-//       />
-//       <TextField
-//         className='input'
-//         margin="normal"
-//         required
-//         fullWidth
-//         name="startingDate"
-//         label="Starting Date"
-//         type="date"
-//         id="startingDate"
-//         onChange={(e) => {
-//           if(e.target.value == '' || e.target.value === null) {
-//               isStartingDateEmptyUpdate(true);
-//           } else {
-//               isStartingDateEmptyUpdate(false);
-//           }
-//           console.log(isStartingDateEmpty)
-//           var date = convertDate(new Date(e.target.value.toString()))
-//           setFormData({...formData, startingDate: date})
-//         }}
-//         error={isStartingDateEmpty}
-//       />
-//       <TextField
-//         className='input'
-//         margin="normal"
-//         required
-//         fullWidth
-//         name="endingDate"
-//         label="Ending Date"
-//         type="date"
-//         id="endingDate"
-//         onChange={(e) => {
-//           if(e.target.value == '' || e.target.value === null) {
-//               isEndingDateEmptyUpdate(true);
-//           } else {
-//               isEndingDateEmptyUpdate(false);
-//           }
-//           console.log(isEndingDateEmpty)
-//           var date = convertDate(new Date(e.target.value.toString()))
-//           setFormData({...formData, endingDate: date})
-//         }}
-//         error={isEndingDateEmpty}
-//       />
-//       <BankingTransactionsTable transactions={dummyTransactions} />
-//     </Box>
-//   </Box>
-//   <Copyright sx={{ mt: 8, mb: 4 }} />
-// </Container>
-// </ThemeProvider> */}
