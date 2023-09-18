@@ -53,45 +53,7 @@ public class AdminController {
 
     @Autowired
     private SavingsAccountService savingsAccountService;
-    @PostMapping(   "/fetchUsers")
-    @CrossOrigin
-    public ResponseEntity<List<?>>fetchAllUsers(){
-        List<?> customerInfo1=savingsAccountService.getAllCustomersBySpecificColumn();
-        return new ResponseEntity<>(customerInfo1,HttpStatus.OK);
-    }
-    @PostMapping(   "/search")
-    @CrossOrigin
-    public ResponseEntity<?>search(@RequestBody String firstName) {
-        CustomerInfo customerInfo1 = savingsAccountService.getCustomerByFirstName(firstName);
-        if (customerInfo1 == null) {
-            return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(customerInfo1, HttpStatus.OK);
-        }
-    }
 
-
-
-    @Autowired
-    private SavingsAccountService savingsAccountService;
-
-
-    @PostMapping(   "/fetchUsers")
-    @CrossOrigin
-    public ResponseEntity<List<?>>fetchAllUsers(){
-        List<?> customerInfo1=savingsAccountService.getAllCustomersBySpecificColumn();
-        return new ResponseEntity<>(customerInfo1,HttpStatus.OK);
-    }
-    @PostMapping(   "/search")
-    @CrossOrigin
-    public ResponseEntity<?>search(@RequestBody String firstName) {
-        CustomerInfo customerInfo1 = savingsAccountService.getCustomerByFirstName(firstName);
-        if (customerInfo1 == null) {
-            return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(customerInfo1, HttpStatus.OK);
-        }
-    }
 
 
 
