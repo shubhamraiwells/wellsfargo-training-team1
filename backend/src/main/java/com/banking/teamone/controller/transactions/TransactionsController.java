@@ -3,6 +3,8 @@ package com.banking.teamone.controller.transactions;
 
 import com.banking.teamone.dto.TransactionDto;
 import com.banking.teamone.dto.TransactionRequestDto;
+import com.banking.teamone.model.CustomerIb;
+import com.banking.teamone.service.CustomerIbService;
 import com.banking.teamone.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,12 +24,29 @@ public class TransactionsController {
     @Autowired
     private  TransactionService transactionService;
 
+
+    @Autowired
+    private CustomerIbService customerIbService;
+
     @GetMapping("/getTransactions")
     @Secured({"ROLE_USER","ROLE_ADMIN"})
     public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam String accountNo){
         List<TransactionDto>res=transactionService.getAllTransactionByAccountNo(accountNo);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
+    @GetMapping("/getTransactionsByUsername")
+    @Secured({"ROLE_USER","ROLE_ADMIN"})
+    public ResponseEntity<List<TransactionDto>>getAllTransactionsByUsername(@RequestParam String username){
+        CustomerIb customer=customerIbService.getCustomerByUsername(username);
+        List<TransactionDto> res=null;
+        if(customer!=null) {
+            res = transactionService.getAllTransactionByAccountNo(customer.getAccountNo());
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+
 
     @GetMapping("/getTransactionsByDate")
     @Secured({"ROLE_USER","ROLE_ADMIN"})
@@ -37,7 +56,7 @@ public class TransactionsController {
     }
 
     @PostMapping("/createTransaction")
-    @Secured("ROLE_USER")
+    @Secured({"ROLE_USER","ROLE_ADMIN"})
     public ResponseEntity<String>createTransaction(@RequestBody TransactionRequestDto transaction){
         try{
             System.out.println(transaction.getTransactionAmount()+transaction.getFromAccountNo()+" "+transaction.getToAccountNo());
