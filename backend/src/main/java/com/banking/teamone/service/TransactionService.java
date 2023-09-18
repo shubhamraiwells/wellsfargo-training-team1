@@ -21,10 +21,14 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
+<<<<<<< HEAD
+    TransactionDto getTransactionById(String Id){
+=======
     @Autowired
     private AccountService accountService;
 
    public TransactionDto getTransactionById(Integer Id){
+>>>>>>> 33fb7476f1d3bd539f869b1b5d30104a51531f13
         Transaction transaction=transactionRepository.findById(Id).isPresent()?transactionRepository.findById(Id).get():null;
         assert transaction != null;
         return new TransactionDto(transaction.getId(),transaction.getFromAccountNo(),transaction.getToAccountNo(),transaction.getTransactionAmount(),transaction.getTransactionDate());

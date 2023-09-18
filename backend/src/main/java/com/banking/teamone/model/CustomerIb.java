@@ -47,7 +47,7 @@ public class CustomerIb {
         this.accountNo = account_no;
     }
 
-    @Pattern(regexp = "^\\d{9,18}$")
+   // @Pattern(regexp = "^\\d{9,18}$")
     @Column(name="acc_no",nullable = false)
     private String accountNo;
 
