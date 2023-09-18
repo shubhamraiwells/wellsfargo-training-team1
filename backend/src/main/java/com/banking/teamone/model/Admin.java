@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Admin {
     @Id
     @Column(nullable = false)
-    private String emailId;
+    private String username;
 
 
     @Column(nullable = false)
