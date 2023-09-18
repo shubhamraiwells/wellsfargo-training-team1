@@ -82,7 +82,7 @@ public class AdminFunctionality {
     @Secured("ROLE_ADMIN")
     ResponseEntity<?>deactivateUser(String accountNo){
         try{
-            Account getAccount=accountService.getAccountById(accountNo).isPresent()?accountService.getAccountById(accountNo).get():null;
+            Account getAccount=accountService.getAccountById(accountNo);
             if(getAccount==null){
                 return  new ResponseEntity<>("Account does not exist",HttpStatus.OK);
             }

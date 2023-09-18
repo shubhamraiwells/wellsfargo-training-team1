@@ -53,8 +53,8 @@ public class TransactionService {
 
 
   public String createTransaction(TransactionRequestDto transactionRequest){
-      Account accFrom= accountService.getAccountById(transactionRequest.getFromAccountNo()).isPresent()?accountService.getAccountById(transactionRequest.getFromAccountNo()).get():null;
-   Account toAccount=    accountService.getAccountById(transactionRequest.getToAccountNo()).isPresent()?accountService.getAccountById(transactionRequest.getToAccountNo()).get():null;
+      Account accFrom= accountService.getAccountById(transactionRequest.getFromAccountNo());
+   Account toAccount=    accountService.getAccountById(transactionRequest.getToAccountNo());
 
        if(accFrom!=null && toAccount !=null){
            if(!accFrom.getIsActive() || !toAccount.getIsActive()){
