@@ -41,8 +41,8 @@ const handleSubmit = async (e) => {
     if(checkUsername && checkPassword && checkAccountNo){
 
     // const result=await apiCall(url,"POST",formData,null);
-    // const result= await signUp(formData,url);
-    // console.log(result)
+    const result= await signUp(formData,url);
+    console.log(result)
     }else{
         var res="";
         console.log(checkUsername+" "+checkPassword+" "+checkAccountNo)
