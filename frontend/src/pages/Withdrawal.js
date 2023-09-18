@@ -6,10 +6,12 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import { useToken } from '../context/TokenContext';
 import './Withdrawal.css';
-
+import apiCall from '../apiCall/apiCall';
 
 const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
+  const {token,role,username,isTokenValid}=useToken()
   const [selectedAccount, setSelectedAccount] = useState('');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -17,21 +19,16 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
   const handleWithdraw = async () => {
     setIsLoading(true);
 
-    // Make an API call to perform the withdrawal here
+ 
     try {
-      // Your API call here (replace with actual API call)
-    //   await fetch('your-api-endpoint', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       accountNumber: selectedAccount,
-    //       amount: amount,
-    //     }),
-    //   });
+   
+    const res=await apiCall("http://localhost:8080/api/transactions/withdrawl","POST",{
+      username,
+      amount
+    },token)
 
-      // Call the callback function to indicate success
+  
+      alert(res.data)
       onWithdraw();
     } catch (error) {
       console.error('Error:', error);
@@ -46,14 +43,14 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
   };
 
   return (
-    <Modal open={isOpen} onClose={handleClose}>
+    isTokenValid()?<Modal open={isOpen} onClose={handleClose}>
       <div className="modal-overlay">
         <Card className="modal-card">
           <CardContent>
             <Typography variant="h5" gutterBottom>
               Withdraw Money
             </Typography>
-            <TextField
+            {/* <TextField
               select
               label="Select Account Number"
               fullWidth
@@ -66,7 +63,7 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
                   {account}
                 </MenuItem>
               ))}
-            </TextField>
+            </TextField> */}
             <TextField
               type="number"
               label="Enter Amount (Rs)"
@@ -100,7 +97,7 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
                 variant="contained"
                 color="primary"
                 onClick={handleWithdraw}
-                disabled={!selectedAccount || !amount || isLoading}
+                disabled={ !amount || isLoading}
               >
                 Withdraw
               </Button>
@@ -115,7 +112,7 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
           </CardContent>
         </Card>
       </div>
-    </Modal>
+    </Modal>:<h1>Unauthorized</h1>
   );
 };
 

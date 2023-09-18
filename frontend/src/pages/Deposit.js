@@ -7,8 +7,10 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import './Withdrawal.css';
-
+import { useToken } from '../context/TokenContext';
+import apiCall from '../apiCall/apiCall';
 const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
+  const {token,role,username,isTokenValid}=useToken()
   const [selectedAccount, setSelectedAccount] = useState('');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -18,19 +20,14 @@ const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
 
     // Make an API call to perform the deposit here
     try {
-      // Your API call here (replace with actual API call)
-    //   await fetch('your-api-endpoint', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       accountNumber: selectedAccount,
-    //       amount: amount,
-    //     }),
-    //   });
+   
+    const res=await apiCall("http://localhost:8080/api/transactions/deposit","POST",{
+      username,
+      amount
+    },token)
 
-      // Call the callback function to indicate success
+  alert(res.data)
+
       onDeposit();
     } catch (error) {
       console.error('Error:', error);
@@ -45,14 +42,14 @@ const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
   };
 
   return (
-    <Modal open={isOpen} onClose={handleClose}>
+    isTokenValid()?<Modal open={isOpen} onClose={handleClose}>
       <div className="modal-overlay">
         <Card className="modal-card">
           <CardContent>
             <Typography variant="h5" gutterBottom>
               Deposit Money
             </Typography>
-            <TextField
+            {/* <TextField
               select
               label="Select Account Number"
               fullWidth
@@ -65,7 +62,7 @@ const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
                   {account}
                 </MenuItem>
               ))}
-            </TextField>
+            </TextField> */}
             <TextField
               type="number"
               label="Enter Amount (Rs)"
@@ -99,7 +96,7 @@ const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
                 variant="contained"
                 color="primary"
                 onClick={handleDeposit}
-                disabled={!selectedAccount || !amount || isLoading}
+                disabled={ !amount || isLoading}
               >
                 Deposit
               </Button>
@@ -114,7 +111,7 @@ const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
           </CardContent>
         </Card>
       </div>
-    </Modal>
+    </Modal>:<h1>Unauthorized</h1>
   );
 };
 
