@@ -72,16 +72,23 @@ public class TransactionsController {
             BigDecimal transactionAmount = new BigDecimal(transferBody.get("amount"));
             String username = transferBody.get("username");
             CustomerIb customer=customerIbService.getCustomerByUsername(username);
-            String accountNo=customer.getAccountNo();
+            String fromAccountNo=customer.getAccountNo();
             String toAccountNumber = transferBody.get("toAccountNo");
-            System.out.println(transactionAmount + " " + username+" "+toAccountNumber);
-            TransactionRequestDto transaction = TransactionRequestDto.builder()
-                    .fromAccountNo(accountNo)
-                    .toAccountNo(toAccountNumber)
-                    .transactionAmount(transactionAmount)
-                    .build();
-            transactionService.createTransaction(transaction);
-            return new ResponseEntity<>("Transaction Registered",HttpStatus.OK);
+            Account fromAccount=accountService.getAccountById(fromAccountNo);
+            Account toAccount = accountService.getAccountById(toAccountNumber);
+            if(toAccount.getIsActive() && fromAccount.getIsActive()) {
+                if(fromAccount.getTotalBalance().compareTo(transactionAmount) > 0) {
+                    TransactionRequestDto transaction = TransactionRequestDto.builder()
+                            .fromAccountNo(fromAccountNo)
+                            .toAccountNo(toAccountNumber)
+                            .transactionAmount(transactionAmount)
+                            .build();
+                    transactionService.createTransaction(transaction);
+                    return new ResponseEntity<>("Transaction Registered",HttpStatus.OK);
+                }
+                return new ResponseEntity<>("Unsufficient funds to transfer", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>("One of the accounts is not active", HttpStatus.BAD_REQUEST);
         }catch(Exception e){
             return new ResponseEntity<>("Error performing transaction",HttpStatus.BAD_REQUEST);
         }
