@@ -74,7 +74,7 @@ public class InternetBanking {
         customerIb.setUsername(username);
         customerIb.setAccountNo(accountNo);
         customerIb.setPassword(passwordEncoder.encode(password));
-        customerIb.setRole(CRole.ROLE_CUSTOMER);
+        customerIb.setRole(CRole.ROLE_USER);
         customerIbService.createCustomerIb(customerIb);
         return new ResponseEntity<>("User Created successfully",HttpStatus.OK);
 

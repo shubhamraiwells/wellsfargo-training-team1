@@ -3,19 +3,19 @@ package com.banking.teamone.controller;
 import java.math.BigDecimal;
 
 import com.banking.teamone.model.CustomerIb;
+import com.banking.teamone.dto.AccountDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import com.banking.teamone.model.Account;
 import com.banking.teamone.dto.BalanceDto;
 import com.banking.teamone.service.AccountService;
 import com.banking.teamone.service.CustomerIbService;
+import java.util.List;
+
 @RestController
 public class FetchBalanceController {
 	
@@ -38,6 +38,14 @@ public class FetchBalanceController {
            return new ResponseEntity<>(val.toString(), HttpStatus.ACCEPTED);
        }
     }
+    @GetMapping("/LoadUserDetails/{ownerId}")
+    @CrossOrigin
+    public ResponseEntity<List<AccountDto>>getAccountDetails(@PathVariable("ownerId") String ownerId){
+        Integer a = Integer.parseInt(ownerId);
+        List<AccountDto> accountList = AccountService.fetchAccountByOwnerId(a);
+        return new ResponseEntity<>(accountList, HttpStatus.OK);
+    }
+
 
 
 

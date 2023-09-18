@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -15,6 +16,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Withdrawal from './Withdrawal';
+import Deposit from './Deposit';
+import { Component ,useContext} from "react";
+import DangerousIcon from '@mui/icons-material/Dangerous';
+import TransactionalHistory from './TransactionalHistory';
 
 function Copyright() {
   return (
@@ -29,20 +35,15 @@ function Copyright() {
   );
 }
 
+export default function Album() {
+  const [viewBal, setViewBal] = useState(false);
 const cards = [1, 2, 3, 4];
-
-const viewBal = () =>{
-  alert("Your Balance is $$$$");
+const checkBal = () =>{
+  setViewBal(true);
 }
 
 const viewTransactions = () =>{
   alert("Your previous transactions are: 1. *** 2. **");
-}
-const withdrawMoney = () =>{
-  alert("Withdrawing Money");
-}
-const depositMoney = () =>{
-  alert("Adding Money");
 }
 
 const transferMoney = () =>{
@@ -51,8 +52,30 @@ const transferMoney = () =>{
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Album() {
-  return (
+  const [isWithdrawalModalOpen, setIsWithdrawalModelOpen] = useState(false);
+  const [isDepositModalOpen, setIsDepositModelOpen] = useState(false);
+  const [isTransactionalHistoryModalOpen, setIsTransactionalHistoryModalOpen] = useState(false);
+
+  const handleOpenTransactionalHistoryModal = () => {
+    setIsTransactionalHistoryModalOpen(true);
+  };
+
+  const handleCloseTransactionalHistoryModal = () => {
+    setIsTransactionalHistoryModalOpen(false);
+  };
+  const [accountNumbers, setAccountNumbers] = useState(['Account 1', 'Account 2', 'Account 3']);
+
+  const handleWithdraw = () => {
+    // Add logic here to handle the successful withdrawal
+    console.log('Withdrawal successful');
+  };
+
+  const handleDeposit = () => {
+    // Add logic here to handle the successful withdrawal
+    console.log('Deposit successful');
+  };
+
+    return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <main>
@@ -109,13 +132,16 @@ export default function Album() {
                     image="https://im.indiatimes.in/content/2020/Jul/indian-currency-389006_1920_5f1547587ee6e.jpg"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    {!viewBal && <Typography gutterBottom variant="h5" component="h2">
                       Check Your Balance
                     </Typography>
+                    }
+                    {viewBal && <Typography gutterBottom variant='h6' component='h3'>
+                      Balance: 54000</Typography>}
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
-                    <Button size="large" variant="contained" onClick={viewBal}>View</Button>
-                    
+                    {!viewBal && <Button size="large" variant="contained" onClick={checkBal}>View</Button>}
+                    {viewBal && <Button size="large" variant="contained" onClick={()=>{setViewBal(false)}}><DangerousIcon /></Button>}
                   </CardActions>
                 </Card>
               </Grid>
@@ -139,7 +165,8 @@ export default function Album() {
                     </Typography>
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
-                    <Button size="large" variant="contained" onClick={viewTransactions}>View</Button>
+                    <Button size="large" variant="contained" onClick={handleOpenTransactionalHistoryModal}>View</Button>
+                    <TransactionalHistory isOpen={isTransactionalHistoryModalOpen} handleClose={handleCloseTransactionalHistoryModal} />
                   </CardActions>
                 </Card>
               </Grid>
@@ -163,7 +190,11 @@ export default function Album() {
                     </Typography>
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
-                    <Button size="large" variant="contained" onClick={withdrawMoney}>View</Button>
+                    <Button size="large" variant="contained" onClick={() => setIsWithdrawalModelOpen(true)}>View</Button>
+                    <Withdrawal isOpen={isWithdrawalModalOpen}
+                      onClose={() => setIsWithdrawalModelOpen(false)}
+                      accountNumbers={accountNumbers}
+                      onWithdraw={handleWithdraw} />
                   </CardActions>
                 </Card>
               </Grid>
@@ -187,7 +218,11 @@ export default function Album() {
                     </Typography>
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
-                    <Button size="large" variant="contained" onClick={depositMoney}>View</Button>
+                    <Button size="large" variant="contained" onClick={() => setIsDepositModelOpen(true)}>View</Button>
+                    <Deposit isOpen={isDepositModalOpen}
+                      onClose={() => setIsDepositModelOpen(false)}
+                      accountNumbers={accountNumbers}
+                      onDeposit={handleDeposit} />
                   </CardActions>
                 </Card>
               </Grid>

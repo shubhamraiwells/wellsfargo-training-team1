@@ -1,5 +1,6 @@
 package com.banking.teamone.security;
 
+import com.banking.teamone.service.AdminDetailImpl;
 import com.banking.teamone.service.CustomerIbDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -25,7 +26,15 @@ public class JwtUtils {
     private int jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication){
+
         CustomerIbDetailsImpl customerIbDetails= (CustomerIbDetailsImpl) authentication.getPrincipal();
+        return Jwts.builder().setSubject(customerIbDetails.getUsername()).setIssuedAt(new Date()).
+                setExpiration(new Date((new Date()).getTime()+jwtExpirationMs)).
+                signWith(key(), SignatureAlgorithm.HS256).compact();
+    }
+
+    public String generateJwtTokenAdmin(Authentication authentication){
+        AdminDetailImpl customerIbDetails= (AdminDetailImpl) authentication.getPrincipal();
         return Jwts.builder().setSubject(customerIbDetails.getUsername()).setIssuedAt(new Date()).
                 setExpiration(new Date((new Date()).getTime()+jwtExpirationMs)).
                 signWith(key(), SignatureAlgorithm.HS256).compact();

@@ -19,7 +19,8 @@ import java.util.Date;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
+
 
     @Column(nullable = false)
     private String fromAccountNo;
@@ -31,8 +32,8 @@ public class Transaction {
 
     private BigDecimal transactionAmount;
 
-    @Column(nullable = false)
-    private final LocalDateTime transactionDate= LocalDateTime.now();
+    @Column
+    private final Date transactionDate= new Date();
 
 
 
