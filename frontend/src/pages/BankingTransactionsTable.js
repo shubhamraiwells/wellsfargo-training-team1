@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { Component, useState, useContext, useEffect }   from 'react';
+
+import apiCall from '../apiCall/apiCall';
 import {
   Table,
   TableBody,
@@ -18,7 +20,7 @@ import {
 import Pagination from '@mui/material/Pagination';
 import styled from '@emotion/styled';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
-
+import { useToken } from "../context/TokenContext";
 const useStyles = styled({
   tableContainer: {
     maxWidth: '800px',
@@ -46,6 +48,7 @@ const useStyles = styled({
   },
 });
 
+
 const rowsPerPage = 4; // Number of rows to display per page
 
 const BankingTransactionsTable = (props) => {
@@ -57,17 +60,32 @@ const BankingTransactionsTable = (props) => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
+  const { token, role, username, isTokenValid } = useToken()
   const startIndex = (page - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
   const displayedTransactions = transactions.slice(startIndex, endIndex);
+  const [originalTransactions, setDummyData] = useState([])
+  useEffect((e) => {
+    if (isTokenValid() == false) {
+      return;
+    }
+    (async () => {
+      if(username!=null){
+      const res = await apiCall('http://localhost:8080/api/transactions/getTransactionsByUsername?username=' + username, "GET", {}, token);
+      console.log(res)
+      setDummyData(res.data)
+      }
+      // console
+    })()
+  },[])
 
   return (
-    <div>
-      <Button variant="contained" color="primary" onClick={() => setIsDialogOpen(true)} type="submit">
+    
+   originalTransactions.length>0? <div>
+      {/* <Button variant="contained" color="primary" onClick={() => setIsDialogOpen(true)} type="submit">
         Get Transactions
-      </Button>
+      </Button> */}
       <Dialog open={isOpen} onClose={handleClose}>
         <DialogTitle>Banking Transactions</DialogTitle>
         <DialogContent>
@@ -76,35 +94,35 @@ const BankingTransactionsTable = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell className={classes.smallText}>Transaction ID</TableCell>
-                  <TableCell>Sender's Address</TableCell>
-                  <TableCell>Receiver's Address</TableCell>
+                  <TableCell>Sender's Account</TableCell>
+                  <TableCell>Receiver's Account</TableCell>
                   <TableCell>Amount</TableCell>
                   <TableCell>Date</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {displayedTransactions.map((transaction, index) => (
+                {originalTransactions.map((transaction, index) => (
                   <TableRow key={index}>
-                    <TableCell className={classes.smallText}>{transaction.transactionId}</TableCell>
-                    <TableCell>{transaction.senderAddress}</TableCell>
-                    <TableCell>{transaction.receiverAddress}</TableCell>
+                    <TableCell className={classes.smallText}>{transaction.id}</TableCell>
+                    <TableCell>{transaction.fromAccountNo}</TableCell>
+                    <TableCell>{transaction.toAccountNo}</TableCell>
                     <TableCell>
                       <span
                         style={{
-                          color: transaction.amount >= 0 ? 'green' : 'red',
+                          color: transaction.transactionAmount >= 0 ? 'green' : 'red',
                           display: 'flex',
                           alignItems: 'center',
                         }}
                       >
-                        {transaction.amount >= 0 ? (
+                        {transaction.transactionAmount >= 0 ? (
                           <Typography className={classes.icon}><ArrowUpward /></Typography>
                         ) : (
                           <Typography className={classes.icon}><ArrowDownward /></Typography>
                         )}
-                        {Math.abs(transaction.amount)}
+                        {Math.abs(transaction.transactionAmount)}
                         </span>
                         </TableCell>
-                    <TableCell>{transaction.date}</TableCell>
+                    <TableCell>{transaction.transactionDate}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -120,13 +138,13 @@ const BankingTransactionsTable = (props) => {
           </div>
 
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setIsDialogOpen(false)} color="primary" >
+        {/* <DialogActions> */}
+          <Button onClick={() => handleClose()} color="primary" >
             Close
           </Button>
-        </DialogActions>
+        {/* </DialogActions> */}
       </Dialog>
-    </div>
+    </div>:<h3>No transactions</h3>
   );
 };
 
