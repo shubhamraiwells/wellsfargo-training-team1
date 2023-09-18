@@ -2,11 +2,11 @@ package com.banking.teamone.service;
 
 import com.banking.teamone.converter.CustomerConverter;
 import com.banking.teamone.dto.CustomerInfoRequestModel;
-<<<<<<< HEAD
+
 import com.banking.teamone.model.CustomerIb;
-=======
+
 import com.banking.teamone.model.Account;
->>>>>>> 33fb7476f1d3bd539f869b1b5d30104a51531f13
+
 import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.CustomerInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class SavingsAccountService {
     AccountService accountService;
 
     public String updateBalance(String accountNo,BigDecimal toAdd){
-        Account fetchedAccount=accountService.getAccountById(accountNo).isPresent()?accountService.getAccountById(accountNo).get():null;
+        Account fetchedAccount=accountService.getAccountById(accountNo);
         if(fetchedAccount!=null) {
             fetchedAccount.setTotalBalance(fetchedAccount.getTotalBalance().add(toAdd));
             accountService.createAccount(fetchedAccount);

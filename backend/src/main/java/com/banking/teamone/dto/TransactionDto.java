@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class TransactionDto {
 
-    private String id;
+    private Integer id;
 
 
 

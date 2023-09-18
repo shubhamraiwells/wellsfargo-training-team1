@@ -1,4 +1,4 @@
-package com.banking.teamone.controller;
+package com.banking.teamone.controller.admin;
 
 
 import com.banking.teamone.dto.CustomerIbRequestModel;

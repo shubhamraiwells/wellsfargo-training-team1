@@ -20,15 +20,15 @@ public class TransactionService {
     TransactionConverter converter;
     @Autowired
     private TransactionRepository transactionRepository;
-
-<<<<<<< HEAD
-    TransactionDto getTransactionById(String Id){
-=======
     @Autowired
     private AccountService accountService;
 
+
+
+
+
    public TransactionDto getTransactionById(Integer Id){
->>>>>>> 33fb7476f1d3bd539f869b1b5d30104a51531f13
+
         Transaction transaction=transactionRepository.findById(Id).isPresent()?transactionRepository.findById(Id).get():null;
         assert transaction != null;
         return new TransactionDto(transaction.getId(),transaction.getFromAccountNo(),transaction.getToAccountNo(),transaction.getTransactionAmount(),transaction.getTransactionDate());
@@ -57,8 +57,8 @@ public class TransactionService {
 
 
   public String createTransaction(TransactionRequestDto transactionRequest){
-      Account accFrom= accountService.getAccountById(transactionRequest.getFromAccountNo()).isPresent()?accountService.getAccountById(transactionRequest.getFromAccountNo()).get():null;
-   Account toAccount=    accountService.getAccountById(transactionRequest.getToAccountNo()).isPresent()?accountService.getAccountById(transactionRequest.getToAccountNo()).get():null;
+      Account accFrom= accountService.getAccountById(transactionRequest.getFromAccountNo());
+   Account toAccount=    accountService.getAccountById(transactionRequest.getToAccountNo());
 
        if(accFrom!=null && toAccount !=null){
            if(!accFrom.getIsActive() || !toAccount.getIsActive()){
