@@ -21,7 +21,8 @@ import Deposit from './Deposit';
 import { Component ,useContext} from "react";
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import TransactionalHistory from './TransactionalHistory';
-
+import apiCall from '../apiCall/apiCall';
+import { useToken } from '../context/TokenContext';
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -35,10 +36,20 @@ function Copyright() {
   );
 }
 
-export default function Album() {
+export default function Album(props) {
   const [viewBal, setViewBal] = useState(false);
-const cards = [1, 2, 3, 4];
-const checkBal = () =>{
+//const {token,role,username,isTokenValid}=useToken();
+const [balAmt, setBalAmt] = useState(0);
+const checkBal = async() =>{
+  
+  const url = "http://localhost:8080/GetTotalBalance";
+  const obj = {"username":props.username};
+  //const temp_token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTYXR5YVNyZWVOYXJheWFuYW4yIiwiaWF0IjoxNjk1MDQ4NjA1LCJleHAiOjE2OTUwNTM2MDV9.2W_Neg49PEphekn-zjDjwMpBc8x9LXAQweSZYnr1fj0";
+  console.log("Token:"+props.token);
+  const result = await apiCall(url, "POST", obj, props.token);
+  console.log(result.data);
+  console.log("User:"+props.username);
+  setBalAmt(result.data);
   setViewBal(true);
 }
 
@@ -87,31 +98,6 @@ const defaultTheme = createTheme();
             pb: 6,
           }}
         >
-          {/* <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="text.primary"
-              gutterBottom
-            >
-              Album layout
-            </Typography>
-            <Typography variant="h5" align="center" color="text.secondary" paragraph>
-              Something short and leading about the collection below—its contents,
-              the creator, etc. Make it short and sweet, but not too short so folks
-              don&apos;t simply skip over it entirely.
-            </Typography>
-            <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
-            >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
-            </Stack>
-          </Container> */}
         </Box>
         <Container sx={{ py: 2 }} maxWidth="md">
           {/* End hero unit */}
@@ -137,7 +123,7 @@ const defaultTheme = createTheme();
                     </Typography>
                     }
                     {viewBal && <Typography gutterBottom variant='h6' component='h3'>
-                      Balance: 54000</Typography>}
+                      Balance: {balAmt}</Typography>}
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
                     {!viewBal && <Button size="large" variant="contained" onClick={checkBal}>View</Button>}
