@@ -13,6 +13,7 @@ import {
 import { TokenProvider } from "./context/TokenContext";
 import Services from "./pages/Services";
 import Navbar from "./pages/NavBar";
+import AdminSignIn from "./pages/AdminSignUp";
 const App = () => {
   return (
     // <ProSidebarProvider>
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/RegisterAccount" element={<RegisterAccount />}></Route>
           <Route path="/Login" element={<Login />}></Route>
           <Route path="/services" element={<Services/>}></Route>
+          <Route path="/admin" element={<AdminSignIn/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
