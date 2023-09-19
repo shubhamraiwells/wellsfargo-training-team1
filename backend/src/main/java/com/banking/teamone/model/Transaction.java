@@ -36,5 +36,8 @@ public class Transaction {
     private final Date transactionDate= new Date();
 
 
+    @Enumerated(EnumType.STRING)
+    private TransType transType;
+
 
 }
