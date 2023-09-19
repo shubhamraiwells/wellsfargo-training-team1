@@ -85,7 +85,7 @@ public class TransactionsController {
                     TransactionRequestDto transaction = TransactionRequestDto.builder()
                             .fromAccountNo(fromAccountNo)
                             .toAccountNo(toAccountNumber)
-                            .transactionAmount(transactionAmount)
+                            .transactionAmount(transactionAmount).transType(TransType.TRANSFER)
                             .build();
                     transactionService.createTransaction(transaction);
                     return new ResponseEntity<>("Transaction Registered",HttpStatus.OK);
