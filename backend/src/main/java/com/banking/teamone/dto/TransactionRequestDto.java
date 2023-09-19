@@ -1,9 +1,14 @@
 package com.banking.teamone.dto;
 
-import lombok.*;
+import com.banking.teamone.model.TransType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -11,7 +16,6 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class TransactionRequestDto {
 
  @NotBlank
@@ -26,6 +30,10 @@ public class TransactionRequestDto {
 
 @NotBlank
 @NotNull
+@Positive(message = "transaction amount should be positive")
         private BigDecimal transactionAmount;
+
+
+TransType transType;
 
 }
