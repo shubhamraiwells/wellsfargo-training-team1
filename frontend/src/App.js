@@ -5,6 +5,10 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import RegisterAccount from "./pages/RegisterAccount";
 import SignUp from "./pages/SignUp";
+import HomePage from "./pages/HomePage";
+import AdminServices from "./pages/AdminServices";
+import AdminNavbar from "./pages/AdminNavbar";
+import ApproveUsers from "./pages/ApproveUsers";
 // import { ProSidebarProvider } from "react-pro-sidebar";
 import {
   Context as UserContext,
@@ -19,11 +23,14 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navbar />}></Route>
+          <Route path="/page0" element={<HomePage/>}></Route>
+          <Route path="/" element={<Navbar />}></Route>          
           <Route path="/SignUp" element={<SignUp />}></Route>
           <Route path="/RegisterAccount" element={<RegisterAccount />}></Route>
           <Route path="/Login" element={<Login />}></Route>
           <Route path="/services" element={<Services/>}></Route>
+          <Route path="/Admin" element={<AdminNavbar/>}></Route>
+          <Route path='/Admin/ApproveUsers' element={<ApproveUsers/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
