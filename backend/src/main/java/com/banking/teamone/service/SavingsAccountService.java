@@ -2,9 +2,8 @@ package com.banking.teamone.service;
 
 import com.banking.teamone.converter.CustomerConverter;
 import com.banking.teamone.dto.CustomerInfoRequestModel;
-import com.banking.teamone.model.CustomerIb;
+import com.banking.teamone.exception.DatabaseIntegrityException;
 import com.banking.teamone.model.Account;
-import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.CustomerInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,9 @@ public class SavingsAccountService {
         String accNo="aa";
         accNo = generateUniqueNo();
         CustomerInfo customerInfo = customerConverter.customerInfoRequestModelToCustomerInfo(customerInfoRequestModel);
-        if(!checkInfo(customerInfo))
-            return "An account with the given Aadhar Number already exists";
+        if(!checkInfo(customerInfo)) {
+            throw new DatabaseIntegrityException("Account with given aadhar card already exists");
+        }
        CustomerInfo createdCust= customerInfoRepository.save(customerInfo);
        //CREATING ACCOUNT
         accountService.createAccount(new Account(accNo,createdCust.getAccountType(),createdCust.getId(),true,new Date(),new BigDecimal(0)));
