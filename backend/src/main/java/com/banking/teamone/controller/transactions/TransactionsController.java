@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -80,6 +81,9 @@ public class TransactionsController {
             String toAccountNumber = transferBody.get("toAccountNo");
             Account fromAccount=accountService.getAccountById(fromAccountNo);
             Account toAccount = accountService.getAccountById(toAccountNumber);
+            if(Objects.equals(fromAccountNo, toAccountNumber)){
+                return new ResponseEntity<>("both account can't be same",HttpStatus.OK);
+            }
             if(toAccount.getIsActive() && fromAccount.getIsActive()) {
                 if(fromAccount.getTotalBalance().compareTo(transactionAmount) > 0) {
                     TransactionRequestDto transaction = TransactionRequestDto.builder()
