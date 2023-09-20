@@ -2,7 +2,7 @@ package com.banking.teamone.service;
 
 import com.banking.teamone.converter.CustomerConverter;
 import com.banking.teamone.dto.CustomerInfoRequestModel;
-import com.banking.teamone.exception.DatabaseIntegrityException;
+import com.banking.teamone.exception.DatabaseExceptions;
 import com.banking.teamone.model.Account;
 import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.CustomerInfoRepository;
@@ -39,7 +39,7 @@ public class SavingsAccountService {
         accNo = generateUniqueNo();
         CustomerInfo customerInfo = customerConverter.customerInfoRequestModelToCustomerInfo(customerInfoRequestModel);
         if(!checkInfo(customerInfo)) {
-            throw new DatabaseIntegrityException("Account with given aadhar card already exists");
+            throw new DatabaseExceptions.AadharCardRegisteredException("Account with given aadhar card already exists");
         }
        CustomerInfo createdCust= customerInfoRepository.save(customerInfo);
        //CREATING ACCOUNT
