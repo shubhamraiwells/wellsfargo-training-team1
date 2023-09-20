@@ -8,9 +8,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +41,24 @@ public class AccountServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @Captor
+    ArgumentCaptor<Account>argumentCaptor;
+
+
     @Test
     @DisplayName("test to get account by id")
     public void testGetAccountById(){
         accountService.getAccountById("shubhamrai");
         verify(accountRepository, VerificationModeFactory.times(1)).findById("shubhamrai");
          when(accountRepository.findById("shubhamrai")).thenReturn(null);
+    }
+
+    @Test
+    @DisplayName("test to create account")
+    public void testCreateAccount(){
+        accountService.createAccount(account);
+        verify(accountRepository).save(argumentCaptor.capture());
+
     }
 
 
