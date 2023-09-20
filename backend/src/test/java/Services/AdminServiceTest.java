@@ -11,15 +11,14 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,6 +38,9 @@ public class AdminServiceTest {
 
     private Admin admin;
 
+
+    @Captor
+    ArgumentCaptor<Admin> acAdmin;
 
 
     @BeforeEach
@@ -64,8 +66,8 @@ public class AdminServiceTest {
         admin=new Admin("shubhamrai","wellsfargo", CRole.ROLE_ADMIN);
         when(adminRepository.save(any(Admin.class))).thenReturn(admin);
         adminService.createAdmin(admin.getUsername(), admin.getPassword());
-
-//        verify(adminRepository,VerificationModeFactory.times(1)).save(admin);
+       verify(adminRepository).save(acAdmin.capture());
+//        verify(adminRepository,VerificationModeFactory.times(1)).save(eq(admin));
         verify(customerIbService,VerificationModeFactory.times(1)).getCustomerByUsername(admin.getUsername());
 
     }
