@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface CustomerInfoRepository extends JpaRepository<CustomerInfo,String> {
     @Query("select id,firstName from CustomerInfo")
-    List<?> findAllByColumn();
+    List<CustomerInfo> findAllByColumn();
 
     @Query("select e from CustomerInfo e where e.firstName = :firstName")
     CustomerInfo findByFirstName(@Param("firstName") String firstName);

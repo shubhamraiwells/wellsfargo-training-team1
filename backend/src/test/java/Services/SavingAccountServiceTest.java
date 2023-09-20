@@ -19,7 +19,9 @@ import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -68,7 +70,6 @@ public class SavingAccountServiceTest {
     @Test
     @DisplayName("test update balance account exists")
     public void testUpdateBalanceAccountExists() {
-        // Arrange
         String accountNo = "account123";
         BigDecimal toAdd = new BigDecimal("100.00");
         Account account = new Account(accountNo,"savings",1,true,new Date(),new BigDecimal("12345"));
@@ -84,7 +85,6 @@ public class SavingAccountServiceTest {
     @Test
 
     public void testUpdateBalanceAccountNotExists() {
-        // Arrange
         String accountNo = "nonExistentAccount";
         BigDecimal toAdd = new BigDecimal("100.00");
 
@@ -177,6 +177,87 @@ public class SavingAccountServiceTest {
     }
 
 
+    @Test
+    public void testGetAllCustomersBySpecificColumn() {
+
+        List<CustomerInfo> expectedResult = new ArrayList<>();
+        expectedResult.add(new CustomerInfo(123, "Savings",
+                "123456789012",
+                "Mr.",
+                "John",
+                "M",
+                "Doe",
+                "Michael Doe",
+                "1234567890",
+                "john.doe@example.com",
+                new Date(), // Set a valid date here
+                "123 Main Street",
+                "Apt 4B",
+                "Near Park",
+                "New York",
+                "10001",
+                "456 Elm Street",
+                "Suite 101",
+                "Downtown",
+                "Los Angeles",
+                "90001",
+                "Engineer",
+                "Employment",
+                new BigDecimal("75000.00")));
+        when(customerInfoRepository.findAllByColumn()).thenReturn(expectedResult);
+
+        List<CustomerInfo> result = savingsAccountService.getAllCustomersBySpecificColumn();
+
+        assertEquals(expectedResult, result);
+    }
 
 
+    @Test
+    public void testGetCustomerByFirstNameFound() {
+        String firstName = "John";
+        CustomerInfo expectedCustomer = new CustomerInfo(123, "Savings",
+                "123456789012",
+                "Mr.",
+                "John",
+                "M",
+                "Doe",
+                "Michael Doe",
+                "1234567890",
+                "john.doe@example.com",
+                new Date(), // Set a valid date here
+                "123 Main Street",
+                "Apt 4B",
+                "Near Park",
+                "New York",
+                "10001",
+                "456 Elm Street",
+                "Suite 101",
+                "Downtown",
+                "Los Angeles",
+                "90001",
+                "Engineer",
+                "Employment",
+                new BigDecimal("75000.00"));
+
+        when(customerInfoRepository.findByFirstName(firstName)).thenReturn(expectedCustomer);
+
+        CustomerInfo result = savingsAccountService.getCustomerByFirstName(firstName);
+
+        assertEquals(expectedCustomer, result);
+    }
+
+    @Test
+    public void testGetCustomerByFirstNameNotFound() {
+        String firstName = "NonExistentName";
+
+        when(customerInfoRepository.findByFirstName(firstName)).thenReturn(null);
+
+        CustomerInfo result = savingsAccountService.getCustomerByFirstName(firstName);
+
+        assertEquals(null, result);
+    }
 }
+
+
+
+
