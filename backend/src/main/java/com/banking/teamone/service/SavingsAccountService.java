@@ -48,7 +48,7 @@ public class SavingsAccountService {
         System.out.println("Size of List:"+customerInfoList.size());
         customerInfoList = customerInfoRepository.findAll();
         System.out.println("Size of List:"+customerInfoList.size());
-        return accNo;
+        return "Account generated successfully";
     }
     private String generateUniqueNo(){
         return UUID.randomUUID().toString().replace("-","");
