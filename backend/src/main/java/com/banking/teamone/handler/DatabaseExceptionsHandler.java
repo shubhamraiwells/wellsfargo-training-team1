@@ -11,14 +11,15 @@ import java.util.List;
 
 import static com.banking.teamone.handler.Error.processFieldErrors;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @ControllerAdvice
 public class DatabaseExceptionsHandler {
 
     @ExceptionHandler(value = DatabaseExceptions.AadharCardRegisteredException.class)
-    public ResponseEntity handleDatabaseIntegrityException(DatabaseExceptions.AadharCardRegisteredException exception) {
-        return new ResponseEntity<>(exception.getMessage(), BAD_REQUEST);
+    public ResponseEntity handleAadharCardRegisteredException(DatabaseExceptions.AadharCardRegisteredException exception) {
+        return new ResponseEntity<>(exception.getMessage(), OK);
     }
 
     @ResponseStatus(BAD_REQUEST)

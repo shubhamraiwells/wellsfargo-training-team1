@@ -39,7 +39,7 @@ public class SavingsAccountService {
         accNo = generateUniqueNo();
         CustomerInfo customerInfo = customerConverter.customerInfoRequestModelToCustomerInfo(customerInfoRequestModel);
         if(!checkInfo(customerInfo)) {
-            throw new DatabaseExceptions.AadharCardRegisteredException("Account with given aadhar card already exists");
+            throw new DatabaseExceptions.AadharCardRegisteredException();
         }
        CustomerInfo createdCust= customerInfoRepository.save(customerInfo);
        //CREATING ACCOUNT
