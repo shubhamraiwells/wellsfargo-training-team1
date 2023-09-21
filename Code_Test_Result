@@ -1,0 +1,81 @@
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+public class CustomerIbServiceImplTest {
+
+    @InjectMocks
+    private CustomerIbServiceImpl customerIbService;
+
+    @Mock
+    private CustomerIbService mockCustomerIbService;
+
+    @Mock
+    private AdminService mockAdminService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void testLoadUserByUsernameCustomer() {
+        // Create a sample customer
+        CustomerIb customerIb = new CustomerIb();
+        customerIb.setUsername("customerUsername");
+        
+        // Mock the behavior of the CustomerIbService
+        when(mockCustomerIbService.getCustomerByUsername("customerUsername")).thenReturn(customerIb);
+
+        // Call the loadUserByUsername method
+        UserDetails userDetails = customerIbService.loadUserByUsername("customerUsername");
+
+        // Verify that the UserDetails is not null and is of the expected type
+        assertNotNull(userDetails);
+        assertTrue(userDetails instanceof CustomerIbDetailsImpl);
+    }
+
+    @Test
+    public void testLoadUserByUsernameAdmin() {
+        // Create a sample admin
+        Admin admin = new Admin();
+        admin.setUsername("adminUsername");
+        
+        // Mock the behavior of the AdminService
+        when(mockAdminService.getAdminByUsername("adminUsername")).thenReturn(admin);
+
+        // Call the loadUserByUsername method
+        UserDetails userDetails = customerIbService.loadUserByUsername("adminUsername");
+
+        // Verify that the UserDetails is not null and is of the expected type
+        assertNotNull(userDetails);
+        assertTrue(userDetails instanceof AdminDetailImpl);
+    }
+
+    @Test
+    public void testLoadUserByUsernameNotFound() {
+        // Mock the behavior of both services to return null (user not found)
+        when(mockCustomerIbService.getCustomerByUsername(anyString())).thenReturn(null);
+        when(mockAdminService.getAdminByUsername(anyString())).thenReturn(null);
+
+        // Call the loadUserByUsername method with a username that doesn't exist
+        assertThrows(UsernameNotFoundException.class, () -> customerIbService.loadUserByUsername("nonExistentUsername"));
+    }
+
+    @Test
+    public void testLoadUserByUsernameDuplicate() {
+        // Mock the behavior of both services to return non-null (duplicate username)
+        when(mockCustomerIbService.getCustomerByUsername(anyString())).thenReturn(new CustomerIb());
+        when(mockAdminService.getAdminByUsername(anyString())).thenReturn(new Admin());
+
+        // Call the loadUserByUsername method with a username that exists in both services
+        assertThrows(UsernameNotFoundException.class, () -> customerIbService.loadUserByUsername("duplicateUsername"));
+    }
+}
