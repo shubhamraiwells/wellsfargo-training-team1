@@ -38,11 +38,11 @@
   }
 }
 */
-body{
+/* body{
   background: rgb(11, 139, 172);
   background: linear-gradient(90deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%);
  
-}
+} */
 .container{
   background: rgb(34,193,195);
   background: linear-gradient(90deg, rgba(34,193,195,1) 0%,   rgba(253,187,45,1) 100%);
@@ -83,6 +83,19 @@ body{
   cursor: pointer;
   transition: opacity 0.25s ease-out;
 }
+.button1{
+  border-radius: 25px;
+  width: 50%;
+  height: 30px;
+  font-size: 1.3rem;
+  color: white;
+  font-weight: 700;
+  background: rgb(15, 15, 15);
+  background: linear-gradient(90deg, rgb(10, 10, 10) 0%,     rgb(7, 7, 7) 100%);
+  border: 0px;
+  cursor: pointer;
+  transition: opacity 0.25s ease-out;
+}
 .bg{
   background: rgb(34,193,195);
   background: linear-gradient(90deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%);
@@ -103,4 +116,8 @@ color:'black';
   justify-content: center;
   font-size: calc(10px + 2vmin);
   margin-top:10px;
+}
+
+.TableContainer{
+margin-top: 100;
 }
