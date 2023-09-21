@@ -62,12 +62,12 @@ public class TransactionsController {
 
 
 
-    @GetMapping("/getTransactionsByDate")
-    @Secured({"ROLE_USER","ROLE_ADMIN"})
-    public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam("accountNo") String accountNo, @RequestParam(value="fromDate") @DateTimeFormat(pattern="dd-MM-yyyy") Date fromDate,@RequestParam(value="fromDate")  @DateTimeFormat(pattern="dd-MM-yyyy") Date toDate){
-        List<TransactionDto>res=transactionService.getAllTransactionByAccountNoAndDate(accountNo,fromDate,toDate);
-        return new ResponseEntity<>(res, HttpStatus.OK);
-    }
+//    @GetMapping("/getTransactionsByDate")
+//    @Secured({"ROLE_USER","ROLE_ADMIN"})
+//    public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam("accountNo") String accountNo, @RequestParam(value="fromDate") @DateTimeFormat(pattern="dd-MM-yyyy") Date fromDate,@RequestParam(value="fromDate")  @DateTimeFormat(pattern="dd-MM-yyyy") Date toDate){
+//        List<TransactionDto>res=transactionService.getAllTransactionByAccountNoAndDate(accountNo,fromDate,toDate);
+//        return new ResponseEntity<>(res, HttpStatus.OK);
+//    }
 
     @PostMapping("/createTransaction")
     @Secured({"ROLE_USER","ROLE_ADMIN"})

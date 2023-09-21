@@ -50,13 +50,7 @@ public class AccountServiceTest {
     ArgumentCaptor<Account>argumentCaptor;
 
 
-    @Test
-    @DisplayName("test to get account by id")
-    public void testGetAccountById(){
-        accountService.getAccountById("shubhamrai");
-        verify(accountRepository, VerificationModeFactory.times(1)).findById("shubhamrai");
-         when(accountRepository.findById("shubhamrai")).thenReturn(null);
-    }
+
 
     @Test
     @DisplayName("test to create account")

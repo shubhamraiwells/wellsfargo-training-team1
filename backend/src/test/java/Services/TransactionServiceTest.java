@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -132,5 +133,21 @@ public class TransactionServiceTest {
         // Assert
         assertEquals("Transaction failed unsufficient balance", result);
     }
+
+
+
+//    @Test
+//    public void testGetAllTransactionByAccountNoAndDate() {
+//        String accountNo = "123456";
+//        Date dateStart = new Date(1633359600000L);
+//        Date dateEnd = new Date(1633363200000L);
+//
+//        List<Transaction> mockTransactions = new ArrayList<>();
+//        mockTransactions.add(new Transaction(/* initialize with matching data */));
+//        when(transactionRepository.findAllByFromAccountNo(accountNo)).thenReturn(mockTransactions);
+//        List<TransactionDto> result = transactionService.getAllTransactionByAccountNoAndDate(accountNo, dateStart, dateEnd);
+//        assertEquals(mockTransactions.size(), result.size());
+//
+//    }
 
 }

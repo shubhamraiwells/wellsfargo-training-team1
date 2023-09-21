@@ -32,6 +32,8 @@ public class AdminDetailImplTest {
         MockitoAnnotations.openMocks(this);
     }
 
+
+
     @Test
     public void testBuild() {
         Admin admin = new Admin();
