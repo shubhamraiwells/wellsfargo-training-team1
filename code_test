@@ -1,27 +1,91 @@
-@Service
-public class CustomerIbServiceImpl implements UserDetailsService {
-    @Autowired
-    CustomerIbService customerIbService;
-    @Autowired
-    AdminService adminService;
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        CustomerIb customerIb= customerIbService.getCustomerByUsername(username);
-        Admin admin= adminService.getAdminByUsername(username);
-        if(customerIb==null && admin==null){
-        throw new UsernameNotFoundException("user not found with this username");
-        }
-        if(customerIb!=null && admin!=null){
-            throw new UsernameNotFoundException("user not found or duplicate username");
-        }
+import com.banking.teamone.dto.AdminSignUpDto;
+import com.banking.teamone.security.JwtResponse;
+import com.banking.teamone.service.AdminDetailImpl;
+import com.banking.teamone.service.AdminService;
+import com.banking.teamone.service.SavingsAccountService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-        if(customerIb!=null) {
-            return CustomerIbDetailsImpl.build(customerIb);
-        }
-        System.out.println("admin returned in loaduserbynam");
-        return AdminDetailImpl.build(admin);
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
-        }
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+public class AdminControllerTest {
 
+    private MockMvc mockMvc;
+
+    @Mock
+    private AdminService adminService;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private JwtUtils jwtUtils;
+
+    @Mock
+    private SavingsAccountService savingsAccountService;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    public void setUp(WebApplicationContext wac) {
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    @Test
+    public void testCreateAdmin() throws Exception {
+        // Mock adminService behavior
+        when(adminService.createAdmin(any(), any())).thenReturn("createdAdmin");
+
+        // Perform a POST request to /api/auth/signUpAdmin
+        mockMvc.perform(post("/api/auth/signUpAdmin")
+                .contentType("application/json")
+                .content("{\"username\":\"testUser\",\"password\":\"testPassword\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("createdAdmin"));
+    }
+
+    @Test
+    public void testGetAdmin() throws Exception {
+        // Mock authenticationManager behavior
+        Authentication authentication = new UsernamePasswordAuthenticationToken("testUser", "testPassword");
+        when(authenticationManager.authenticate(any())).thenReturn(authentication);
+
+        // Mock jwtUtils behavior
+        when(jwtUtils.generateJwtTokenAdmin(any())).thenReturn("testJwtToken");
+
+        // Mock SecurityContextHolder behavior
+        AdminDetailImpl adminDetail = new AdminDetailImpl("testUser", "testPassword", Collections.emptyList());
+        when(authentication.getPrincipal()).thenReturn(adminDetail);
+
+        // Perform a POST request to /api/auth/signinAdmin
+        mockMvc.perform(post("/api/auth/signinAdmin")
+                .contentType("application/json")
+                .content("{\"username\":\"testUser\",\"password\":\"testPassword\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.jwt").value("testJwtToken"))
+                .andExpect(jsonPath("$.username").value("testUser"))
+                .andExpect(jsonPath("$.role").doesNotExist()); // You may need to adjust this based on your actual response
+    }
 }
