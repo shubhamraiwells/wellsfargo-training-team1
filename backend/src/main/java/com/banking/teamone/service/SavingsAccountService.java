@@ -59,6 +59,10 @@ public class SavingsAccountService {
         customerInfoList.stream().filter(x-> Objects.nonNull(x)).forEach(x-> map.put(x.getAadharCardNo(), Boolean.TRUE));
         return Objects.isNull(map.get(customerInfo.getAadharCardNo()));
     }
+    public CustomerInfo getAllCustomers(Integer ownerId){
+        return customerInfoRepository.findById(ownerId).isPresent() ? customerInfoRepository.findById(ownerId).get():null;
+
+    }
     public List<?> getAllCustomersBySpecificColumn(){
         return customerInfoRepository.findAllByColumn();
     }

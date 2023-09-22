@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import apiCall from '../apiCall/apiCall';
 import Switch from "@mui/material/Switch";
-
+import RequestDetails from "./RequestDetails";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -41,9 +41,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const style = {
   position: 'absolute',
   top: '50%',
-  left: '50%',
+ left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 800,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -61,138 +61,135 @@ const handleSearch = (event) => {
 };
 
 
-  const rows = 
-    [{ "AccountNumber" : "9048t59u94","AccountType": "Savings", "CustomerID":41, "Active":"true", "ActivationDate":"23/12/2008","TotalBalance":250},
-    { "AccountNumber" : "9058uy7554","AccountType": "Salary", "CustomerID":42, "Active":"true", "ActivationDate":"25/09/2008","TotalBalance":1000},
-    { "AccountNumber" : "9gjtu48594","AccountType": "Savings", "CustomerID":43, "Active":"true", "ActivationDate":"27/04/2008","TotalBalance":1200},
-    { "AccountNumber" : "4930303094","AccountType": "Salary", "CustomerID":44, "Active":"true", "ActivationDate":"29/02/2008","TotalBalance":50},
-    { "AccountNumber" : "9048t39394","AccountType": "Savings", "CustomerID":45, "Active":"true", "ActivationDate":"13/06/2008","TotalBalance":10980}
-  ];
-  
-  
     const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
   const [loadingModal, setLoadingModal] = useState(true)
+  const [loadingModal1, setLoadingModal1] = useState(true)
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState(users);
 const [modalData, setModalData] = useState('');
-const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const temp_token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTYXR5YVNyZWVOYXJheWFuYW4yIiwiaWF0IjoxNjk1MDQ4NjA1LCJleHAiOjE2OTUwNTM2MDV9.2W_Neg49PEphekn-zjDjwMpBc8x9LXAQweSZYnr1fj0";
-  let i = 0;
-const [isDisabled,setIsDisabled] = useState(false);
-  const dummyTransactions = [
-    {
-      transactionId: 'tx123',
-      senderAddress: '1234567890',
-      receiverAddress: '9876543210',
-      amount: 1000,
-      date: '2023-09-15',
-    },
-    {
-      transactionId: 'tx124',
-      senderAddress: '9876543210',
-      receiverAddress: '1234567890',
-      amount: -500,
-      date: '2023-09-14',
-    },
-    {
-      transactionId: 'tx125',
-      senderAddress: '1234567890',
-      receiverAddress: '7890123456',
-      amount: 200,
-      date: '2023-09-13',
-    },
-    {
-      transactionId: 'tx126',
-      senderAddress: '7890123456',
-      receiverAddress: '1234567890',
-      amount: 300,
-      date: '2023-09-12',
-    },
-    {
-      transactionId: 'tx127',
-      senderAddress: '1234567890',
-      receiverAddress: '5678901234',
-      amount: -100,
-      date: '2023-09-11',
-    },
-    {
-      transactionId: 'tx128',
-      senderAddress: '5678901234',
-      receiverAddress: '1234567890',
-      amount: 800,
-      date: '2023-09-10',
-    },
-    {
-      transactionId: 'tx129',
-      senderAddress: '1234567890',
-      receiverAddress: '3456789012',
-      amount: -250,
-      date: '2023-09-09',
-    },
-    {
-      transactionId: 'tx130',
-      senderAddress: '3456789012',
-      receiverAddress: '1234567890',
-      amount: 150,
-    },];  
-
-
-const handleSwitch = (accountNo) => {
-  setIsDisabled((isDisabled) => !isDisabled);
-//const temp_token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTYXR5YVNyZWVOYXJheWFuYW4yIiwiaWF0IjoxNjk1MDQ4NjA1LCJleHAiOjE2OTUwNTM2MDV9.2W_Neg49PEphekn-zjDjwMpBc8x9LXAQweSZYnr1fj0";
-  //  const url = 'http://localhost:8080/api/admin/deactivateUser' 
-  //  const response=await apiCall(url,"GET",accountNo,temp_token)
- //   console.log(response)
+const [open1, setOpen1] = useState(false);
+  const handleClose1 = () => setOpen1(false);
+  const [open2, setOpen2] = useState(false);
+  const handleClose2 = () => setOpen2(false);
+const [userStates, setUserStates] = useState({});
+//const temp_token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJOaW5pb2lvaW9pbjEiLCJpYXQiOjE2OTUzNTM2NTAsImV4cCI6MTY5NTM1ODY1MH0.ZNJxUg6xdfK9G3gxwpobmdJ7IbrsEIf1aCDDQbT7ZZU";
+const temp_token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJOaW5pb2lvaW9pbjEiLCJpYXQiOjE2OTU0MDU0NDksImV4cCI6MTY5NTQxMDQ0OX0.JZFGK2RbR0qiQcWKsPVNiTvXSa0zcHaJ9WHkArHOK-k";
+const [transactions,setTransactions] = useState([]);
+const [customer,setCustomer] = useState([]);
+const handleToggle = (userStates,accountNo) => {
+  setUserStates((userStates) => ({
+    ...userStates,
+    [accountNo]: !userStates[accountNo], // Toggle the state
+  }));
 }
-  const handleChange = 
-  //async 
-  (accountNo) => {
-    setOpen(true);
-    //const temp_token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTYXR5YVNyZWVOYXJheWFuYW4yIiwiaWF0IjoxNjk1MDQ4NjA1LCJleHAiOjE2OTUwNTM2MDV9.2W_Neg49PEphekn-zjDjwMpBc8x9LXAQweSZYnr1fj0";
-  //  const url = 'http://localhost:8080/api/transactions/getTransactions'  
-  //  const response=await apiCall(url,"GET",accountNo,temp_token)
- //   console.log(response)
-  //  if(response.data!=null){
-      setLoadingModal(false);
-      let res = "";
-     
-      for(var key in dummyTransactions[i]){
-res = res + key + " " + dummyTransactions[i][key]+"\n";
+const handleSwitch = async (accountNo) => {
+  handleToggle(userStates,accountNo);
+ const url = `http://localhost:8080/api/admin/deactivateUser?accountNo=${accountNo}`;
+   const response=await apiCall(url,"GET",null,temp_token)
+   console.log(response)
 }
-if(i>8){i=0;}else{i++};
-    //   setModalData(response.data);
-    setModalData(res);
-        
-  //  }else{
-  //    setModalData("No Transactions performed");
-  //  }
+const handleChange = async (accountNo) => {
+  setOpen1(true);
+  const url = `http://localhost:8080/api/transactions/getTransactions?accountNo=${accountNo}`;
+  
+  try {
+    console.log(accountNo);
+    const response = await apiCall(url, "GET", null, temp_token);
+    console.log("Response Status:", response.status);
+    console.log("Response Data:", response.data);
+    if (response.status === 200) {
+    
+      if (response.data!=null) {
+        setTransactions(response.data);
+        console.log(transactions);
+      } else {
+       console.log("No Transactions Performed");
+      }
+    } else {
+      // Handle non-200 status codes here
+      console.error(`Request failed with status code ${response.status}`);
+      setModalData("Failed to fetch data");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    // Handle other errors here
+    setModalData("An error occurred");
+  } finally {
+    setLoadingModal(false);
+  }
+};
 
+const handleChangeCustomer = async (ownerId) => {
+  setOpen2(true);
+  const url = `http://localhost:8080/api/admin/getAllCustomers?ownerId=${ownerId}`;
+  
+  try {
+    console.log(ownerId);
+    const response = await apiCall(url, "GET", null, temp_token);
+    console.log("Response Status:", response.status);
+    console.log("Response Data:", response.data);
+
+    if (response.status === 200) {
+    
+      if (response.data!=null) {
+        setCustomer(response.data);
+
+        console.log(customer);
+      } else {
+       console.log("No Data found");
+      }
+    } else {
+      // Handle non-200 status codes here
+      console.error(`Request failed with status code ${response.status}`);
+      setModalData("Failed to fetch data");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    // Handle other errors here
+    setModalData("An error occurred");
+  } finally {
+    setLoadingModal1(false);
+  }
+};
+
+
+useEffect(() => {
+  setLoading(true);
+
+  const fetchData = async () => {
+    try {
+      const response = await apiCall("http://localhost:8080/api/admin/getAllAccounts", "GET", null, temp_token);
+      const responseData = response.data;
+      console.log(responseData);
+
+      if (responseData != null) {
+        setUsers(responseData);
+        responseData.map(item => (
+           setUserStates((userStates) => ({ ...userStates,[item.id]: item.isActive?true:false}))))
+      } else {
+        setUsers([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle errors here
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => {
-    setLoading(true)
-   
-    //  const response=apiCall("http://localhost:8080/api/admin/getAllAccounts","GET",null,temp_token)
-   // console.log(response.data)
-    setLoading(false)
-   // if(response.data!=null){
-    
-    //  setUsers(response.data) 
-   // }else{
-      setUsers(rows)
-   // }
+  fetchData(); 
 
+}, []);
 
-  }, [])
+// ...
+
 
   
   // Update filteredData when search changes
   useEffect(() => {
     const filtered = users.filter(item =>
-      item.AccountNumber.includes(search)
+      item.id.includes(search)
     );
     setFilteredData(filtered);
   }, [search, users]);
@@ -218,34 +215,53 @@ if(i>8){i=0;}else{i++};
           <TableRow>
             <StyledTableCell>Account Number</StyledTableCell>
             <StyledTableCell align="right">Account Type</StyledTableCell>
-            <StyledTableCell align="right">Customer ID</StyledTableCell>
+            <StyledTableCell align="right">Owner ID</StyledTableCell>
             <StyledTableCell align="right">Active</StyledTableCell>
             <StyledTableCell align="right">Activation Date</StyledTableCell>
             <StyledTableCell align="right">Total Balance</StyledTableCell>
             <StyledTableCell align="right">Transaction History</StyledTableCell>
+            <StyledTableCell align="right">Customer Details</StyledTableCell>
             <StyledTableCell align="right">Enable / Disable User</StyledTableCell>
           </TableRow>
         </TableHead>
+       
         <TableBody>
         
 
           {filteredData.map(item => (
-            <StyledTableRow key={item.AccountNumber}>
+          
+            <StyledTableRow key={item.id}>
               <StyledTableCell component="th" scope="row">
-                {item.AccountNumber}
+                {item.id}
               </StyledTableCell>
-              <StyledTableCell align="right">{item.AccountType}</StyledTableCell>
-              <StyledTableCell align="right">{item.CustomerID}</StyledTableCell>
-              <StyledTableCell align="right">{item.Active}</StyledTableCell>
-              <StyledTableCell align="right">{item.ActivationDate}</StyledTableCell>
-              <StyledTableCell align="right">{item.TotalBalance}</StyledTableCell>
+              <StyledTableCell align="right">{item.accountType}</StyledTableCell>
+              <StyledTableCell align="right">{item.ownerId}</StyledTableCell>
+              <StyledTableCell align="right">{item.isActive ? "true" : "false"}</StyledTableCell>
+              <StyledTableCell align="right">{item.accountActivationDate}</StyledTableCell>
+              <StyledTableCell align="right">{item.totalBalance}</StyledTableCell>
              
+              <StyledTableCell align="right">
+             
+              <Button
+                className="button1"
+                onClick={()=>{
+                  console.log(item.id);              
+                handleChange(item.id);
+                }}
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Open
+              </Button>
+              </StyledTableCell>
               <StyledTableCell align="right">
 
               <Button
                 className="button1"
                 onClick={()=>{
-                 handleChange("key");
+                  console.log(item.ownerId);              
+                handleChangeCustomer(item.ownerId);
+               // handleChangeCustomer(item.ownerId);
                 }}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
@@ -255,8 +271,8 @@ if(i>8){i=0;}else{i++};
               </StyledTableCell>
               <StyledTableCell align="right">
               <Switch 
-              checked={isDisabled}
-              onChange={() => handleSwitch(item.AccountNumber)}
+              checked={userStates[item.id]}
+              onChange={() => handleSwitch(item.id)}
               color="primary"
               inputProps={{ 'aria-label': 'toggle switch' }}
                 
@@ -267,37 +283,87 @@ if(i>8){i=0;}else{i++};
         </TableBody>
       </Table>
     </TableContainer>
-    {
-      loadingModal && open ? 
-<Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-           Loading....
-          </Typography>
-          
-        </Box>
+   
+    
+  {loadingModal  ? 
+      <Modal
+      open={open1}
+      onClose={handleClose1}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Loading...
+                </Typography>
       </Modal>
+       :
+    <Modal
+    open={open1}
+    onClose={handleClose1}
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+  >
+      <Box sx={style}>
+    <TableContainer component={Paper} className="TableContainer"  sx={{ maxWidth: 1100 , maxHeight:400}}>  
+    <Table  aria-label="customized table" data={transactions}>
+      <TableHead>
+        <TableRow>
+        
+          <StyledTableCell align="right">id</StyledTableCell>
+          <StyledTableCell align="right">fromAccountNo</StyledTableCell>
+          <StyledTableCell align="right">toAccountNo</StyledTableCell>
+          <StyledTableCell align="right">transactionAmount</StyledTableCell>
+          <StyledTableCell align="right">TransactionDate</StyledTableCell>
 
-     : <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-           {modalData}
-          </Typography>
-          
-        </Box>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+      
+
+        {transactions.map(item => (
+          <StyledTableRow key={item.id}>
+            <StyledTableCell component="th" scope="row">
+              {item.id}
+            </StyledTableCell>
+            <StyledTableCell align="right">{item.fromAccountNo}</StyledTableCell>
+            <StyledTableCell align="right">{item.toAccountNo}</StyledTableCell>
+            <StyledTableCell align="right">{item.transactionAmount}</StyledTableCell>
+            <StyledTableCell align="right">{item.transactionDate}</StyledTableCell>
+            
+          </StyledTableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+  </Box>
+  </Modal>
+}
+{loadingModal1  ? 
+      <Modal
+      open={open2}
+      onClose={handleClose2}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Loading...
+                </Typography>
       </Modal>
-    }
-    </div>
+       :
+    <Modal
+    open={open2}
+    onClose={handleClose2}
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+  >
+      <Box sx={style}>
+   {customer.length!=0 ? <RequestDetails customer={customer}/>:<p>Data could not be displayed, try again</p>}
+    {/* <Requestdetails customer={customer}/> */}
+  </Box>
+  </Modal>
+}    
+    
+   </div>
     )
   );
 }

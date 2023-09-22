@@ -1,9 +1,12 @@
 package com.banking.teamone.controller.admin;
 
 
+import com.banking.teamone.dto.CustomerInfoRequestModel;
 import com.banking.teamone.model.Account;
+import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.service.AccountService;
 import com.banking.teamone.service.AdminService;
+import com.banking.teamone.service.SavingsAccountService;
 import com.banking.teamone.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,11 +15,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,7 +34,8 @@ public class AdminFunctionality {
     @Autowired
     private AccountService accountService;
 
-
+    @Autowired
+    private SavingsAccountService savingsAccountService;
 
     @GetMapping("/resource")
     public String getResource() {
@@ -77,7 +80,19 @@ public class AdminFunctionality {
             return new ResponseEntity<>("Some Exception occured in fetching all transactions",HttpStatus.OK);
         }
     }
+    @GetMapping(value="/getAllCustomers")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<?> getAllCustomers(Integer ownerId){
+        try{
+            CustomerInfo cus =savingsAccountService.getAllCustomers(ownerId);
+            System.out.println(cus);
+            return new ResponseEntity<>(savingsAccountService.getAllCustomers(ownerId),HttpStatus.OK);
 
+        }catch (Exception e){
+            return new ResponseEntity<>("Some Exception occured in fetching customers",HttpStatus.OK);
+        }
+
+    }
     @GetMapping("/deactivateUser")
     @Secured("ROLE_ADMIN")
     ResponseEntity<?>deactivateUser(String accountNo){

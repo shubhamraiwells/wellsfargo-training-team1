@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CustomerInfoRepository extends JpaRepository<CustomerInfo,String> {
+public interface CustomerInfoRepository extends JpaRepository<CustomerInfo,Integer> {
     @Query("select id,firstName from CustomerInfo")
     List<?> findAllByColumn();
 
