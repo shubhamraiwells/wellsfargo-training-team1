@@ -17,8 +17,7 @@ import {
   } from '@mui/material';
 export function RequestDetails(props){
     const request = props.customer;
-    console.log("Reqsss:")
-    console.log(request);
+    // console.log("Table Data:"+request);
     return(     
     <TableContainer component={Paper} style={{marginLeft:"15%", marginTop:"10%", maxWidth:1000}}>
     <Table sx={{ maxWidth:1000}} aria-label="simple table">
