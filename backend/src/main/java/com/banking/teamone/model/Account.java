@@ -1,6 +1,7 @@
 package com.banking.teamone.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 @Table(name = "account")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Account{
 
     @Id
