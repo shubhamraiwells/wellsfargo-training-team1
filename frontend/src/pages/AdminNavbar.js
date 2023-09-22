@@ -34,6 +34,7 @@ import {
     }  from 'react';
 import { Switch } from "@mui/material/";
 import {NavLink} from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -114,6 +115,10 @@ export default function AdminNavbar() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleLogout = () =>{
+    alert("Logged out");
+  }
   const [mode, setMode] = useState("light");
   const darkTheme = createTheme({
     palette: {
@@ -174,7 +179,7 @@ export default function AdminNavbar() {
         </DrawerHeader>
         <Divider />
             <List>
-                <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -197,9 +202,8 @@ Admin Approval
       </NavLink></ListItemText>
  
  </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding sx={{ display: 'block' }}>
+              </ListItem>
+              <ListItem disablePadding sx={{ display: 'block' }}>
                     <ListItemButton
                         sx={{
                         minHeight: 48,
@@ -218,11 +222,33 @@ Admin Approval
                     
         </ListItemIcon>
         <ListItemText><NavLink to="/RegisterAccount" style={{textDecoration:'None',color:'black'}}>
-        Open Account
+          Search Users
             </NavLink></ListItemText>
         
         </ListItemButton>
-                </ListItem>
+              </ListItem>
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                    <ListItemButton
+                        sx={{
+                        minHeight: 48,
+                        justifyContent: open ? 'initial' : 'center',
+                        px: 2.5,
+                        }}
+                    >
+                        <ListItemIcon
+                        sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : 'auto',
+                            justifyContent: 'center',
+                        }}
+                        >
+        <NavLink to=""><Button onClick={handleLogout}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
+                    
+        </ListItemIcon>
+        <ListItemText>Logout</ListItemText>
+        
+        </ListItemButton>
+              </ListItem>
             </List>
        
          <Divider />

@@ -34,6 +34,7 @@ import {
     }  from 'react';
 import { Switch } from "@mui/material/";
 import {NavLink} from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -114,6 +115,9 @@ export default function Navbar() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const handleLogout = () =>{
+    alert("Logged out");
+  }
   const [mode, setMode] = useState("light");
   const darkTheme = createTheme({
     palette: {
@@ -247,6 +251,7 @@ Home
                
               </ListItemButton>
             </ListItem>
+            
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -295,6 +300,28 @@ Home
  
  </ListItemButton>
             </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+                    <ListItemButton
+                        sx={{
+                        minHeight: 48,
+                        justifyContent: open ? 'initial' : 'center',
+                        px: 2.5,
+                        }}
+                    >
+                        <ListItemIcon
+                        sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : 'auto',
+                            justifyContent: 'center',
+                        }}
+                        >
+        <NavLink to=""><Button onClick={handleLogout}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
+                    
+        </ListItemIcon>
+        <ListItemText>Logout</ListItemText>
+        
+        </ListItemButton>
+              </ListItem>
         </List>
        
          <Divider />

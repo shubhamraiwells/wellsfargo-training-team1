@@ -64,7 +64,7 @@ import DangerousIcon from '@mui/icons-material/Dangerous';
 
   return (
     <div className="container">
-         <TableContainer component={Paper} style={{marginLeft:"35%", marginTop:"10%", maxWidth:800}}>
+         <TableContainer component={Paper} style={{marginLeft:"30%", marginTop:"10%", maxWidth:800}}>
       <Table sx={{ maxWidth:800}} aria-label="simple table">
         <TableHead style={{textAlign:"center"}}>
           <TableRow>
