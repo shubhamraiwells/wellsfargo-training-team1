@@ -48,7 +48,7 @@ public class SavingsAccountService {
         System.out.println("Size of List:"+customerInfoList.size());
         customerInfoList = customerInfoRepository.findAll();
         System.out.println("Size of List:"+customerInfoList.size());
-        return accNo;
+        return "Account generated successfully";
     }
     private String generateUniqueNo(){
         return UUID.randomUUID().toString().replace("-","");
@@ -59,7 +59,7 @@ public class SavingsAccountService {
         customerInfoList.stream().filter(x-> Objects.nonNull(x)).forEach(x-> map.put(x.getAadharCardNo(), Boolean.TRUE));
         return Objects.isNull(map.get(customerInfo.getAadharCardNo()));
     }
-    public List<?> getAllCustomersBySpecificColumn(){
+    public List<CustomerInfo> getAllCustomersBySpecificColumn(){
         return customerInfoRepository.findAllByColumn();
     }
     public CustomerInfo getCustomerByFirstName(String firstName){
