@@ -13,11 +13,27 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import UserRequestsTable from "./UserRequestTable";
-   
+import { useEffect } from "react";
+import apiCall from "../apiCall/apiCall";
+import { useState} from 'react';
+
 export default function ApproveUsers(){
+    const [requests, setRequests] = useState([]);
+    const [returned, setReturned] = useState(false);
+    const fetchRequests = async() =>{
+        const response= await apiCall("http://localhost:8080/api/auth/getPendingRequests","GET",{});
+        setRequests(response.data);
+        setReturned(true);
+        console.log("Hi");
+        console.log(response.data);
+
+    }
+    useEffect(()=>{
+            fetchRequests();
+    },[]);
     return(
     <div>
-    <UserRequestsTable/>
+    {returned && <UserRequestsTable requests={requests} />}
     <AdminNavbar/>
     </div> 
     )
