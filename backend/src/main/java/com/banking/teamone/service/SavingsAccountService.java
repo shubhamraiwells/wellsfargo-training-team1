@@ -2,9 +2,8 @@ package com.banking.teamone.service;
 
 import com.banking.teamone.converter.CustomerConverter;
 import com.banking.teamone.dto.CustomerInfoRequestModel;
-import com.banking.teamone.model.CustomerIb;
+import com.banking.teamone.model.*;
 import com.banking.teamone.model.Account;
-import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.CustomerInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,9 @@ public class SavingsAccountService {
     @Autowired
     AccountService accountService;
 
+    @Autowired
+    AccountRequestService accountRequestService;
+
     public String updateBalance(String accountNo,BigDecimal toAdd){
         Account fetchedAccount=accountService.getAccountById(accountNo);
         if(fetchedAccount!=null) {
@@ -41,9 +43,16 @@ public class SavingsAccountService {
         CustomerInfo customerInfo = customerConverter.customerInfoRequestModelToCustomerInfo(customerInfoRequestModel);
         if(!checkInfo(customerInfo))
             return "An account with the given Aadhar Number already exists";
-       CustomerInfo createdCust= customerInfoRepository.save(customerInfo);
-       //CREATING ACCOUNT
-        accountService.createAccount(new Account(accNo,createdCust.getAccountType(),createdCust.getId(),true,new Date(),new BigDecimal(0)));
+        CustomerInfo createdCust= customerInfoRepository.save(customerInfo);
+
+        //CREATING ACCOUNT
+        AccountRequest accountRequest = AccountRequest.builder()
+                .id(accNo)
+                .accountType(createdCust.getAccountType())
+                .ownerId(createdCust.getId())
+                .build();
+
+        accountRequestService.createAccount(accountRequest);
         List<CustomerInfo> customerInfoList = new ArrayList<>();
         System.out.println("Size of List:"+customerInfoList.size());
         customerInfoList = customerInfoRepository.findAll();
