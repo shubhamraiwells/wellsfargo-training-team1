@@ -14,12 +14,14 @@ import { TokenProvider } from "./context/TokenContext";
 import Services from "./pages/Services";
 import Navbar from "./pages/NavBar";
 import AdminSignIn from "./pages/AdminSignUp";
+import AdminSearchUsers from "./pages/AdminSearchUsers";
 const App = () => {
   return (
     // <ProSidebarProvider>
     <div className="App">
       <BrowserRouter>
         <Routes>
+        <Route path="/AdminSearchUsers" element={<AdminSearchUsers />}></Route>
           <Route path="/" element={<Navbar />}></Route>
           <Route path="/SignUp" element={<SignUp />}></Route>
           <Route path="/RegisterAccount" element={<RegisterAccount />}></Route>
