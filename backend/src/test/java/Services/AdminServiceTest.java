@@ -7,13 +7,12 @@ import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.AdminRepository;
 import com.banking.teamone.service.AdminService;
 import com.banking.teamone.service.CustomerIbService;
-import org.junit.Test;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.mockito.internal.verification.VerificationModeFactory;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
@@ -22,7 +21,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class AdminServiceTest {
 
     @Mock

@@ -3,7 +3,7 @@ package Services;
 import com.banking.teamone.model.CRole;
 import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.service.CustomerIbDetailsImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

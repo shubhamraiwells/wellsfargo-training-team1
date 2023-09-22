@@ -7,10 +7,9 @@ import com.banking.teamone.model.Account;
 import com.banking.teamone.model.Transaction;
 import com.banking.teamone.repository.TransactionRepository;
 import com.banking.teamone.service.AccountService;
-import com.banking.teamone.service.TransactionService;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
+import com.banking.teamone.service.TransactionService;import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,11 +21,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 
 public class TransactionServiceTest {
     @InjectMocks

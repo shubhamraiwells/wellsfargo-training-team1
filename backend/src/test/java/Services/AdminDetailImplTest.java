@@ -3,10 +3,9 @@ package Services;
 import com.banking.teamone.model.Admin;
 import com.banking.teamone.model.CRole;
 import com.banking.teamone.service.AdminDetailImpl;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -21,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class AdminDetailImplTest {
 
     @InjectMocks

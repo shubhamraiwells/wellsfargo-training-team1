@@ -8,25 +8,26 @@ import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.CustomerInfoRepository;
 import com.banking.teamone.service.AccountService;
 import com.banking.teamone.service.SavingsAccountService;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SavingAccountServiceTest {
 
     @Mock
@@ -44,7 +45,7 @@ public class SavingAccountServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        savingsAccountService = new SavingsAccountService();
+//        savingsAccountService = new SavingsAccountService();
 
     }
 

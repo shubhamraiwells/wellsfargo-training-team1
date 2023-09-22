@@ -6,12 +6,11 @@ import com.banking.teamone.model.CRole;
 import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.repository.CustomerIbRepository;
 import com.banking.teamone.service.CustomerIbService;
-import org.junit.Before;
-import org.junit.Test;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,12 +21,11 @@ import org.mockito.verification.VerificationMode;
 
 import java.util.Optional;
 
-import static junit.framework.TestCase.assertNotNull;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.mockito.Mockito.verify;
+
+
+//@RunWith(MockitoJUnitRunner.class)
 public class CustomerIbServiceTest {
 
     @Mock
