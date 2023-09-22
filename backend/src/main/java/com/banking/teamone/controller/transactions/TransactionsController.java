@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -61,12 +62,12 @@ public class TransactionsController {
 
 
 
-    @GetMapping("/getTransactionsByDate")
-    @Secured({"ROLE_USER","ROLE_ADMIN"})
-    public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam("accountNo") String accountNo, @RequestParam(value="fromDate") @DateTimeFormat(pattern="dd-MM-yyyy") Date fromDate,@RequestParam(value="fromDate")  @DateTimeFormat(pattern="dd-MM-yyyy") Date toDate){
-        List<TransactionDto>res=transactionService.getAllTransactionByAccountNoAndDate(accountNo,fromDate,toDate);
-        return new ResponseEntity<>(res, HttpStatus.OK);
-    }
+//    @GetMapping("/getTransactionsByDate")
+//    @Secured({"ROLE_USER","ROLE_ADMIN"})
+//    public ResponseEntity<List<TransactionDto>>getAllTransactionsByAccount(@RequestParam("accountNo") String accountNo, @RequestParam(value="fromDate") @DateTimeFormat(pattern="dd-MM-yyyy") Date fromDate,@RequestParam(value="fromDate")  @DateTimeFormat(pattern="dd-MM-yyyy") Date toDate){
+//        List<TransactionDto>res=transactionService.getAllTransactionByAccountNoAndDate(accountNo,fromDate,toDate);
+//        return new ResponseEntity<>(res, HttpStatus.OK);
+//    }
 
     @PostMapping("/createTransaction")
     @Secured({"ROLE_USER","ROLE_ADMIN"})
@@ -80,6 +81,9 @@ public class TransactionsController {
             String toAccountNumber = transferBody.get("toAccountNo");
             Account fromAccount=accountService.getAccountById(fromAccountNo);
             Account toAccount = accountService.getAccountById(toAccountNumber);
+            if(Objects.equals(fromAccountNo, toAccountNumber)){
+                return new ResponseEntity<>("both account can't be same",HttpStatus.OK);
+            }
             if(toAccount.getIsActive() && fromAccount.getIsActive()) {
                 if(fromAccount.getTotalBalance().compareTo(transactionAmount) > 0) {
                     TransactionRequestDto transaction = TransactionRequestDto.builder()

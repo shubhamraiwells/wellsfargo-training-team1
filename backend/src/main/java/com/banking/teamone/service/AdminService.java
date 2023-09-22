@@ -18,9 +18,9 @@ public class AdminService {
     @Autowired
     private CustomerIbService customerIbService;
 
-    public boolean getAdmin(String username){
-        return adminRepository.findById(username).isPresent();
-    }
+//    public boolean getAdmin(String username){
+//        return adminRepository.findById(username).isPresent();
+//    }
 
     public String createAdmin(String username,String password){
        CustomerIb customerIb= customerIbService.getCustomerByUsername(username);
