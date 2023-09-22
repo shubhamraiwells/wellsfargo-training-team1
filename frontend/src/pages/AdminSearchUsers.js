@@ -17,6 +17,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import apiCall from '../apiCall/apiCall';
 import Switch from "@mui/material/Switch";
+import AdminNavbar from './AdminNavbar';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -202,8 +203,8 @@ if(i>8){i=0;}else{i++};
       <div>Loading</div>
     ) : (
     <div>
-      <NavBar/>
-      <Box sx={{ '& > :not(style)': { m: 1 } }} style={{margin:75}}>
+      <AdminNavbar/>
+      <Box sx={{ '& > :not(style)': { m: 1 } }} style={{marginLeft:"20%", marginTop:"10%"}}>
       
       
       <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -212,7 +213,7 @@ if(i>8){i=0;}else{i++};
       </Box>
     </Box>
     
-    <TableContainer component={Paper} className="TableContainer" style={{marginLeft:100}} sx={{ maxWidth: 1100 , maxHeight:400}}>  
+    <TableContainer component={Paper} className="TableContainer" style={{marginLeft:"20%", marginTop:"2%"}} sx={{ maxWidth: 1100 , maxHeight:400}}>  
       <Table  aria-label="customized table" data={filteredData}>
         <TableHead>
           <TableRow>
