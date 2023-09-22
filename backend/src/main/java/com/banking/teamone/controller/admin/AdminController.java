@@ -1,6 +1,7 @@
 package com.banking.teamone.controller.admin;
 
 
+import com.banking.teamone.dto.ApproveBankAccountModel;
 import com.banking.teamone.dto.PendingRequestModel;
 import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.service.*;
@@ -92,8 +93,15 @@ public class AdminController {
   }
 
   @GetMapping("/getPendingRequests")
+  @CrossOrigin
   ResponseEntity<List<PendingRequestModel>> getPendingRequests() {
         List<PendingRequestModel> pendingRequestList = accountRequestService.getAllPendingRequests();
         return new ResponseEntity<>(pendingRequestList, HttpStatus.OK);
+  }
+
+  @PostMapping("/approveBankAccount")
+  @CrossOrigin
+    ResponseEntity<String> approveBankAccount(@RequestBody ApproveBankAccountModel approveBankAccountModel) {
+        return new ResponseEntity<>(adminService.approveBankAccount(approveBankAccountModel), HttpStatus.OK);
   }
 }
