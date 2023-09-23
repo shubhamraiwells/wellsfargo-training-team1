@@ -20,7 +20,7 @@ import {
 import Pagination from '@mui/material/Pagination';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import { useToken } from "../context/TokenContext";
-import { RequestDetails } from './RequestDetails';
+import RequestDetails from "./RequestDetails";
 import Box from '@mui/material/Box';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';

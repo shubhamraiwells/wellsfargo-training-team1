@@ -66,14 +66,14 @@ const Login = () => {
   return (
     <div className="container">
       <NavBar />
-      <Container maxWidth="sm" className="container">
+      <Container maxWidth="sm" className="container" style={{ marginTop: "10%" }} >
         <Box
           sx={{
             boxShadow: 3,
             borderRadius: 5,
             px: 4,
             py: 6,
-            marginTop: 8,
+
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -156,6 +156,7 @@ const Login = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              style={{ background: "#101073" }}
             >
               Sign In
             </Button>

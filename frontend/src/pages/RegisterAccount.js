@@ -122,187 +122,14 @@ export default function RegisterAccount() {
 
     let result = true;
 
-    if (firstName === '' || firstName === null) {
+    if (firstName === '' || firstName === null || middleName === '' || middleName === null || lastName === '' || lastName === null || fatherName === '' || fatherName === null || mobileNo === '' || mobileNo === null || emailId === '' || emailId === null || aadharCardNo === '' || aadharCardNo === null || dateOfBirth === '' || dateOfBirth === null
+      || residentialAddressLine1 === '' || residentialAddressLine1 === null || residentialAddressLine2 === '' || residentialAddressLine2 === null || residentialLandmark === '' || residentialLandmark === null || residentialCity === '' || residentialCity === null ||
+      permanentAddressLine1 === '' || permanentAddressLine1 === null || permanentAddressLine2 === '' || permanentAddressLine2 === null ||
+      permanentLandmark === '' || permanentLandmark === null || permanentCity === '' || permanentCity === null || grossAnnualIncome === '' || grossAnnualIncome === null ||
+      permanentPincode === '' || permanentPincode === null || accountType === '' || accountType === null || occupationType === '' || occupationType === null || sourceOfIncome === '' || sourceOfIncome === null) {
 
       result = false;
-
-      console.log("firstName is empty");
-
-    }
-
-    if (middleName === '' || middleName === null) {
-
-      result = false;
-
-      console.log("middleName is empty");
-
-    }
-
-    if (lastName === '' || lastName === null) {
-
-      result = false;
-
-      console.log("lastName is empty");
-
-    }
-
-    if (fatherName === '' || fatherName === null) {
-
-      result = false;
-
-      console.log("fatherName is empty");
-
-    }
-
-    if (mobileNo === '' || mobileNo === null) {
-
-      result = false;
-
-      console.log("mobileNo is empty");
-
-    }
-
-    if (emailId === '' || emailId === null) {
-
-      result = false;
-
-      console.log("email is empty");
-
-    }
-
-    if (aadharCardNo === '' || aadharCardNo === null) {
-
-      result = false;
-
-      console.log("aadharCardNo is empty");
-
-    }
-
-    if (dateOfBirth === '' || dateOfBirth === null) {
-
-      result = false;
-
-      console.log("dateOfBirth is empty");
-
-    }
-
-    if (mobileNo === '' || mobileNo === null) {
-
-      result = false;
-
-      console.log("mobileNo is empty");
-
-    }
-
-    if (residentialAddressLine1 === '' || residentialAddressLine1 === null) {
-
-      result = false;
-
-      console.log("residentialAddressLine1 is empty");
-
-    }
-
-    if (residentialAddressLine2 === '' || residentialAddressLine2 === null) {
-
-      result = false;
-
-      console.log("residentialAddressLine2 is empty");
-
-    }
-
-    if (residentialLandmark === '' || residentialLandmark === null) {
-
-      result = false;
-
-      console.log("residentialLandmark is empty");
-
-    }
-
-    if (residentialCity === '' || residentialCity === null) {
-
-      result = false;
-
-      console.log("residentialCity is empty");
-
-    }
-
-    if (residentialPincode === '' || residentialPincode === null) {
-
-      result = false;
-
-      console.log("residentialPincode is empty");
-
-    }
-
-    if (permanentAddressLine1 === '' || permanentAddressLine1 === null) {
-
-      result = false;
-
-      console.log("residentialPincode is empty");
-
-    }
-
-    if (permanentAddressLine2 === '' || permanentAddressLine2 === null) {
-
-      result = false;
-
-      console.log("permanentAddressLine2 is empty");
-
-    }
-
-    if (permanentLandmark === '' || permanentLandmark === null) {
-
-      result = false;
-
-      console.log("permanentLandmark is empty");
-
-    }
-
-    if (permanentCity === '' || permanentCity === null) {
-
-      result = false;
-
-      console.log("permanentCity is empty");
-
-    }
-
-    if (permanentPincode === '' || permanentPincode === null) {
-
-      result = false;
-
-      console.log("permanentPincode is empty");
-
-    }
-
-    if (occupationType === '' || occupationType === null) {
-
-      result = false;
-
-      console.log("occupationType is empty");
-
-    }
-
-    if (sourceOfIncome === '' || sourceOfIncome === null) {
-
-      result = false;
-
-      console.log("sourceOfIncome is empty");
-
-    }
-
-    if (grossAnnualIncome === '' || grossAnnualIncome === null) {
-
-      result = false;
-
-      //isincomeEmptyUpdate(true);
-
-      console.log("grossannualincome is empty");
-
-    }
-    if (accountType === '' || accountType === null) {
-
-      result = false;
-      console.log("accountType is empty");
+      console.log("Some fields are empty");
     }
     if (!result) {
       setOpen(true);
@@ -317,7 +144,7 @@ export default function RegisterAccount() {
     <div className="container">
 
       <NavBar />
-      <Container component="main" maxWidth="md" className="container">
+      <Container component="main" maxWidth="md" className="container" style={{ marginTop: "10%" }}>
 
         <div className="App-header">
 
@@ -894,9 +721,10 @@ export default function RegisterAccount() {
                 </Select>
               </FormControl>
               <Button
+                fullWidth
                 className="button"
                 type="submit"
-
+                style={{ background: "#101073" }}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
