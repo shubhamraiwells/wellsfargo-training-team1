@@ -104,7 +104,7 @@ export default function RegisterAccount() {
     let result = validate();
     if (result) {
       let obj = { firstName, middleName, lastName, fatherName, mobileNo, emailId, aadharCardNo, dateOfBirth, residentialAddressLine1, residentialAddressLine2, residentialLandmark, residentialCity, residentialPincode, permanentAddressLine1, permanentAddressLine2, permanentLandmark, permanentCity, permanentPincode, occupationType, sourceOfIncome, grossAnnualIncome };
-      result = await apiCall("http://localhost:8080/createSavingsAccount", "POST", obj, null);
+      result = await apiCall("http://localhost:8080//api/savingAccount/createSavingsAccount", "POST", obj, null);
       console.log(obj)
       console.log(result)
       alert("Registered Successfully");

@@ -32,6 +32,12 @@ import java.util.List;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
+
+// @Autowired
+// private CustomLoginFailureHandler loginFailureHandler;
+//
+// @Autowired
+// private CustomLoginSuccessHandler loginSuccessHandler;
  @Autowired
  private CustomerIbServiceImpl customerIbServiceImpl;
 
@@ -64,7 +70,7 @@ public class WebSecurityConfig {
   http.cors().configurationSource(option->corsConfigurationSource()).and().csrf(AbstractHttpConfigurer::disable).exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)).
           sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
          authorizeRequests().antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
-          .antMatchers(HttpMethod.GET, "/api/auth/**").permitAll().antMatchers(HttpMethod.POST,"/api/savingAccount/**").permitAll().
+          .antMatchers(HttpMethod.GET, "/api/auth/**").permitAll().antMatchers(HttpMethod.POST,"/api/savingAccount/**").permitAll().antMatchers("/api/savingAccount/createSavingsAccount").permitAll().
         anyRequest().authenticated();
 
   http.authenticationProvider(authenticationProvider());

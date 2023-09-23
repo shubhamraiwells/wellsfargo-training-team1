@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -16,9 +17,23 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class CustomerIbDetailsImpl implements UserDetails {
+
+    private CustomerIb user;
+
+//    public CustomerIbDetailsImpl(CustomerIb user) {
+//        this.user = user;
+//    }
+    public CustomerIbDetailsImpl(CustomerIb customerIb,String username,String password,Collection<?extends GrantedAuthority> authorities) {
+        this.username=username;
+        this.password=password;
+        this.authorities=authorities;
+        this.user=customerIb;
+    }
+
+
 
     private String username;
 
@@ -28,10 +43,14 @@ public class CustomerIbDetailsImpl implements UserDetails {
     private Collection<?extends GrantedAuthority> authorities;
 
     public static CustomerIbDetailsImpl build(CustomerIb customerIb){
+
         List<GrantedAuthority>authorities= new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(customerIb.getRole().name()));
-        return new CustomerIbDetailsImpl(customerIb.getUsername(),customerIb.getPassword(),authorities);
+        return new CustomerIbDetailsImpl(customerIb,customerIb.getUsername(),customerIb.getPassword(),authorities);
     }
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
@@ -54,7 +73,7 @@ public class CustomerIbDetailsImpl implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.isAccountNonLocked();
     }
 
     @Override
