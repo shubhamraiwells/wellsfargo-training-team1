@@ -1,60 +1,77 @@
 import {
     Table,
     TableBody,
-    TableCell,
     TableContainer,
     TableHead,
-    TableRow,
     Paper,
-    Typography,
-    Button,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
-    Modal,
   } from '@mui/material';
-export function RequestDetails(props){
+  import { styled } from '@mui/material/styles';
+  import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+  import TableRow from '@mui/material/TableRow';
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+  
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
+  
+  
+export default function RequestDetails(props){
     const request = props.customer;
-    // console.log("Table Data:"+request);
+    console.log("Reqsss:")
+    console.log(request);
     return(     
-    <TableContainer component={Paper} style={{marginLeft:"15%", marginTop:"10%", maxWidth:1000}}>
-    <Table sx={{ maxWidth:1000}} aria-label="simple table">
-      <TableHead style={{textAlign:"center"}}>
-        <TableRow>
-          <TableCell align="right">Account Number</TableCell>
-          <TableCell align="right">Account Type</TableCell>
-          <TableCell align="right">First Name</TableCell>
-          <TableCell align="right">Last Name</TableCell>
-          <TableCell align="centre">Mobile Number</TableCell>
-          <TableCell align="right">Email Id</TableCell>
-          <TableCell align="centre">Residential Address</TableCell>
-          <TableCell align="right">Residential City</TableCell>
-          <TableCell align="centre">Residential Pin Code</TableCell>
-          <TableCell align="right">Occupation Type</TableCell>
-          <TableCell align="right">Source of Income</TableCell>
-          <TableCell align="right">Gross Annual Income</TableCell>
-        </TableRow>
+       
+        <TableContainer component={Paper} className="TableContainer"  sx={{ maxWidth: 1500 , maxHeight:400}}>  
+        <Table  aria-label="customized table" data={request}>
+      <TableHead style={{textAlign:"right"}}>
+        <StyledTableRow>
+          <StyledTableCell align="right">Owner Id</StyledTableCell>
+          <StyledTableCell align="right">Account Type</StyledTableCell>
+          <StyledTableCell align="right">First Name</StyledTableCell>
+          <StyledTableCell align="right">Last Name</StyledTableCell>
+          <StyledTableCell align="centre">Mobile Number</StyledTableCell>
+          <StyledTableCell align="right">Email Id</StyledTableCell>
+          <StyledTableCell align="centre">Residential Address</StyledTableCell>
+          <StyledTableCell align="right">Residential City</StyledTableCell>
+          <StyledTableCell align="centre">Residential Pin Code</StyledTableCell>
+          <StyledTableCell align="right">Occupation Type</StyledTableCell>
+          <StyledTableCell align="right">Source of Income</StyledTableCell>
+          <StyledTableCell align="right">Gross Annual Income</StyledTableCell>
+        </StyledTableRow>
         </TableHead>
       <TableBody>
-          <TableRow
-            key={request.accountNo}
+          <StyledTableRow
+            key={request.id}
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
           >
-            <TableCell component="th" scope="row">{request.accountNo}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.accountType}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.firstName}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.lastName}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.mobileNo}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.emailId}</TableCell>           
-            <TableCell align="right" style={{textAlign:"center"}}>{request.residentialAddressLine1}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.residentialCity}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.residentialPincode}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.occupationType}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.sourceOfIncome}</TableCell>
-            <TableCell align="right" style={{textAlign:"center"}}>{request.grossAnnualIncome}</TableCell>
-          </TableRow>
+            <StyledTableCell component="th" scope="row">{request.id}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.accountType}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.firstName}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.lastName}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.mobileNo}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.emailId}</StyledTableCell>           
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.residentialAddressLine1}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.residentialCity}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.residentialPincode}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.occupationType}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.sourceOfIncome}</StyledTableCell>
+            <StyledTableCell align="right" style={{textAlign:"center"}}>{request.grossAnnualIncome}</StyledTableCell>
+          </StyledTableRow>
       </TableBody>
     </Table>
   </TableContainer>
