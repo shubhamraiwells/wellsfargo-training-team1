@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
+    @Service
 public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
@@ -24,7 +24,7 @@ public class AccountService {
     public Account getAccountById(String Id){
         Optional<Account> account = accountRepository.findById(Id);
 
-        return account.isPresent()?account.get():null;
+        return account.orElse(null);
     }
 
 

@@ -1,6 +1,5 @@
 package com.banking.teamone.repository;
 
-import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.model.CustomerInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +11,9 @@ import java.util.List;
 @Repository
 public interface CustomerInfoRepository extends JpaRepository<CustomerInfo,Integer> {
     @Query("select id,firstName from CustomerInfo")
-    List<?> findAllByColumn();
+    List<CustomerInfo> findAllByColumn();
 
     @Query("select e from CustomerInfo e where e.firstName = :firstName")
     CustomerInfo findByFirstName(@Param("firstName") String firstName);
+
 }

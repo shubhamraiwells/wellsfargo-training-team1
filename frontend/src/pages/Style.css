@@ -44,10 +44,10 @@
  
 } */
 .container{
-  background: rgb(34,193,195);
+  /* background: rgb(34,193,195);
   background: linear-gradient(90deg, rgba(34,193,195,1) 0%,   rgba(253,187,45,1) 100%);
   border-radius: 5;
-  margin-top:8px;
+  margin-top:8px; */
 }
 .title{
   text-align: center;
@@ -104,7 +104,7 @@
   font-family:  'open sans', sans-serif;
 color:'black';
 }
-.App {
+/* .App {
   text-align: center;
   background-color: #ffffff;
 }
@@ -116,7 +116,8 @@ color:'black';
   justify-content: center;
   font-size: calc(10px + 2vmin);
   margin-top:10px;
-}
+} */
+
 
 .TableContainer{
 margin-top: 100;

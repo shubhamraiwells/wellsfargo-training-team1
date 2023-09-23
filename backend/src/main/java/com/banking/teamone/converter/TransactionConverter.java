@@ -17,9 +17,5 @@ public class TransactionConverter {
         return transaction;
     }
 
-//    public CustomerIb customerIbRequestModelToCustomerIb(CustomerIbRequestModel customerIbRequestModel) {
-//        CustomerIb customerIb = new CustomerIb();
-//        BeanUtils.copyProperties(customerIbRequestModel, customerIb);
-//        return customerIb;
-//    }
+
 }

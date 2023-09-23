@@ -24,8 +24,8 @@ import Login from './Login';
 import RegisterAccount from './RegisterAccount';
 import SignUp from "./SignUp";
 import Button from '@mui/material/Button';
-import HomeIcon from '@mui/icons-material/Home';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import ApprovalIcon from '@mui/icons-material/Approval';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonIcon from '@mui/icons-material/Person';
 import HailIcon from '@mui/icons-material/Hail';
@@ -104,7 +104,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function Navbar() {
+export default function AdminNavbar() {
   // const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -115,6 +115,7 @@ export default function Navbar() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
   const handleLogout = () =>{
     alert("Logged out");
   }
@@ -163,7 +164,7 @@ export default function Navbar() {
                 
                 {/* <Assessment className={classes.icon} /> */}
                 <Typography variant ="h6" noWrap component="div" >
-                   WF Net Banking
+                  Admin Dashboard WF
                 </Typography>
             
             </Box>
@@ -177,8 +178,8 @@ export default function Navbar() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-                <List>
-        <ListItem disablePadding sx={{ display: 'block' }}>
+            <List>
+              <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -193,114 +194,40 @@ export default function Navbar() {
                     justifyContent: 'center',
                   }}
                 >
- <NavLink to="/"><Button><HomeIcon style={{color:"black"}}/></Button></NavLink> 
+ <NavLink to="/Admin/ApproveUsers"><Button><ApprovalIcon style={{color:"black"}}/></Button></NavLink> 
                
  </ListItemIcon>
  <ListItemText><NavLink to="/" style={{textDecoration:'None',color:'black'}}>
-Home
+Admin Approval
       </NavLink></ListItemText>
  
  </ListItemButton>
-            </ListItem>
-
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
- <NavLink to="/RegisterAccount"><Button><AccountBalanceIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/RegisterAccount" style={{textDecoration:'None',color:'black'}}>
- Open Account
-      </NavLink></ListItemText>
- 
- </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-      <NavLink to="/SignUp"><Button><PersonAddIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/SignUp" style={{textDecoration:'None',color:'black'}}>
- SignUp
-      </NavLink></ListItemText> 
-               
-              </ListItemButton>
-            </ListItem>
-            
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                 
-                  }}
-                >
-             <NavLink to="/Login"><Button><PersonIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/Login" style={{textDecoration:'None',color:'black'}}>
- Login
-      </NavLink></ListItemText>
-              </ListItemButton>
-            </ListItem>
-             
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
- <NavLink to="/Services"><Button><HailIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/Services" style={{textDecoration:'None',color:'black'}}>
-Home
-      </NavLink></ListItemText>
- 
- </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
+              </ListItem>
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                    <ListItemButton
+                        sx={{
+                        minHeight: 48,
+                        justifyContent: open ? 'initial' : 'center',
+                        px: 2.5,
+                        }}
+                    >
+                        <ListItemIcon
+                        sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : 'auto',
+                            justifyContent: 'center',
+                        }}
+                        >
+        <NavLink to="/Admin/SearchUsers"><Button><ManageSearchIcon style={{color:"black"}}/></Button></NavLink> 
+                    
+        </ListItemIcon>
+        <ListItemText><NavLink to="/RegisterAccount" style={{textDecoration:'None',color:'black'}}>
+          Search Users
+            </NavLink></ListItemText>
+        
+        </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding sx={{ display: 'block' }}>
                     <ListItemButton
                         sx={{
                         minHeight: 48,
@@ -322,7 +249,7 @@ Home
         
         </ListItemButton>
               </ListItem>
-        </List>
+            </List>
        
          <Divider />
       </Drawer>
