@@ -12,6 +12,7 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import apiCall from '../apiCall/apiCall';
 import { useToken } from '../context/TokenContext';
+import AdminNavbar from "./AdminNavbar";
 const AdminSignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -44,17 +45,18 @@ const AdminSignIn = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" style={{marginTop:"10%"}}>
+    <Container component="main" maxWidth="xs" style={{marginTop:"10%"}} spacing={3}>
+      <AdminNavbar/>
       <CssBaseline />
-      <Paper elevation={3} sx={{ padding: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-          <LockOutlinedIcon />
+      <Paper elevation={3}  sx={{ padding: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Avatar sx={{ m: 1, bgcolor: "#101073" }}>
+          <LockOutlinedIcon style={{ background: "#101073" }}/>
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography style={{marginTop:"5%"}} component="h1" variant="h5">
           Admin Sign In
         </Typography>
         <form noValidate>
-          <Grid container spacing={2}>
+          <Grid container spacing={3} style={{marginTop:"5%"}}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -83,6 +85,7 @@ const AdminSignIn = () => {
             color="primary"
             sx={{ mt: 3 }}
             onClick={handleSignIn}
+            style={{ background: "#101073" }}
           >
             Sign In
           </Button>
