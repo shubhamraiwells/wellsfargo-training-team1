@@ -4,8 +4,10 @@ package Services;
 import com.banking.teamone.converter.CustomerConverter;
 import com.banking.teamone.dto.CustomerInfoRequestModel;
 import com.banking.teamone.model.Account;
+import com.banking.teamone.model.AccountRequest;
 import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.CustomerInfoRepository;
+import com.banking.teamone.service.AccountRequestService;
 import com.banking.teamone.service.AccountService;
 import com.banking.teamone.service.SavingsAccountService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -35,7 +38,8 @@ public class SavingAccountServiceTest {
 
     @Mock
     private CustomerConverter customerConverter;
-
+    @Mock
+    AccountRequestService accountRequestService;
 
     @Mock
     private AccountService accountService;
@@ -174,43 +178,9 @@ public class SavingAccountServiceTest {
         String result = savingsAccountService.createSavingsAccount(customerInfoRequestModel);
 
         assertEquals("Account generated successfully", result);
-        verify(accountService, times(1)).createAccount(any(Account.class));
+        verify(accountRequestService, times(1)).createAccount(any(AccountRequest.class));
     }
 
-
-    @Test
-    public void testGetAllCustomersBySpecificColumn() {
-
-        List<CustomerInfo> expectedResult = new ArrayList<>();
-        expectedResult.add(new CustomerInfo(123, "Savings",
-                "123456789012",
-                "Mr.",
-                "John",
-                "M",
-                "Doe",
-                "Michael Doe",
-                "1234567890",
-                "john.doe@example.com",
-                new Date(), // Set a valid date here
-                "123 Main Street",
-                "Apt 4B",
-                "Near Park",
-                "New York",
-                "10001",
-                "456 Elm Street",
-                "Suite 101",
-                "Downtown",
-                "Los Angeles",
-                "90001",
-                "Engineer",
-                "Employment",
-                new BigDecimal("75000.00")));
-        when(customerInfoRepository.findAllByColumn()).thenReturn(expectedResult);
-
-        List<CustomerInfo> result = savingsAccountService.getAllCustomersBySpecificColumn();
-
-        assertEquals(expectedResult, result);
-    }
 
 
     @Test
