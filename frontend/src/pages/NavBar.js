@@ -144,7 +144,7 @@ export default function Navbar() {
     <ThemeProvider theme={selectedtheme}>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} style={{ background: '#2E3B55' }}>
+      <AppBar position="fixed" open={open} style={{ background: "#101073" }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -295,7 +295,7 @@ Home
                
  </ListItemIcon>
  <ListItemText><NavLink to="/Services" style={{textDecoration:'None',color:'black'}}>
-Home
+Services
       </NavLink></ListItemText>
  
  </ListItemButton>
