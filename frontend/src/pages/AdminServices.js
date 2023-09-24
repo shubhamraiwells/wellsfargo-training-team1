@@ -90,7 +90,9 @@ function Copyright() {
     const handleTransfer = () => {
       console.log('Transfer successful');
     }
-  
+  const {token,role,username,isTokenValid}=useToken();
+  const authorizedFlag = role==="ROLE_ADMIN";
+  if(authorizedFlag){
       return (
       <ThemeProvider theme={defaultTheme}>
         <CssBaseline />
@@ -171,4 +173,8 @@ function Copyright() {
         {/* End footer */}
       </ThemeProvider>
     );
+  }
+  else{
+    alert("Not Logged in");
+  }
   }
