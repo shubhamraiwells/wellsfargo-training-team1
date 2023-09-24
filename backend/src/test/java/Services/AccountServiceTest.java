@@ -16,10 +16,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,7 +48,36 @@ public class AccountServiceTest {
     @Captor
     ArgumentCaptor<Account>argumentCaptor;
 
+    @Test
+    public void testGetAccountById_AccountExists() {
+        String accountId = "12345";
+        Account account = new Account();
+        account.setId(accountId);
 
+        // Mock the repository to return the account
+        when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
+
+        // Perform the test
+        Account result = accountService.getAccountById(accountId);
+
+        // Verify that the correct account is returned
+        assertNotNull(result);
+        assertEquals(accountId, result.getId());
+    }
+
+    @Test
+    public void testGetAccountById_AccountNotFound() {
+        String accountId = "12345";
+
+        // Mock the repository to return an empty optional
+        when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
+
+        // Perform the test
+        Account result = accountService.getAccountById(accountId);
+
+        // Verify that null is returned when the account is not found
+        assertNull(result);
+    }
 
 
     @Test

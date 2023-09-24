@@ -16,7 +16,7 @@ public class CustomerIbService {
 
     public static final int MAX_FAILED_ATTEMPTS = 3;
 
-    private static final long LOCK_TIME_DURATION =  10000; // 24 hours
+    public static final long LOCK_TIME_DURATION =  10000; // 24 hours
     @Autowired
     CustomerConverter customerConverter;
 

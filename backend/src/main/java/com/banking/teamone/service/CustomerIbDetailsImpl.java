@@ -23,9 +23,6 @@ public class CustomerIbDetailsImpl implements UserDetails {
 
     private CustomerIb user;
 
-//    public CustomerIbDetailsImpl(CustomerIb user) {
-//        this.user = user;
-//    }
     public CustomerIbDetailsImpl(CustomerIb customerIb,String username,String password,Collection<?extends GrantedAuthority> authorities) {
         this.username=username;
         this.password=password;

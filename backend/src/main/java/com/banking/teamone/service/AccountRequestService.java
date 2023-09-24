@@ -34,8 +34,10 @@ public class AccountRequestService {
         for(AccountRequest account : accountRequestList) {
             Integer id = account.getOwnerId();
             CustomerInfo customerInfo = customerInfoRepository.findById(id).orElse(null);
-            pendingRequestModelList.add(accountConverter.createPendingRequestModel(customerInfo, account.getId()));
-        }
+            if(customerInfo!=null) {
+                pendingRequestModelList.add(accountConverter.createPendingRequestModel(customerInfo, account.getId()));
+            }
+            }
         return pendingRequestModelList;
     }
 }
