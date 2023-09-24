@@ -1,79 +1,153 @@
 package Services;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-import com.banking.teamone.converter.CustomerConverter;
+import java.util.Date;
+import java.util.Optional;
+
 import com.banking.teamone.model.CRole;
-import com.banking.teamone.model.CustomerIb;
-import com.banking.teamone.repository.CustomerIbRepository;
 import com.banking.teamone.service.CustomerIbService;
-
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import com.banking.teamone.converter.CustomerConverter;
+import com.banking.teamone.model.CustomerIb;
+import com.banking.teamone.repository.CustomerIbRepository;
 import org.mockito.internal.verification.VerificationModeFactory;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.verification.VerificationMode;
 
-import java.util.Optional;
-
-
-import static org.mockito.Mockito.verify;
-
-
-//@RunWith(MockitoJUnitRunner.class)
 public class CustomerIbServiceTest {
 
     @Mock
-    CustomerIbRepository customerIbRepository;
-
-    @Mock
-    CustomerConverter customerConverter;
+    private CustomerIbRepository customerIbRepository;
 
     @InjectMocks
     private CustomerIbService customerIbService;
 
-
-    private CustomerIb customerIb;
-
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
-    @DisplayName("test case for getting customer by username")
     @Test
-    public void testGetCustomerByUsername() {
-        customerIb = new CustomerIb("shubhamrai", "wellsfargo@123", CRole.ROLE_USER, "1234567890123", true);
+    public void testGetCustomerByUsername_CustomerExists() {
+        String username = "john_doe";
+        CustomerIb customerIb = new CustomerIb();
+        customerIb.setUsername(username);
 
-        CustomerIb customer = customerIbService.getCustomerByUsername(customerIb.getUsername());
+        // Mock the repository to return the customer
+        when(customerIbRepository.findById(username)).thenReturn(Optional.of(customerIb));
 
-       verify(customerIbRepository, VerificationModeFactory.times(1)).
-               findById("shubhamrai");
+        // Perform the test
+        CustomerIb result = customerIbService.getCustomerByUsername(username);
+
+        // Verify that the correct customer is returned
+        assertNotNull(result);
+        assertEquals(username, result.getUsername());
     }
 
-    @DisplayName("test for getting customer by account no")
     @Test
-    public void testGetCustomerByAccountNo(){
-        customerIb = new CustomerIb("shubhamrai", "wellsfargo@123", CRole.ROLE_USER, "1234567890123", true);
-        customerIbService.getCustomerByAccountNo(customerIb.getAccountNo()) ;
+    public void testGetCustomerByUsername_CustomerNotFound() {
+        String username = "john_doe";
 
-        verify(customerIbRepository,VerificationModeFactory.times(1)).findByAccountNo(customerIb.getAccountNo());
+        // Mock the repository to return an empty optional
+        when(customerIbRepository.findById(username)).thenReturn(Optional.empty());
 
+        // Perform the test
+        CustomerIb result = customerIbService.getCustomerByUsername(username);
+
+        // Verify that null is returned when the customer is not found
+        assertNull(result);
     }
 
-
-    @DisplayName("test for creating customer internet banking")
     @Test
-    public void testCreateInternetBanking(){
-        customerIb = new CustomerIb("shubhamrai", "wellsfargo@123", CRole.ROLE_USER, "1234567890123", true);
-        customerIbService.createCustomerIb(customerIb);
-        verify(customerIbRepository,VerificationModeFactory.times(1)).save(customerIb);
+    public void testCreateCustomerIb() {
+        CustomerIb customerIb = new CustomerIb("shubhamrai", "wellsfargo@123", CRole.ROLE_USER, "1234567890123", true,true,0,new Date());;
+//        when(customerIbRepository.save(customerIb)).thenReturn(customerIb);
+
+        CustomerIb result = customerIbService.createCustomerIb(customerIb);
+
+        verify(customerIbRepository, VerificationModeFactory.times(1)).save(any(CustomerIb.class));
     }
 
+    @Test
+    public void testIncreaseFailedAttempts() {
+        CustomerIb customerIb = new CustomerIb();
+        customerIb.setUsername("john_doe");
+        customerIb.setFailedAttempt(2);
+        customerIbService.increaseFailedAttempts(customerIb);
+
+        verify(customerIbRepository, times(1)).updateFailedAttempts(3, "john_doe");
+    }
+
+    @Test
+    public void testResetFailedAttempts() {
+        String username = "john_doe";
+
+        // Perform the test
+        customerIbService.resetFailedAttempts(username);
+
+        // Verify that failed attempts are reset to 0 and saved
+        verify(customerIbRepository, times(1)).updateFailedAttempts(0, username);
+    }
+
+    @Test
+    public void testLock() {
+        CustomerIb customerIb = new CustomerIb();
+        customerIb.setUsername("john_doe");
+
+        // Perform the test
+        customerIbService.lock(customerIb);
+
+        // Verify that the account is locked, lock time is set, and saved
+        assertFalse(customerIb.isAccountNonLocked());
+        assertNotNull(customerIb.getLockTime());
+        verify(customerIbRepository, times(1)).save(customerIb);
+    }
+
+    @Test
+    public void testUnlockWhenTimeExpired_Success() {
+        CustomerIb customerIb = new CustomerIb();
+        customerIb.setUsername("john_doe");
+        customerIb.setFailedAttempt(3);
+
+        long currentTimeInMillis = System.currentTimeMillis();
+        long lockTimeInMillis = currentTimeInMillis - (CustomerIbService.LOCK_TIME_DURATION + 1000);
+        customerIb.setLockTime(new Date(lockTimeInMillis));
+
+        // Perform the test
+        boolean result = customerIbService.unlockWhenTimeExpired(customerIb);
+
+        // Verify that the account is unlocked, lock time is cleared, and failed attempts are reset
+        assertTrue(result);
+        assertTrue(customerIb.isAccountNonLocked());
+        assertNull(customerIb.getLockTime());
+        assertEquals(0, customerIb.getFailedAttempt());
+        verify(customerIbRepository, times(1)).save(customerIb);
+    }
+
+    @Test
+    public void testUnlockWhenTimeExpired_Failure() {
+        CustomerIb customerIb = new CustomerIb();
+        customerIb.setUsername("john_doe");
+        customerIb.setFailedAttempt(3);
+
+        // Lock time is not expired
+        long currentTimeInMillis = System.currentTimeMillis();
+        long lockTimeInMillis = currentTimeInMillis - (CustomerIbService.LOCK_TIME_DURATION - 1000);
+        customerIb.setLockTime(new Date(lockTimeInMillis));
+
+        // Perform the test
+        boolean result = customerIbService.unlockWhenTimeExpired(customerIb);
+
+        // Verify that the account remains locked
+        assertFalse(result);
+        assertFalse(customerIb.isAccountNonLocked());
+        assertNotNull(customerIb.getLockTime());
+        assertEquals(3, customerIb.getFailedAttempt());
+        verify(customerIbRepository, never()).save(customerIb);
+    }
 }

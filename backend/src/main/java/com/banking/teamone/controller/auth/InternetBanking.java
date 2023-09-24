@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,23 +45,52 @@ public class InternetBanking {
     @PostMapping("/signinIb")
     @CrossOrigin
     public ResponseEntity<?>authenicateUser(@RequestBody LoginRequestIb loginRequest){
-        System.out.println(loginRequest.getUsername()+" "+loginRequest.getPassword());
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(),loginRequest.getPassword()
-        ));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-//System.out.println(jwt);
-        CustomerIbDetailsImpl customerIbDetails= (CustomerIbDetailsImpl) authentication.getPrincipal();
-        List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
+        try {
+            CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
+             if (user != null) {
+                  if(passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
+                        if (customerIbService.unlockWhenTimeExpired(user)) {
+                            System.out.println("Your account has been unlocked. Please try to login again.");
+                        }
+
+                  }
+            }
+
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginRequest.getUsername(), loginRequest.getPassword()
+            ));
+            CustomerIbDetailsImpl customerIbDetails= (CustomerIbDetailsImpl) authentication.getPrincipal();
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
+
+            List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+            return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
+        }catch (Exception e){
+                System.out.println(e.getMessage());
+                CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
+//                System.out.println(user.toString());
+                if (user != null) {
+                   System.out.println(user.getIsActive()+" "+user.isAccountNonLocked());
+                    if (user.getIsActive() && user.isAccountNonLocked()) {
+//                        System.out.println(user.getFailedAttempt());
+                        if (user.getFailedAttempt() < customerIbService.MAX_FAILED_ATTEMPTS - 1) {
+                            customerIbService.increaseFailedAttempts(user);
+                        } else {
+                            customerIbService.lock(user);
+                            System.out.println("Your account has been locked due to 3 failed attempts."
+                                    + " It will be unlocked after 24 hours.");
+                        }
+                    }
+                }
+            return ResponseEntity.ok(null);
+
+        }
+
     }
 
     @PostMapping("/signup")
     @CrossOrigin
     public ResponseEntity<String>registeredUser(@RequestBody SignUpRequestIb signUpRequestIb){
-//        System.out.println(signUpRequestIb.getAccountNo()+" "+signUpRequestIb.getUsername()+" "+signUpRequestIb.getPassword()+" "+signUpRequestIb.getRole());
-//             System.out.println(signUpRequestIb.getAccountNo()+" "+signUpRequestIb.getUsername()+" "+signUpRequestIb.getPassword()+" "+signUpRequestIb.getRole());
        String username=signUpRequestIb.getUsername();
        String password=signUpRequestIb.getPassword();
        String accountNo=signUpRequestIb.getAccountNo();
@@ -75,6 +105,8 @@ public class InternetBanking {
         customerIb.setAccountNo(accountNo);
         customerIb.setPassword(passwordEncoder.encode(password));
         customerIb.setRole(CRole.ROLE_USER);
+        customerIb.setIsActive(true);
+        customerIb.setAccountNonLocked(true);
         customerIbService.createCustomerIb(customerIb);
         return new ResponseEntity<>("User Created successfully",HttpStatus.OK);
 

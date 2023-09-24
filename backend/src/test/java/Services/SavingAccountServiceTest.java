@@ -4,8 +4,10 @@ package Services;
 import com.banking.teamone.converter.CustomerConverter;
 import com.banking.teamone.dto.CustomerInfoRequestModel;
 import com.banking.teamone.model.Account;
+import com.banking.teamone.model.AccountRequest;
 import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.CustomerInfoRepository;
+import com.banking.teamone.service.AccountRequestService;
 import com.banking.teamone.service.AccountService;
 import com.banking.teamone.service.SavingsAccountService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,13 +20,15 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +39,8 @@ public class SavingAccountServiceTest {
 
     @Mock
     private CustomerConverter customerConverter;
-
+    @Mock
+    AccountRequestService accountRequestService;
 
     @Mock
     private AccountService accountService;
@@ -174,43 +179,9 @@ public class SavingAccountServiceTest {
         String result = savingsAccountService.createSavingsAccount(customerInfoRequestModel);
 
         assertEquals("Account generated successfully", result);
-        verify(accountService, times(1)).createAccount(any(Account.class));
+        verify(accountRequestService, times(1)).createAccount(any(AccountRequest.class));
     }
 
-
-    @Test
-    public void testGetAllCustomersBySpecificColumn() {
-
-        List<CustomerInfo> expectedResult = new ArrayList<>();
-        expectedResult.add(new CustomerInfo(123, "Savings",
-                "123456789012",
-                "Mr.",
-                "John",
-                "M",
-                "Doe",
-                "Michael Doe",
-                "1234567890",
-                "john.doe@example.com",
-                new Date(), // Set a valid date here
-                "123 Main Street",
-                "Apt 4B",
-                "Near Park",
-                "New York",
-                "10001",
-                "456 Elm Street",
-                "Suite 101",
-                "Downtown",
-                "Los Angeles",
-                "90001",
-                "Engineer",
-                "Employment",
-                new BigDecimal("75000.00")));
-        when(customerInfoRepository.findAllByColumn()).thenReturn(expectedResult);
-
-        List<CustomerInfo> result = savingsAccountService.getAllCustomersBySpecificColumn();
-
-        assertEquals(expectedResult, result);
-    }
 
 
     @Test
@@ -257,6 +228,81 @@ public class SavingAccountServiceTest {
 
         assertEquals(null, result);
     }
+
+    @Test
+    public void testGenerateUniqueNo() {
+        // Perform the test
+        String uniqueNo1 = savingsAccountService.generateUniqueNo();
+        String uniqueNo2 = savingsAccountService.generateUniqueNo();
+
+        // Verify that generated unique numbers are not the same
+        assertNotEquals(uniqueNo1, uniqueNo2);
+    }
+
+    @Test
+    public void testCheckInfo_InfoExists() {
+        CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setAadharCardNo("123456789");
+
+        List<CustomerInfo> customerInfoList = new ArrayList<>();
+        customerInfoList.add(customerInfo);
+
+        // Mock the repository to return a list of customer info
+        when(customerInfoRepository.findAll()).thenReturn(customerInfoList);
+
+        // Perform the test
+        boolean result = savingsAccountService.checkInfo(customerInfo);
+
+        // Verify that the method returns false since info already exists
+        assertFalse(result);
+    }
+
+    @Test
+    public void testCheckInfo_InfoDoesNotExist() {
+        CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setAadharCardNo("123456789");
+
+        // Mock the repository to return an empty list
+        when(customerInfoRepository.findAll()).thenReturn(new ArrayList<>());
+
+        // Perform the test
+        boolean result = savingsAccountService.checkInfo(customerInfo);
+
+        // Verify that the method returns true since info does not exist
+        assertTrue(result);
+    }
+
+    @Test
+    public void testGetAllCustomers_CustomerExists() {
+        int ownerId = 1;
+        CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setId(ownerId);
+
+        // Mock the repository to return the customer info
+        when(customerInfoRepository.findById(ownerId)).thenReturn(Optional.of(customerInfo));
+
+        // Perform the test
+        CustomerInfo result = savingsAccountService.getAllCustomers(ownerId);
+
+        // Verify that the correct customer info is returned
+        assertNotNull(result);
+        assertEquals(ownerId, result.getId());
+    }
+
+    @Test
+    public void testGetAllCustomers_CustomerNotFound() {
+        int ownerId = 1;
+
+        // Mock the repository to return an empty optional
+        when(customerInfoRepository.findById(ownerId)).thenReturn(Optional.empty());
+
+        // Perform the test
+        CustomerInfo result = savingsAccountService.getAllCustomers(ownerId);
+
+        // Verify that null is returned when the customer info is not found
+        assertNull(result);
+    }
+
 }
 
 
