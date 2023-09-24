@@ -1,4 +1,5 @@
 import React, { Component, useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import "./Style.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -19,7 +20,7 @@ const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$
 
 
 export default function SignUp() {
-
+const [redirectLogin,setRedirectLogin] = useState(false);
   const { signUp } = useContext(Context)
   const [formData, setFormData] = useState({
     username: "",
@@ -42,7 +43,15 @@ export default function SignUp() {
 
       // const result=await apiCall(url,"POST",formData,null);
       const result = await signUp(formData, url);
+if(result.status === 200){
       console.log(result)
+      setRedirectLogin(true);
+}
+else{
+  alert("Some issue in signing up");
+     
+}
+
     } else {
       var res = "";
       console.log(checkUsername + " " + checkPassword + " " + checkAccountNo)
@@ -62,6 +71,7 @@ export default function SignUp() {
   return (
 
     <div className="container">
+      {redirectLogin && <Navigate to='/Login'/>}
       <NavBar />
       <Container maxWidth="sm" className="container" style={{ marginTop: "10%" }} >
         <Box
