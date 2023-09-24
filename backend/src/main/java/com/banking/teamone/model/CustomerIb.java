@@ -1,6 +1,9 @@
 package com.banking.teamone.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +16,8 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name="customerIb")
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomerIb {
     // TODO Auto-generated method stub
     @Getter

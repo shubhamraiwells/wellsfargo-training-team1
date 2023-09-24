@@ -3,6 +3,7 @@ package com.banking.teamone.service;
 import com.banking.teamone.converter.CustomerConverter;
 import com.banking.teamone.dto.CustomerInfoRequestModel;
 import com.banking.teamone.exception.DatabaseExceptions;
+import com.banking.teamone.model.*;
 import com.banking.teamone.model.Account;
 import com.banking.teamone.model.CustomerInfo;
 import com.banking.teamone.repository.CustomerInfoRepository;
@@ -22,6 +23,9 @@ public class SavingsAccountService {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    AccountRequestService accountRequestService;
 
     public String updateBalance(String accountNo,BigDecimal toAdd){
         Account fetchedAccount=accountService.getAccountById(accountNo);
@@ -43,12 +47,18 @@ public class SavingsAccountService {
         }
        CustomerInfo createdCust= customerInfoRepository.save(customerInfo);
        //CREATING ACCOUNT
-        accountService.createAccount(new Account(accNo,createdCust.getAccountType(),createdCust.getId(),true,new Date(),new BigDecimal(0)));
+        AccountRequest accountRequest = AccountRequest.builder()
+                .id(accNo)
+                .accountType(createdCust.getAccountType())
+                .ownerId(createdCust.getId())
+                .build();
+
+        accountRequestService.createAccount(accountRequest);
         List<CustomerInfo> customerInfoList = new ArrayList<>();
         System.out.println("Size of List:"+customerInfoList.size());
         customerInfoList = customerInfoRepository.findAll();
         System.out.println("Size of List:"+customerInfoList.size());
-        return accNo;
+        return "Account generated successfully";
     }
     private String generateUniqueNo(){
         return UUID.randomUUID().toString().replace("-","");
@@ -59,7 +69,13 @@ public class SavingsAccountService {
         customerInfoList.stream().filter(x-> Objects.nonNull(x)).forEach(x-> map.put(x.getAadharCardNo(), Boolean.TRUE));
         return Objects.isNull(map.get(customerInfo.getAadharCardNo()));
     }
+
+    public CustomerInfo getAllCustomers(Integer ownerId){
+        return customerInfoRepository.findById(ownerId).isPresent() ? customerInfoRepository.findById(ownerId).get():null;
+
+    }
     public List<?> getAllCustomersBySpecificColumn(){
+
         return customerInfoRepository.findAllByColumn();
     }
     public CustomerInfo getCustomerByFirstName(String firstName){

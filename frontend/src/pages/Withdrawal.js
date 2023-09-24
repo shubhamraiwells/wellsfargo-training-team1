@@ -31,7 +31,8 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
       alert(res.data)
       onWithdraw();
     } catch (error) {
-      console.error('Error:', error);
+      // console.error('Error:', error);
+      alert(error.response.data)
     }
 
     setIsLoading(false);

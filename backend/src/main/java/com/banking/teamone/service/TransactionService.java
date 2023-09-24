@@ -45,9 +45,9 @@ public class TransactionService {
     }
 
 
-    public List<TransactionDto> getAllTransactionByAccountNoAndDate(String accountNo, Date dateStart, Date dateEnd){
-        return transactionRepository.findAllByFromAccountNo(accountNo).stream().filter(el->(el.getTransactionDate().after(dateStart) && el.getTransactionDate().before(dateEnd)) ).map(el->new TransactionDto(el.getId(),el.getFromAccountNo(),el.getToAccountNo(),el.getTransactionAmount(),el.getTransactionDate())).collect(Collectors.toList());
-    }
+//    public List<TransactionDto> getAllTransactionByAccountNoAndDate(String accountNo, Date dateStart, Date dateEnd){
+//        return transactionRepository.findAllByFromAccountNo(accountNo).stream().filter(el->(el.getTransactionDate().after(dateStart) && el.getTransactionDate().before(dateEnd)) ).map(el->new TransactionDto(el.getId(),el.getFromAccountNo(),el.getToAccountNo(),el.getTransactionAmount(),el.getTransactionDate())).collect(Collectors.toList());
+//    }
 
 
 

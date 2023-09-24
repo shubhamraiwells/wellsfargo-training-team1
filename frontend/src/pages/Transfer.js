@@ -34,6 +34,7 @@ const Transfer = ({ isOpen, onClose, accountNumbers, onTransfer }) => {
       onTransfer();
     } catch (error) {
       console.error('Error:', error);
+      alert(error.response.data)
     }
 
     setIsLoading(false);

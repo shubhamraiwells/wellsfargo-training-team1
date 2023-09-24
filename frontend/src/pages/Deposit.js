@@ -31,6 +31,7 @@ const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
       onDeposit();
     } catch (error) {
       console.error('Error:', error);
+      alert(error.response.data)
     }
 
     setIsLoading(false);

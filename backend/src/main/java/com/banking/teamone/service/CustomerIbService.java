@@ -27,38 +27,10 @@ public class CustomerIbService {
         return customerIbRepository.findByAccountNo(accountNo);
     }
 
-//    public void createCustomerIb(CustomerIbRequestModel customerIbRequestModel){
-//        CustomerIb customerIb = customerConverter.customerIbRequestModelToCustomerIb(customerIbRequestModel);
-//        customerIbRepository.save(customerIb);
-//
-//    }
 
-    public void createCustomerIb(CustomerIb customerIb){
-        customerIbRepository.save(customerIb);
+    public CustomerIb createCustomerIb(CustomerIb customerIb){
+        return customerIbRepository.save(customerIb);
     }
 
-//    private Boolean checkIfAccountAlreadyLinked(Integer accountNo,String username){
-//        CustomerIb customerIb=null;
-//        if(
-//                customerIbRepository.findById(username).isPresent()){
-//            customerIb=customerIbRepository.findById(username).get();
-//
-//
-//        }
-//        if(customerIb!=null){
-//            return (customerIb.getAccountListIb().stream().filter(e-> Objects.equals(e.getId(), accountNo)).toArray().length>0);
-//        }
-//        return false;
-//    }
-//
-//    public CustomerIb createCustomerIb(CustomerIb customerIb,Integer accNo){
-//        Boolean checkUser=checkIfAccountAlreadyLinked(accNo,customerIb.getUsername());
-//        if(!checkUser) {
-//            List<Account>accountList=customerIb.getAccountListIb();
-//
-//            return customerIbRepository.save(customerIb);
-//        }else{
-//            return null;
-//        }
-//    }
+
 }

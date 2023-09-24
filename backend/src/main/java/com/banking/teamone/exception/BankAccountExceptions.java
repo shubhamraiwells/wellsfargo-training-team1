@@ -26,4 +26,10 @@ public class BankAccountExceptions {
         }
     }
 
+    public static class InvalidAmountException extends RuntimeException {
+        public InvalidAmountException() {
+            super("Amount can't be less than or equal to zero");
+        }
+    }
+
 }
