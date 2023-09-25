@@ -14,7 +14,7 @@ import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 import { Context } from "../context/AuthContext";
 import NavBar from "./NavBar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Navigate } from "react-router-dom";
 import { useToken } from "../context/TokenContext";
 //const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 //const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
@@ -26,20 +26,21 @@ const Login = () => {
   const [password, passwordUpdate] = useState("");
   const [isusernameEmpty, isusernameEmptyUpdate] = useState(false);
   const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
-  const obj = { username, password };
   // console.log(jwtDecode('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaHViaGFtcmFpIiwiaWF0IjoxNjk0NjE4OTgxLCJleHAiOjE2OTQ2MjM5ODF9.9vQkEkTPfGsK72afYPIpQm59ar3L9Ah2Kuq4kRJAeVo'));
   let navigate = useNavigate();
+  const [redirect,setRedirect] = useState(false);
   const handleSubmit = async (e) => {
+    const obj = { username, password };
     const url = "http://localhost:8080/api/auth/signinIb";
     e.preventDefault();
-
     if (validate()) {
       const response = await signIn(obj, url);
-      // console.log(response);
+       console.log(response);
       if (response && response.data) {
         const { token, role, username } = response.data;
         console.log(token, role, username)
         setTokenWithExpiry(token, role, username);
+        setRedirect(true);
       } else {
         console.log("unauthorized");
       }
@@ -65,6 +66,7 @@ const Login = () => {
   };
   return (
     <div className="container">
+        {redirect && <Navigate to='/Services'/>}
       <NavBar />
       <Container maxWidth="sm" className="container" style={{ marginTop: "10%" }} >
         <Box
