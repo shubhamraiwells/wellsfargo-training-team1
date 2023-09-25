@@ -39,13 +39,13 @@ public class CustomerIb {
     private String accountNo;
 
     @Column
-    private Boolean isActive;
+    private Boolean isActive=true;
 
     @Column(name = "account_non_locked")
-    private boolean accountNonLocked;
+    private boolean accountNonLocked=true;
 
     @Column(name = "failed_attempt")
-    private int failedAttempt;
+    private int failedAttempt=0;
 
     @Column(name = "lock_time")
     private Date lockTime;

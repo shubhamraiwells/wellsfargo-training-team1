@@ -6,8 +6,10 @@ import com.banking.teamone.payload.request.LoginRequestIb;
 import com.banking.teamone.payload.request.SignUpRequestIb;
 import com.banking.teamone.payload.response.JwtResponse;
 import com.banking.teamone.security.JwtUtils;
+import com.banking.teamone.service.AccountService;
 import com.banking.teamone.service.CustomerIbService;
 import com.banking.teamone.service.CustomerIbDetailsImpl;
+import com.banking.teamone.service.SavingsAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,9 @@ public class InternetBanking {
 
 
     @Autowired
+    AccountService accountService;
+
+    @Autowired
     CustomerIbService customerIbService;
 
     @Autowired
@@ -48,7 +53,7 @@ public class InternetBanking {
         try {
             CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
              if (user != null) {
-                  if(passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
+                  if((passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))&& (user.getLockTime()!=null)){
                         if (customerIbService.unlockWhenTimeExpired(user)) {
                             System.out.println("Your account has been unlocked. Please try to login again.");
                         }
@@ -73,7 +78,7 @@ public class InternetBanking {
                    System.out.println(user.getIsActive()+" "+user.isAccountNonLocked());
                     if (user.getIsActive() && user.isAccountNonLocked()) {
 //                        System.out.println(user.getFailedAttempt());
-                        if (user.getFailedAttempt() < customerIbService.MAX_FAILED_ATTEMPTS - 1) {
+                        if (user.getFailedAttempt() < CustomerIbService.MAX_FAILED_ATTEMPTS - 1) {
                             customerIbService.increaseFailedAttempts(user);
                         } else {
                             customerIbService.lock(user);
@@ -99,6 +104,9 @@ public class InternetBanking {
         }
         if(customerIbService.getCustomerByAccountNo(accountNo)!=null){
             return new ResponseEntity<>("Account already registered",HttpStatus.OK);
+        }
+        if(accountService.getAccountById(accountNo)==null){
+            return new ResponseEntity<>("Account number does not exist",HttpStatus.OK);
         }
         CustomerIb customerIb= new CustomerIb();
         customerIb.setUsername(username);
