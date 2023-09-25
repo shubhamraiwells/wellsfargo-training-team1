@@ -6,6 +6,7 @@ import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.repository.CustomerIbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,8 @@ public class CustomerIbService {
 
 
     public CustomerIb createCustomerIb(CustomerIb customerIb){
+
+
         return customerIbRepository.save(new CustomerIb(customerIb.getUsername(),customerIb.getPassword(),customerIb.getRole(),customerIb.getAccountNo(),
                 customerIb.getIsActive(),customerIb.isAccountNonLocked(),customerIb.getFailedAttempt(),customerIb.getLockTime()));
     }
@@ -52,6 +55,7 @@ public class CustomerIbService {
         customerIbRepository.save(user);
     }
 
+    @Transactional
     public boolean unlockWhenTimeExpired(CustomerIb user) {
         long lockTimeInMillis = user.getLockTime().getTime();
         long currentTimeInMillis = System.currentTimeMillis();

@@ -39,8 +39,7 @@ public class AccountService {
 
     public List<AccountDto> fetchAccountByOwnerId(Integer ownerId){
         Collection<Account> accountList = accountRepository.findByOwnerId(ownerId);
-        List<AccountDto> accountDtoList = accountList.stream().filter(x-> Objects.nonNull(x)).map( x-> accountConverter.AccountToAccountDto(x)).collect(Collectors.toList());
-        return accountDtoList;
+        return accountList.stream().filter(Objects::nonNull).map(x-> accountConverter.AccountToAccountDto(x)).collect(Collectors.toList());
     }
 
 
