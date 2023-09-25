@@ -33,7 +33,7 @@ export default function ApproveUsers(){
             fetchRequests();
     },[]);
     const {token,role,username,isTokenValid}=useToken();
-    console.log(username);
+    console.log("Us:"+username);
     return(
     <div>
     {returned && <UserRequestsTable requests={requests} />}
