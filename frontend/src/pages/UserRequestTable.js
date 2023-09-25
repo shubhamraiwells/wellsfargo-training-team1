@@ -81,11 +81,11 @@ const UserRequestsTable = (props) =>{
         <TableHead style={{textAlign:"center"}}>
           <TableRow>
             <StyledTableCell>Account Number</StyledTableCell>
-            <StyledTableCell align="right">Account Type</StyledTableCell>
-            <StyledTableCell align="right"></StyledTableCell>
-            <StyledTableCell align="right"></StyledTableCell>
-            <StyledTableCell align="right" style={{backgroundColor:"black"}}></StyledTableCell>
-            <StyledTableCell align="right" style={{backgroundColor:"black"}}></StyledTableCell>
+            <StyledTableCell >Account Type</StyledTableCell>
+            <StyledTableCell></StyledTableCell>
+            <StyledTableCell ></StyledTableCell>
+            <StyledTableCell  style={{backgroundColor:"black"}}></StyledTableCell>
+            <StyledTableCell  style={{backgroundColor:"black"}}></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -96,11 +96,11 @@ const UserRequestsTable = (props) =>{
               <StyledTableCell component="th" scope="row">
                 {request.accountNo}
               </StyledTableCell>
-              <StyledTableCell align="right" style={{textAlign:"center"}}>{request.accountType}</StyledTableCell>
-              <StyledTableCell align="right" style={{textAlign:"center"}}>{request.customerId}</StyledTableCell>
-              <StyledTableCell align="right" style={{textAlign:"center"}} onClick={()=>{setModalProp(request); viewRequest();}} ><Button size="small" variant="contained" style={{backgroundColor:"blue"}}>View</Button></StyledTableCell>
-              <StyledTableCell align="right" style={{textAlign:"center"}} onClick={()=>{handleRequest(index)}} ><Button size="small" variant="contained" style={{backgroundColor:"green"}}>Approve</Button></StyledTableCell>
-              <StyledTableCell align="right" style={{textAlign:"center"}}onClick={()=>{handleRequest(index)}} ><Button size="small" variant="contained" style={{backgroundColor:"red"}}>Reject</Button></StyledTableCell>
+              <StyledTableCell  style={{textAlign:"center"}}>{request.accountType}</StyledTableCell>
+              <StyledTableCell  style={{textAlign:"center"}}>{request.customerId}</StyledTableCell>
+              <StyledTableCell  style={{textAlign:"center"}} onClick={()=>{setModalProp(request); viewRequest();}} ><Button size="small" variant="contained" style={{backgroundColor:"blue"}}>View</Button></StyledTableCell>
+              <StyledTableCell  style={{textAlign:"center"}} onClick={()=>{handleRequest(index)}} ><Button size="small" variant="contained" style={{backgroundColor:"green"}}>Approve</Button></StyledTableCell>
+              <StyledTableCell  style={{textAlign:"center"}}onClick={()=>{handleRequest(index)}} ><Button size="small" variant="contained" style={{backgroundColor:"red"}}>Reject</Button></StyledTableCell>
               
             </StyledTableRow>
             

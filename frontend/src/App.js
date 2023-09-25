@@ -27,12 +27,13 @@ const App = () => {
         <Routes>
 
           <Route path="/" element={<HomePage/>}></Route>  
-         <Route path="/Admin/SearchUsers" element={<AdminSearchUsers />}></Route>
+          <Route path="/Admin/SearchUsers" element={<AdminSearchUsers />}></Route>
           <Route path="/SignUp" element={<SignUp />}></Route>
           <Route path="/RegisterAccount" element={<RegisterAccount />}></Route>
           <Route path="/Login" element={<Login />}></Route>
           <Route path="/services" element={<Services/>}></Route>
           <Route path="/Admin/Home" element={<AdminNavbar/>}></Route>
+          <Route path="/User/Home" element={<Navbar/>}></Route>
           <Route path='/Admin/ApproveUsers' element={<ApproveUsers/>}></Route>
           <Route path="/Admin" element={<AdminSignIn/>}></Route>
         </Routes>
