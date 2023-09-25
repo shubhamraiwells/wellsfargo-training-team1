@@ -14,11 +14,12 @@ import apiCall from '../apiCall/apiCall';
 import { useToken } from '../context/TokenContext';
 import AdminNavbar from "./AdminNavbar";
 import Notification from './Notification';
+import {useNavigate} from "react-router-dom"
 const AdminSignIn = () => {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
- 
- 
+  const [password, setPassword] = useState('');  
+  const { setTokenWithExpiry } = useToken();  
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -52,11 +53,13 @@ const AdminSignIn = () => {
     },null)
     console.log(response)
     if(response.data.token!=null){
-        const { token, role, username,setTokenWithExpiry } = response.data;
-        setTokenWithExpiry(token, role, username);
+        const { token, role, username } = response.data;
+        setTokenWithExpiry(token, username, role);
+        console.log(role);
         showNotification('Admin signin success', 'success')
         // alert("Admin signin success");
-    }else{
+        navigate("/Admin/Home");
+   }else{
       showNotification('Do not have admin access', 'error')
         // alert("do not have admin access")
     }
@@ -65,7 +68,6 @@ const AdminSignIn = () => {
 
   return (
     <Container component="main" maxWidth="xs" style={{marginTop:"10%"}} spacing={3}>
-      <AdminNavbar/>
       <CssBaseline />
       <Notification
         open={notificationOpen}
@@ -109,7 +111,8 @@ const AdminSignIn = () => {
             variant="contained"
             color="primary"
             sx={{ mt: 3 }}
-            onClick={handleSignIn}
+            onClick={()=>{              
+              handleSignIn(); }}
             style={{ background: "#101073" }}
           >
             Sign In

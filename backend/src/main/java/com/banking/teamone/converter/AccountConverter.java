@@ -21,6 +21,7 @@ public class AccountConverter {
         PendingRequestModel pendingRequestModel = new PendingRequestModel();
         BeanUtils.copyProperties(customerInfo, pendingRequestModel);
         pendingRequestModel.setAccountNo(accountNo);
+        pendingRequestModel.setId(customerInfo.getId());
         return pendingRequestModel;
     }
 }

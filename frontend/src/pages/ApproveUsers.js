@@ -16,7 +16,8 @@ import UserRequestsTable from "./UserRequestTable";
 import { useEffect } from "react";
 import apiCall from "../apiCall/apiCall";
 import { useState} from 'react';
-
+import { useToken } from "../context/TokenContext";
+import {useNavigate} from "react-router-dom"
 export default function ApproveUsers(){
     const [requests, setRequests] = useState([]);
     const [returned, setReturned] = useState(false);
@@ -31,10 +32,12 @@ export default function ApproveUsers(){
     useEffect(()=>{
             fetchRequests();
     },[]);
+    const {token,role,username,isTokenValid}=useToken();
+    console.log(username);
     return(
     <div>
     {returned && <UserRequestsTable requests={requests} />}
     <AdminNavbar/>
     </div> 
-    )
+    ); 
 }

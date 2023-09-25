@@ -48,7 +48,7 @@ const InternetBankingSignUp = () => {
     };
   
     const handleSubmit = async (e) => {
-        const url="http://localhost:8080/createIbAccount";
+        const url="http://localhost:8080/signup";
         e.preventDefault();
         const checkUsername=userNameRegex.test(formData.username);
         const checkPassword=passwordRegex.test(formData.password);

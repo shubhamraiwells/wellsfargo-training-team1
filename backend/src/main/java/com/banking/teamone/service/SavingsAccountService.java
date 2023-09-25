@@ -79,4 +79,9 @@ public class SavingsAccountService {
         return customerInfoRepository.findByFirstName(firstName)!=null ?customerInfoRepository.findByFirstName(firstName):null;
 
     }
+
+    public List<?> getAllCustomersBySpecificColumn(){
+
+        return customerInfoRepository.findAllByColumn();
+    }
 }

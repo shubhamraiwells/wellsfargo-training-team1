@@ -187,13 +187,13 @@ export default function AdminSearchUsers() {
     );
     setFilteredData(filtered);
   }, [search, users]);
-
   return (
-    loading ? (
+    <div>      
+    <AdminNavBar />
+    {loading ? (
       <div>Loading</div>
     ) : isTokenValid() && (
       <div>
-        <AdminNavBar />
         <Box sx={{ '& > :not(style)': { m: 1 } }} style={{ margin: 75 }}>
 
 
@@ -358,6 +358,8 @@ export default function AdminSearchUsers() {
         }
 
       </div>
-    )
+    )}
+    </div>
   );
+  
 }

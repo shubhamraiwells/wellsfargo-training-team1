@@ -35,7 +35,10 @@ import {
 import { Switch } from "@mui/material/";
 import {NavLink} from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useToken } from "../context/TokenContext";
 
+import {useNavigate} from "react-router-dom"
+import { useEffect } from 'react';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -106,8 +109,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function AdminNavbar() {
   // const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
+  const [open, setOpen] = React.useState(false);   
+  const {token,role,username,isTokenValid}=useToken();
+  const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -138,122 +142,134 @@ export default function AdminNavbar() {
       }
     }
   });
-  // const selectedTheme = mode === "dark" ? darkTheme : lightTheme;
-  const selectedtheme = mode === "dark" ? darkTheme : lightTheme;
- 
-   return (
-    <ThemeProvider theme={selectedtheme}>
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open} style={{ background: "#101073" }}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          {/* Box helps to only right-flush Dark/Bright Button */}
-            <Box display='flex' flexGrow={1}>
-                
-                {/* <Assessment className={classes.icon} /> */}
-                <Typography variant ="h6" noWrap component="div" >
-                  Admin Dashboard WF
-                </Typography>
+  const selectedtheme = mode === "dark" ? darkTheme : lightTheme; 
+  useEffect(()=>{
+    if(username!=null){
+      const authorizedFlag = username.trim()=="ROLE_ADMIN";    
+    console.log("Role:"+role);
+    console.log("Username:"+username)
+    console.log(username.trim()=="ROLE_ADMIN")
+    }
+    else{
+      alert("Kindly log in to view this page");
+      console.log("Navigating...")
+      navigate('/Admin');
+  }
+  },[])  
+    return (   
+      <ThemeProvider theme={selectedtheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open} style={{ background: "#101073" }}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: 'none' }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            {/* Box helps to only right-flush Dark/Bright Button */}
+              <Box display='flex' flexGrow={1}>
+                  
+                  {/* <Assessment className={classes.icon} /> */}
+                  <Typography variant ="h6" noWrap component="div" >
+                    Admin Dashboard WF
+                  </Typography>
+              
+              </Box>
             
-            </Box>
-           
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {selectedtheme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-            <List>
-              <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {selectedtheme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+              <List>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
- <NavLink to="/Admin/ApproveUsers"><Button><ApprovalIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/" style={{textDecoration:'None',color:'black'}}>
-Admin Approval
-      </NavLink></ListItemText>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+  <NavLink to="/Admin/ApproveUsers"><Button><ApprovalIcon style={{color:"black"}}/></Button></NavLink> 
+                
+  </ListItemIcon>
+  <ListItemText><NavLink to="/" style={{textDecoration:'None',color:'black'}}>
+  Admin Approval
+        </NavLink></ListItemText>
+  
+  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                      <ListItemButton
+                          sx={{
+                          minHeight: 48,
+                          justifyContent: open ? 'initial' : 'center',
+                          px: 2.5,
+                          }}
+                      >
+                          <ListItemIcon
+                          sx={{
+                              minWidth: 0,
+                              mr: open ? 3 : 'auto',
+                              justifyContent: 'center',
+                          }}
+                          >
+          <NavLink to="/Admin/SearchUsers"><Button><ManageSearchIcon style={{color:"black"}}/></Button></NavLink> 
+                      
+          </ListItemIcon>
+          <ListItemText><NavLink to="/AdminSearchUsers" style={{textDecoration:'None',color:'black'}}>
+            Search Users
+              </NavLink></ListItemText>
+          
+          </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                      <ListItemButton
+                          sx={{
+                          minHeight: 48,
+                          justifyContent: open ? 'initial' : 'center',
+                          px: 2.5,
+                          }}
+                      >
+                          <ListItemIcon
+                          sx={{
+                              minWidth: 0,
+                              mr: open ? 3 : 'auto',
+                              justifyContent: 'center',
+                          }}
+                          >
+          <NavLink to=""><Button onClick={handleLogout}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
+                      
+          </ListItemIcon>
+          <ListItemText>Logout</ListItemText>
+          
+          </ListItemButton>
+                </ListItem>
+              </List>
+        
+          <Divider />
+        </Drawer>
+      </Box>
+      </ThemeProvider>
+    ); 
  
- </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                    <ListItemButton
-                        sx={{
-                        minHeight: 48,
-                        justifyContent: open ? 'initial' : 'center',
-                        px: 2.5,
-                        }}
-                    >
-                        <ListItemIcon
-                        sx={{
-                            minWidth: 0,
-                            mr: open ? 3 : 'auto',
-                            justifyContent: 'center',
-                        }}
-                        >
-        <NavLink to="/Admin/SearchUsers"><Button><ManageSearchIcon style={{color:"black"}}/></Button></NavLink> 
-                    
-        </ListItemIcon>
-        <ListItemText><NavLink to="/AdminSearchUsers" style={{textDecoration:'None',color:'black'}}>
-          Search Users
-            </NavLink></ListItemText>
-        
-        </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                    <ListItemButton
-                        sx={{
-                        minHeight: 48,
-                        justifyContent: open ? 'initial' : 'center',
-                        px: 2.5,
-                        }}
-                    >
-                        <ListItemIcon
-                        sx={{
-                            minWidth: 0,
-                            mr: open ? 3 : 'auto',
-                            justifyContent: 'center',
-                        }}
-                        >
-        <NavLink to=""><Button onClick={handleLogout}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
-                    
-        </ListItemIcon>
-        <ListItemText>Logout</ListItemText>
-        
-        </ListItemButton>
-              </ListItem>
-            </List>
-       
-         <Divider />
-      </Drawer>
-    </Box>
-    </ThemeProvider>
-  );
 }

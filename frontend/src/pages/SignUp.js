@@ -1,4 +1,5 @@
 import React, { Component, useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import "./Style.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -20,7 +21,7 @@ const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$
 
 
 export default function SignUp() {
-
+const [redirectLogin,setRedirectLogin] = useState(false);
   const { signUp } = useContext(Context)
   const [formData, setFormData] = useState({
     username: "",
@@ -30,6 +31,8 @@ export default function SignUp() {
   const [isaccntnoEmpty, isaccntnoEmptyUpdate] = useState(false);
   const [isusernameEmpty, isusernameEmptyUpdate] = useState(false);
   const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
+  const [isTypingUsername, isTypingUsernameUpdate] = useState(false);
+  const [isTypingPassword, isTypingPasswordUpdate] = useState(false);
 
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
@@ -58,7 +61,16 @@ export default function SignUp() {
 
       // const result=await apiCall(url,"POST",formData,null);
       const result = await signUp(formData, url);
+if(result.status === 200){
       console.log(result)
+      setRedirectLogin(true);
+}
+else{
+  showNotification("Some issue in signing up", 'error')
+  // alert("Some issue in signing up");
+     
+}
+
     } else {
       var res = "";
       console.log(checkUsername + " " + checkPassword + " " + checkAccountNo)
@@ -79,6 +91,7 @@ export default function SignUp() {
   return (
 
     <div className="container">
+      {redirectLogin && <Navigate to='/Login'/>}
       <NavBar />
       <Notification
         open={notificationOpen}
@@ -140,6 +153,7 @@ export default function SignUp() {
               autoComplete="username"
               value={formData.username}
               onChange={(e) => {
+                isTypingUsernameUpdate(true);
                 if (e.target.value == '' || e.target.value === null) {
                   isusernameEmptyUpdate(true);
                 }
@@ -155,7 +169,11 @@ export default function SignUp() {
             />
             <p style={{ color: "red", textAlign: "left", marginTop: 2 }} hidden={isusernameEmpty ? false : true}>Username cannot be empty!</p>
 
-
+            <p style={{ color: "black", textAlign: "left", fontStyle:'italic',fontSize:10}} hidden={isTypingUsername ? false : true}>
+              Usernames cannot contain consecutive periods, cannot end with a period.
+              Usernames can only consist of letters (both uppercase and lowercase), numbers, underscores, and periods.
+              Usernames must be between 8 and 20 characters in length.
+                </p>
 
             <TextField
               className="input"
@@ -168,6 +186,7 @@ export default function SignUp() {
               id="password"
               value={formData.password}
               onChange={(e) => {
+                isTypingPasswordUpdate(true);
                 if (e.target.value == '' || e.target.value === null) {
                   ispasswordEmptyUpdate(true);
                 }
@@ -183,7 +202,10 @@ export default function SignUp() {
               autoComplete="current-password"
             />
             <p style={{ color: "red", textAlign: "left", marginTop: 2 }} hidden={ispasswordEmpty ? false : true}>Password cannot be empty!</p>
-
+            <p style={{ color: "black", textAlign: "left" ,fontStyle:'italic',fontSize:10}} hidden={isTypingPassword ? false : true}>
+              Password should have at least one uppercase, lowercase letter, one digit,one special character
+              and a minimum length of 12 characters.
+                </p>
 
 
 
@@ -204,6 +226,9 @@ export default function SignUp() {
                   {"Already have an account? Sign In"}
                 </Link>
               </Grid>
+             
+              
+
             </Grid>
           </Box>
         </Box>
