@@ -24,6 +24,7 @@ import TransactionalHistory from './TransactionalHistory';
 import apiCall from '../apiCall/apiCall';
 import { useToken } from '../context/TokenContext';
 import Transfer from './Transfer';
+import Notification from './Notification';
 
 function Copyright() {
   return (
@@ -90,6 +91,21 @@ const defaultTheme = createTheme();
   const handleTransfer = () => {
   }
 
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationSeverity, setNotificationSeverity] = useState('success'); // Default severity
+
+  const handleNotificationClose = () => {
+    setNotificationOpen(false);
+  };
+
+  // Function to trigger the notification
+  const showNotification = (message, severity) => {
+    setNotificationMessage(message);
+    setNotificationSeverity(severity);
+    setNotificationOpen(true);
+  };
+
     return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -119,6 +135,12 @@ const defaultTheme = createTheme();
                   }}
                   image="https://i.pinimg.com/236x/0b/96/48/0b9648211fb19c8d77e82f078094a0af.jpg"
                 />
+                <Notification
+        open={notificationOpen}
+        message={notificationMessage}
+        severity={notificationSeverity}
+        onClose={handleNotificationClose}
+      />
                   <CardContent sx={{ flexGrow: 1 }}>
                     {!viewBal && <Typography gutterBottom variant="h5" component="h2">
                       Check Your Balance
@@ -175,7 +197,8 @@ const defaultTheme = createTheme();
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
                     <Button style={{ background: "#101073" }} size="large" variant="contained" onClick={() => setIsWithdrawalModelOpen(true)}>View</Button>
-                    <Withdrawal isOpen={isWithdrawalModalOpen}
+                    <Withdrawal onApiCall={showNotification} 
+                    isOpen={isWithdrawalModalOpen}
                       onClose={() => setIsWithdrawalModelOpen(false)}
                       accountNumbers={accountNumbers}
                       onWithdraw={handleWithdraw} />
@@ -201,7 +224,8 @@ const defaultTheme = createTheme();
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
                     <Button style={{ background: "#101073" }} size="large" variant="contained" onClick={() => setIsDepositModelOpen(true)}>View</Button>
-                    <Deposit isOpen={isDepositModalOpen}
+                    <Deposit onApiCall={showNotification} 
+                    isOpen={isDepositModalOpen}
                       onClose={() => setIsDepositModelOpen(false)}
                       accountNumbers={accountNumbers}
                       onDeposit={handleDeposit} />
@@ -227,7 +251,8 @@ const defaultTheme = createTheme();
                   </CardContent>
                   <CardActions sx={{display:'flex', justifyContent:'center'}}>
                     <Button style={{ background: "#101073" }} size="large" variant="contained" onClick={() => setIsTransferModalOpen(true)}>View</Button>
-                    <Transfer isOpen={isTransferModalOpen}
+                    <Transfer onApiCall={showNotification}
+                    isOpen={isTransferModalOpen}
                       onClose={() => setIsTransferModalOpen(false)}
                       accountNumbers={accountNumbers}
                       onTransfer={handleTransfer} />

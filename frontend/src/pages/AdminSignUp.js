@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import apiCall from '../apiCall/apiCall';
 import { useToken } from '../context/TokenContext';
 import AdminNavbar from "./AdminNavbar";
+import Notification from './Notification';
 const AdminSignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -27,6 +28,22 @@ const AdminSignIn = () => {
     setPassword(e.target.value);
   };
 
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationSeverity, setNotificationSeverity] = useState('success'); // Default severity
+
+  const handleNotificationClose = () => {
+    setNotificationOpen(false);
+  };
+
+  // Function to trigger the notification
+  const showNotification = (message, severity) => {
+    setNotificationMessage(message);
+    setNotificationSeverity(severity);
+    setNotificationOpen(true);
+  };
+
+
   const handleSignIn = async () => {
     // Add your authentication logic here.
     const response=await apiCall("http://localhost:8080/api/auth/signinAdmin","POST",{
@@ -37,9 +54,11 @@ const AdminSignIn = () => {
     if(response.data.token!=null){
         const { token, role, username,setTokenWithExpiry } = response.data;
         setTokenWithExpiry(token, role, username);
-        alert("Admin signin success");
+        showNotification('Admin signin success', 'success')
+        // alert("Admin signin success");
     }else{
-        alert("do not have admin access")
+      showNotification('Do not have admin access', 'error')
+        // alert("do not have admin access")
     }
 
   };
@@ -48,6 +67,12 @@ const AdminSignIn = () => {
     <Container component="main" maxWidth="xs" style={{marginTop:"10%"}} spacing={3}>
       <AdminNavbar/>
       <CssBaseline />
+      <Notification
+        open={notificationOpen}
+        message={notificationMessage}
+        severity={notificationSeverity}
+        onClose={handleNotificationClose}
+      />
       <Paper elevation={3}  sx={{ padding: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Avatar sx={{ m: 1, bgcolor: "#101073" }}>
           <LockOutlinedIcon style={{ background: "#101073" }}/>

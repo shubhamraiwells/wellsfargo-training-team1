@@ -10,7 +10,7 @@ import { useToken } from '../context/TokenContext';
 import './Withdrawal.css';
 import apiCall from '../apiCall/apiCall';
 
-const Transfer = ({ isOpen, onClose, accountNumbers, onTransfer }) => {
+const Transfer = ({ onApiCall, isOpen, onClose, accountNumbers, onTransfer }) => {
   const {token,role,username,isTokenValid}=useToken()
   const [selectedAccount, setSelectedAccount] = useState('');
   const [amount, setAmount] = useState('');
@@ -29,12 +29,12 @@ const Transfer = ({ isOpen, onClose, accountNumbers, onTransfer }) => {
       amount
     },token)
 
-  
-      alert(res.data)
+    onApiCall(res.data, 'success')
       onTransfer();
     } catch (error) {
       console.error('Error:', error);
-      alert(error.response.data)
+      onApiCall(error.response.data, 'error')
+      // alert(error.response.data)
     }
 
     setIsLoading(false);

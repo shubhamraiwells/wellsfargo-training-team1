@@ -10,6 +10,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import apiCall from "../apiCall/apiCall";
 import {Context} from "../context/AuthContext";
 import Cookies from "js-cookie";
+import Notification from "./Notification";
 const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
@@ -30,6 +31,22 @@ const InternetBankingSignUp = () => {
         password:"",
         accountNo:""
     });
+
+    const [notificationOpen, setNotificationOpen] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [notificationSeverity, setNotificationSeverity] = useState('success'); // Default severity
+  
+    const handleNotificationClose = () => {
+      setNotificationOpen(false);
+    };
+  
+    // Function to trigger the notification
+    const showNotification = (message, severity) => {
+      setNotificationMessage(message);
+      setNotificationSeverity(severity);
+      setNotificationOpen(true);
+    };
+  
     const handleSubmit = async (e) => {
         const url="http://localhost:8080/createIbAccount";
         e.preventDefault();
@@ -40,7 +57,8 @@ const InternetBankingSignUp = () => {
         if(checkUsername && checkPassword && checkAccountNo){
 
         const result=await apiCall(url,"POST",formData,null);
-        alert(result.data);
+        showNotification(result.data, 'success')
+        // alert(result.data);
         }else{
             var res="";
             console.log(checkUsername+" "+checkPassword+" "+checkAccountNo)
@@ -53,7 +71,8 @@ const InternetBankingSignUp = () => {
             if(checkAccountNo===false){
                 res=res.concat("invalid account number");
             }
-            alert(res);
+            showNotification(res, 'error')
+            // alert(res);
         }
 
   
@@ -62,6 +81,13 @@ const InternetBankingSignUp = () => {
     }
     return (
         <Grid>
+                        <Notification
+        open={notificationOpen}
+        message={notificationMessage}
+        severity={notificationSeverity}
+        onClose={handleNotificationClose}
+      />
+
             <Paper elevation={20} style={paperStyle}>
                 <Grid align='center'>
                     <Avatar style={avatarStyle}>

@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import './Withdrawal.css';
 import { useToken } from '../context/TokenContext';
 import apiCall from '../apiCall/apiCall';
-const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
+const Deposit = ({ onApiCall, isOpen, onClose, accountNumbers, onDeposit }) => {
   const {token,role,username,isTokenValid}=useToken()
   const [selectedAccount, setSelectedAccount] = useState('');
   const [amount, setAmount] = useState('');
@@ -25,13 +25,12 @@ const Deposit = ({ isOpen, onClose, accountNumbers, onDeposit }) => {
       username,
       amount
     },token)
-
-  alert(res.data)
+    onApiCall(res.data, 'success')
 
       onDeposit();
     } catch (error) {
+      onApiCall(error.response.data, 'error')
       console.error('Error:', error);
-      alert(error.response.data)
     }
 
     setIsLoading(false);

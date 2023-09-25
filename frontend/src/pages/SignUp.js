@@ -14,6 +14,7 @@ import apiCall from "../apiCall/apiCall";
 import { Context } from "../context/AuthContext";
 
 import NavBar from "./NavBar";
+import Notification from "./Notification";
 const userNameRegex = /^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
@@ -29,6 +30,21 @@ export default function SignUp() {
   const [isaccntnoEmpty, isaccntnoEmptyUpdate] = useState(false);
   const [isusernameEmpty, isusernameEmptyUpdate] = useState(false);
   const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationSeverity, setNotificationSeverity] = useState('success'); // Default severity
+
+  const handleNotificationClose = () => {
+    setNotificationOpen(false);
+  };
+
+  // Function to trigger the notification
+  const showNotification = (message, severity) => {
+    setNotificationMessage(message);
+    setNotificationSeverity(severity);
+    setNotificationOpen(true);
+  };
 
 
   const handleSubmit = async (e) => {
@@ -55,7 +71,8 @@ export default function SignUp() {
       if (checkAccountNo === false) {
         res = res.concat("invalid account number");
       }
-      alert(res);
+      showNotification(res, 'error')
+      // alert(res);
     }
   }
 
@@ -63,6 +80,13 @@ export default function SignUp() {
 
     <div className="container">
       <NavBar />
+      <Notification
+        open={notificationOpen}
+        message={notificationMessage}
+        severity={notificationSeverity}
+        onClose={handleNotificationClose}
+      />
+
       <Container maxWidth="sm" className="container" style={{ marginTop: "10%" }} >
         <Box
           sx={{
