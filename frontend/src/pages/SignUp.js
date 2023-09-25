@@ -30,7 +30,8 @@ const [redirectLogin,setRedirectLogin] = useState(false);
   const [isaccntnoEmpty, isaccntnoEmptyUpdate] = useState(false);
   const [isusernameEmpty, isusernameEmptyUpdate] = useState(false);
   const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
-
+  const [isTypingUsername, isTypingUsernameUpdate] = useState(false);
+  const [isTypingPassword, isTypingPasswordUpdate] = useState(false);
 
   const handleSubmit = async (e) => {
     const url = "http://localhost:8080/api/auth/signup";
@@ -126,6 +127,7 @@ else{
               autoComplete="username"
               value={formData.username}
               onChange={(e) => {
+                isTypingUsernameUpdate(true);
                 if (e.target.value == '' || e.target.value === null) {
                   isusernameEmptyUpdate(true);
                 }
@@ -141,7 +143,11 @@ else{
             />
             <p style={{ color: "red", textAlign: "left", marginTop: 2 }} hidden={isusernameEmpty ? false : true}>Username cannot be empty!</p>
 
-
+            <p style={{ color: "black", textAlign: "left", fontStyle:'italic',fontSize:10}} hidden={isTypingUsername ? false : true}>
+              Usernames cannot contain consecutive periods, cannot end with a period.
+              Usernames can only consist of letters (both uppercase and lowercase), numbers, underscores, and periods.
+              Usernames must be between 8 and 20 characters in length.
+                </p>
 
             <TextField
               className="input"
@@ -154,6 +160,7 @@ else{
               id="password"
               value={formData.password}
               onChange={(e) => {
+                isTypingPasswordUpdate(true);
                 if (e.target.value == '' || e.target.value === null) {
                   ispasswordEmptyUpdate(true);
                 }
@@ -169,7 +176,10 @@ else{
               autoComplete="current-password"
             />
             <p style={{ color: "red", textAlign: "left", marginTop: 2 }} hidden={ispasswordEmpty ? false : true}>Password cannot be empty!</p>
-
+            <p style={{ color: "black", textAlign: "left" ,fontStyle:'italic',fontSize:10}} hidden={isTypingPassword ? false : true}>
+              Password should have at least one uppercase, lowercase letter, one digit,one special character
+              and a minimum length of 12 characters.
+                </p>
 
 
 
@@ -190,6 +200,9 @@ else{
                   {"Already have an account? Sign In"}
                 </Link>
               </Grid>
+             
+              
+
             </Grid>
           </Box>
         </Box>

@@ -29,10 +29,12 @@ import NavBar from "./NavBar";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import { Navigate } from "react-router-dom";
 export default function RegisterAccount() {
 
+  const [redirect,setRedirect] = useState(false);
 
+  const [title,titleUpdate] = useState('');
 
   const [firstName, firstNameUpdate] = useState('');
 
@@ -76,15 +78,17 @@ export default function RegisterAccount() {
 
   const [grossAnnualIncome, grossAnnualIncomeUpdate] = useState('');
 
-  const [accountType, accountTypeUpdate] = React.useState('');
+  const [accountType, accountTypeUpdate] = useState('');
 
+  const [errMsg,setErrMsg] = useState('');
   const handleChange = (event) => {
     accountTypeUpdate(event.target.value);
   };
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const numberCheckRegex = /^[0-9]+$/
+  const dobregex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/
   const style = {
     position: 'absolute',
     top: '50%',
@@ -103,11 +107,18 @@ export default function RegisterAccount() {
     console.log(event.target)
     let result = validate();
     if (result) {
-      const obj = { firstName, middleName, lastName, fatherName, mobileNo, emailId, aadharCardNo, dateOfBirth, residentialAddressLine1, residentialAddressLine2, residentialLandmark, residentialCity, residentialPincode, permanentAddressLine1, permanentAddressLine2, permanentLandmark, permanentCity, permanentPincode, occupationType, sourceOfIncome, grossAnnualIncome };
-      result = await apiCall("http://localhost:8080//api/savingAccount/createSavingsAccount", "POST", obj, null);
+      const obj = { title, firstName, middleName, lastName, fatherName, mobileNo, emailId, aadharCardNo, dateOfBirth, residentialAddressLine1, residentialAddressLine2, residentialLandmark, residentialCity, residentialPincode, permanentAddressLine1, permanentAddressLine2, permanentLandmark, permanentCity, permanentPincode, occupationType, sourceOfIncome, grossAnnualIncome, accountType };
+      result = await apiCall("http://localhost:8080/api/savingAccount/createSavingsAccount", "POST", obj, null);
+      if(result.status==200){
       console.log(obj)
       console.log(result)
-      alert("Registered Successfully");
+      setOpen(true)
+      setErrMsg("Your request is being processed. Status will be notified at the earliest.");
+      setTimeout(()=>setRedirect(true),5000)
+    }
+      else{
+        alert("Some issue with registration, please try again");
+      }
     }
     else {
       console.log("Not registered");
@@ -115,34 +126,68 @@ export default function RegisterAccount() {
   };
 
   const validate = () => {
-    let emailid = toString(emailIdUpdate);
-    if (!(validator.isEmail(emailid))) {
-      console.log('Enter a valid Email');
+    let msg = ""
+   
+    const mobile = numberCheckRegex.test(mobileNo);
+    if(!mobile || mobileNo.length != 10){
+    
+      msg = msg.concat("Check your mobile number"+"<br>");
     }
-
-    let result = true;
-
-    if (firstName === '' || firstName === null || middleName === '' || middleName === null || lastName === '' || lastName === null || fatherName === '' || fatherName === null || mobileNo === '' || mobileNo === null || emailId === '' || emailId === null || aadharCardNo === '' || aadharCardNo === null || dateOfBirth === '' || dateOfBirth === null
+    if (!(validator.isEmail(emailId))) {
+      
+      msg = msg.concat("Enter a valid Email"+"<br>");
+    }
+    const aadhar = numberCheckRegex.test(aadharCardNo);
+    if(!aadhar || aadharCardNo.length != 12){
+      
+      msg = msg.concat("Check your Aadhar number"+"<br>");
+    }
+    const dob = dobregex.test(dateOfBirth);
+    if(!dob){
+      msg = msg.concat("DOB should be in dd/mm/yyyy format"+"<br>");
+    }
+    const checkPincode1 = numberCheckRegex.test(permanentPincode);
+    if(!checkPincode1 || permanentPincode.length != 6){
+      
+      msg = msg.concat("Check your permanent Pincode"+"<br>");
+    }
+    const checkPincode2 = numberCheckRegex.test(residentialPincode);
+    if(!checkPincode2 || residentialPincode.length != 6){
+      
+      msg = msg.concat("Check your residential Pincode"+"<br>");
+    }
+    const checkIncome = numberCheckRegex.test(grossAnnualIncome);
+    if(!checkIncome){
+      
+      msg = msg.concat("Enter annual income in numbers"+"<br>");
+    }
+    if (firstName === '' || firstName === null || lastName === '' || lastName === null || fatherName === '' || fatherName === null || mobileNo === '' || mobileNo === null || emailId === '' || emailId === null || aadharCardNo === '' || aadharCardNo === null || dateOfBirth === '' || dateOfBirth === null
       || residentialAddressLine1 === '' || residentialAddressLine1 === null || residentialAddressLine2 === '' || residentialAddressLine2 === null || residentialLandmark === '' || residentialLandmark === null || residentialCity === '' || residentialCity === null ||
       permanentAddressLine1 === '' || permanentAddressLine1 === null || permanentAddressLine2 === '' || permanentAddressLine2 === null ||
       permanentLandmark === '' || permanentLandmark === null || permanentCity === '' || permanentCity === null || grossAnnualIncome === '' || grossAnnualIncome === null ||
       permanentPincode === '' || permanentPincode === null || accountType === '' || accountType === null || occupationType === '' || occupationType === null || sourceOfIncome === '' || sourceOfIncome === null) {
-
-      result = false;
-      console.log("Some fields are empty");
+        
+      msg = msg.concat("Some fields are empty"+"<br>");
     }
-    if (!result) {
+    if (msg.length==0) {
+      
+      console.log("returned true");
+      return true;
+    }
+    else{
+      console.log("returned alse");
       setOpen(true);
-      console.log("Some fields are empty");
+      setErrMsg(msg);
+      return false;
+     
     }
-    return result;
 
   }
 
   return (
 
     <div className="container">
-
+       {redirect && <Navigate to='/'/>}
       <NavBar />
       <Container component="main" maxWidth="md" className="container" style={{ marginTop: "10%" }}>
 
@@ -202,6 +247,27 @@ export default function RegisterAccount() {
 
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+                className="input"
+                margin="normal"
+
+               
+
+                fullWidth
+
+                id="title"
+
+                label="Mr/Mrs/Ms"
+
+                name="title"
+
+                value={title}
+
+                onChange={e => titleUpdate(e.target.value)}
+
+                autoFocus
+
+              />
 
               <TextField
                 className="input"
@@ -227,7 +293,7 @@ export default function RegisterAccount() {
                 className="input"
                 margin="normal"
 
-                required
+              
 
                 fullWidth
 
@@ -366,7 +432,7 @@ export default function RegisterAccount() {
 
                 name="dateOfBirth"
 
-                label="Date of Birth"
+                label="Date of Birth (dd/mm/yyyy)"
 
 
 
@@ -405,13 +471,6 @@ export default function RegisterAccount() {
 
 
               />
-
-
-
-
-
-
-
               <TextField
                 className="input"
                 margin="normal"
@@ -711,12 +770,12 @@ export default function RegisterAccount() {
                   onChange={handleChange}
                   className="input"
                 >
-                  <MenuItem value={10}>Savings Account</MenuItem>
-                  <MenuItem value={20}>Checking Account</MenuItem>
-                  <MenuItem value={30}>Money Market Account</MenuItem>
-                  <MenuItem value={40}>Joint Account</MenuItem>
-                  <MenuItem value={50}>Student Account</MenuItem>
-                  <MenuItem value={60}>Custodial Account</MenuItem>
+                  <MenuItem value="Savings Account">Savings Account</MenuItem>
+                  <MenuItem value="Checking Account">Checking Account</MenuItem>
+                  <MenuItem value="Money Market Account">Money Market Account</MenuItem>
+                  <MenuItem value="Joint Account">Joint Account</MenuItem>
+                  <MenuItem value="Student Account">Student Account</MenuItem>
+                  <MenuItem value="Custodial Account">Custodial Account</MenuItem>
 
                 </Select>
               </FormControl>
@@ -738,12 +797,11 @@ export default function RegisterAccount() {
               aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography style={{color:"red"}} id="modal-modal-title" variant="h6" component="h2">
                   Alert!
                 </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  Some fields are empty
-                </Typography>
+                <Typography style={{color:"red"}} id="modal-modal-description" sx={{ mt: 2 }} dangerouslySetInnerHTML={{ __html: errMsg }}/>
+                
               </Box>
             </Modal>
 
