@@ -142,7 +142,6 @@ export default function AdminNavbar() {
       }
     }
   });
-  // const selectedTheme = mode === "dark" ? darkTheme : lightTheme;
   const selectedtheme = mode === "dark" ? darkTheme : lightTheme; 
   useEffect(()=>{
     if(username!=null){
