@@ -108,6 +108,7 @@ public class AdminController {
     @PostMapping("/approveBankAccount")
     @CrossOrigin
     ResponseEntity<String> approveBankAccount(@RequestBody ApproveBankAccountModel approveBankAccountModel) {
+
         return new ResponseEntity<>(adminService.approveBankAccount(approveBankAccountModel), HttpStatus.OK);
     }
 
