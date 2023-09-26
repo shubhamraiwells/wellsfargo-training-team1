@@ -107,19 +107,19 @@ export default function TransactionalHistory(props) {
     handleShow();
   }
 
-  useEffect((e) => {
-    if (isTokenValid() == false) {
-      return;
-    }
-    (async () => {
-      if(username!=null){
-      const res = await apiCall('http://localhost:8080/api/transactions/getTransactionsByUsername?username=' + username, "GET", {}, token);
-      console.log(res)
-      setDummyData(res.data)
-      }
-      // console
-    })()
-  },[])
+  // useEffect((e) => {
+  //   if (isTokenValid() == false) {
+  //     return;
+  //   }
+  //   (async () => {
+  //     if(username!=null){
+  //     const res = await apiCall('http://localhost:8080/api/transactions/getTransactionsByUsername?username=' + username, "GET", {}, token);
+  //     console.log(res)
+  //     setDummyData(res.data)
+  //     }
+  //     // console
+  //   })()
+  // },[])
 
   function convertDate(inputFormat) {
     function pad(s) { return (s < 10) ? '0' + s : s; }

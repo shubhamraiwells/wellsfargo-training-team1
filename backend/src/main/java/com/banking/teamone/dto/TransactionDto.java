@@ -31,4 +31,16 @@ public class TransactionDto {
 
 
     private Date transactionDate= new Date();
+
+    @Override
+    public boolean equals(Object o){
+        if(o==this){
+            return true;
+        }
+        if(!(o instanceof TransactionDto)){
+            return false;
+        }
+        return ((fromAccountNo.compareTo(((TransactionDto) o).fromAccountNo)==0)
+                && (toAccountNo.compareTo(((TransactionDto) o).toAccountNo)==0));
+    }
 }
