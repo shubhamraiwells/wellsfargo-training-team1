@@ -130,4 +130,12 @@ public class InternetBanking {
 
     }
 
+    @GetMapping("/forgotpassword")
+    @CrossOrigin
+    public void forgotPassword(@RequestParam String username){
+
+    }
+
+
+
 }
