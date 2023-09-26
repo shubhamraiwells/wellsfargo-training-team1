@@ -37,7 +37,7 @@ import {NavLink} from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useToken } from "../context/TokenContext";
 
-import {useNavigate} from "react-router-dom"
+import {useNavigate, Navigate} from "react-router-dom"
 import { useEffect } from 'react';
 const drawerWidth = 240;
 
@@ -147,23 +147,28 @@ export default function AdminNavbar() {
     }
   });
   const selectedtheme = mode === "dark" ? darkTheme : lightTheme; 
-  useEffect(()=>{
-    console.log("Rendering");
-    if(username!=null){
-      const authorizedFlag = username.trim()=="ROLE_ADMIN";    
-    console.log("Role:"+role);
-    console.log("Username:"+username)
-    console.log(username.trim()=="ROLE_ADMIN")
-    }
-    else{
-      alert("Kindly log in to view this page");
-      console.log("Navigating...")
-      navigate('/Admin');
-  }
-  },[loggedOut])  
-    return (   
-      <ThemeProvider theme={selectedtheme}>
-      <Box sx={{ display: 'flex' }}>
+  // useEffect(()=>{
+  //   console.log("Rendering");
+  //   if(username!=null){
+  //     const authorizedFlag = username.trim()=="ROLE_ADMIN";    
+  //   console.log("Role:"+role);
+  //   console.log("Username:"+username)
+  //   console.log(username.trim()=="ROLE_ADMIN")
+  //   }
+  //   else{
+  //     alert("Kindly log in to view this page");
+  //     console.log("Navigating...")
+  //     navigate('/Admin');
+  // }
+  // },[loggedOut])  
+  if(username==null)
+      alert('Kindly Login to access Admin functionalities');
+    else 
+      if(username.trim()!='ROLE_ADMIN')
+        alert('Kindly Login to access Admin functionalities');
+    return (         
+        <ThemeProvider theme={selectedtheme}>
+      {username!=null && username.trim()=="ROLE_ADMIN" && <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="fixed" open={open} style={{ background: "#101073" }}>
           <Toolbar>
@@ -273,7 +278,9 @@ export default function AdminNavbar() {
         
           <Divider />
         </Drawer>
-      </Box>
+      </Box>}
+      {username==null && <Navigate to='/Admin'/>}
+      {username!=null && username.trim()!="ROLE_ADMIN" && <Navigate to ='/Admin'/>}
       </ThemeProvider>
     ); 
  
