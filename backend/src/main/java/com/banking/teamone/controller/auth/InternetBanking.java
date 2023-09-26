@@ -55,11 +55,14 @@ public class InternetBanking {
              if (user != null) {
                   if((passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))&& (user.getLockTime()!=null)){
                         if (customerIbService.unlockWhenTimeExpired(user)) {
-                            System.out.println("Your account has been unlocked. Please try to login again.");
+//                            System.out.println("Your account has been unlocked. Please try to login again.");
+                            return new ResponseEntity<>("Your account has been unlocked. Please try to login again.",HttpStatus.OK);
                         }
 
                   }
-            }
+            }else{
+                 return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
+             }
 
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(), loginRequest.getPassword()
@@ -71,7 +74,7 @@ public class InternetBanking {
             List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
             return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
         }catch (Exception e){
-                System.out.println(e.getMessage());
+//                System.out.println(e.getMessage());
                 CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
 //                System.out.println(user.toString());
                 if (user != null) {
@@ -84,10 +87,11 @@ public class InternetBanking {
                             customerIbService.lock(user);
                             System.out.println("Your account has been locked due to 3 failed attempts."
                                     + " It will be unlocked after 24 hours.");
+                            return new ResponseEntity<>("Your Account has been locked due to 3 failed attempts it. it will be unlcoked after 24 hrs",HttpStatus.LOCKED);
                         }
                     }
                 }
-            return ResponseEntity.ok(null);
+            return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
 
         }
 
