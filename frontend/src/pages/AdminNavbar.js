@@ -110,7 +110,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function AdminNavbar() {
   // const theme = useTheme();
   const [open, setOpen] = React.useState(false);   
-  const {token,role,username,isTokenValid}=useToken();
+  const {token,role,username,isTokenValid, clearToken}=useToken();
+  const [loggedOut, setLoggedOut] = useState(false);
   const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -120,8 +121,11 @@ export default function AdminNavbar() {
     setOpen(false);
   };
 
-  const handleLogout = () =>{
-    alert("Logged out");
+  const handleLogout = () =>{    
+    //navigate('/Admin');
+    clearToken();
+    setLoggedOut(true);
+    console.log("Logging you out");    
   }
   const [mode, setMode] = useState("light");
   const darkTheme = createTheme({
@@ -144,6 +148,7 @@ export default function AdminNavbar() {
   });
   const selectedtheme = mode === "dark" ? darkTheme : lightTheme; 
   useEffect(()=>{
+    console.log("Rendering");
     if(username!=null){
       const authorizedFlag = username.trim()=="ROLE_ADMIN";    
     console.log("Role:"+role);
@@ -155,7 +160,7 @@ export default function AdminNavbar() {
       console.log("Navigating...")
       navigate('/Admin');
   }
-  },[])  
+  },[loggedOut])  
     return (   
       <ThemeProvider theme={selectedtheme}>
       <Box sx={{ display: 'flex' }}>

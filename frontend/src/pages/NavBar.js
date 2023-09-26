@@ -35,7 +35,7 @@ import {
 import { Switch } from "@mui/material/";
 import {NavLink} from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
-
+import { useToken } from "../context/TokenContext";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -107,7 +107,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function Navbar() {
   // const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const {token,role,username,isTokenValid, clearToken}=useToken();
+  const [loggedOut, setLoggedOut] = useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -115,8 +116,17 @@ export default function Navbar() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const handleLogout = () =>{
-    alert("Logged out");
+  const handleLogout = () =>{    
+    //navigate('/Admin');
+    console.log("Before Logging out:")
+    console.log('User:'+username)
+    console.log('Role:'+role);
+    clearToken();
+    setLoggedOut(true);
+    //console.log("Logging you out");  
+    console.log("After Logging out:")
+    console.log('User:'+username)
+    console.log('Role:'+role);  
   }
   const [mode, setMode] = useState("light");
   const darkTheme = createTheme({
