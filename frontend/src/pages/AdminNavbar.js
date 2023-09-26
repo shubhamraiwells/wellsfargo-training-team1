@@ -156,6 +156,7 @@ export default function AdminNavbar() {
       navigate('/Admin');
   }
   },[])  
+ 
     return (   
       <ThemeProvider theme={selectedtheme}>
       <Box sx={{ display: 'flex' }}>
@@ -183,7 +184,9 @@ export default function AdminNavbar() {
                   </Typography>
               
               </Box>
-            
+              {isTokenValid() ?<Typography variant ="h6" noWrap component="div" style={{textAlign:"right"}}>
+                   Welcome {role}
+                </Typography>:<div/>}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
