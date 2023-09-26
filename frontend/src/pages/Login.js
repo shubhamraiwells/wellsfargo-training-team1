@@ -26,6 +26,8 @@ const Login = () => {
   const [password, passwordUpdate] = useState("");
   const [isusernameEmpty, isusernameEmptyUpdate] = useState(false);
   const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
+  const [error,setError] = useState('');
+  const [isError, isErrorUpdate] = useState(false);
   // console.log(jwtDecode('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaHViaGFtcmFpIiwiaWF0IjoxNjk0NjE4OTgxLCJleHAiOjE2OTQ2MjM5ODF9.9vQkEkTPfGsK72afYPIpQm59ar3L9Ah2Kuq4kRJAeVo'));
   let navigate = useNavigate();
   const [redirect,setRedirect] = useState(false);
@@ -36,16 +38,30 @@ const Login = () => {
     if (validate()) {
       const response = await signIn(obj, url);
        console.log(response);
+     
+        if(response.data == "Your account has been unlocked. Please try to login again."){
+          isErrorUpdate(true);
+          setError("Your account has been unlocked. Please try to login again.");
+        }
+        if(response.data == "User not found"){
+          isErrorUpdate(true);
+          setError("User not found");
+        }
+    
       if (response && response.data) {
         const { token, role, username } = response.data;
         console.log(token, role, username)
         setTokenWithExpiry(token, role, username);
+        isErrorUpdate(false);
         setRedirect(true);
       } else {
-        console.log("unauthorized");
+        isErrorUpdate(true);
+          setError("Unauthorized");
       }
     } else {
-      alert("Not logged in, some fields are empty");
+      isErrorUpdate(true);
+      setError("Not logged in, some fields are empty");
+    
     }
   };
   const validate = () => {
@@ -114,7 +130,7 @@ const Login = () => {
               error={isusernameEmpty}
             />
             <p
-              style={{ color: "red", textAlign: "left", marginTop: 2 }}
+             style={{ color: "red", textAlign: "left", marginTop: 2,fontStyle:"italic",fontSize:12}}
               hidden={isusernameEmpty ? false : true}
             >
               username cannot be empty!
@@ -143,7 +159,7 @@ const Login = () => {
               error={ispasswordEmpty}
             />
             <p
-              style={{ color: "red", textAlign: "left", marginTop: 2 }}
+         style={{ color: "red", textAlign: "left", marginTop: 2,fontStyle:"italic",fontSize:12}}
               hidden={ispasswordEmpty ? false : true}
             >
               Password cannot be empty!
@@ -180,8 +196,12 @@ const Login = () => {
                 >
                   {"Don't have an account? Sign Up"}
                 </Link>
+                
               </Grid>
+             
             </Grid>
+            <Typography style={{ color: "red", marginTop: 2,fontStyle:"italic",fontSize:12,textAlign:'center' }} hidden={isError ? false : true} id="modal-modal-description" sx={{ mt: 2 }} dangerouslySetInnerHTML={{ __html: error }}/>
+             
           </Box>
         </Box>
       </Container>
