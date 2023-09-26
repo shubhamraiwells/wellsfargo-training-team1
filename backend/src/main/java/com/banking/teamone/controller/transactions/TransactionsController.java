@@ -75,6 +75,9 @@ public class TransactionsController {
         try{
 
             BigDecimal transactionAmount = new BigDecimal(transferBody.get("amount"));
+            if(transactionAmount.compareTo(new BigDecimal(0))<0){
+                return new ResponseEntity<>("Transaction amount can't be negative",HttpStatus.OK);
+            }
             String username = transferBody.get("username");
             CustomerIb customer=customerIbService.getCustomerByUsername(username);
             String fromAccountNo=customer.getAccountNo();
