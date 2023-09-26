@@ -141,7 +141,7 @@ public class TransactionsController {
             BigDecimal amount=new BigDecimal(withDrawBody.get("amount"));
             CustomerIb customer=customerIbService.getCustomerByUsername(username);
             if(amount.compareTo(new BigDecimal(0))<=0){
-                return new ResponseEntity<>("withdraw amount can't be negative or zero",HttpStatus.OK);
+                return new ResponseEntity<>("deposit amount can't be negative",HttpStatus.OK);
             }
             String accountNo=customer.getAccountNo();
             Account account=accountService.getAccountById(accountNo);

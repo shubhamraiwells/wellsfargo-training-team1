@@ -91,7 +91,7 @@ const BankingTransactionsTable = (props) => {
         <DialogContent>
           <TableContainer component={Paper} className={classes.tableContainer}>
             <Table>
-              <TableHead>
+              {/* <TableHead>
                 <TableRow>
                   <TableCell className={classes.smallText}>Transaction ID</TableCell>
                   <TableCell>Sender's Account</TableCell>
@@ -99,7 +99,7 @@ const BankingTransactionsTable = (props) => {
                   <TableCell>Amount</TableCell>
                   <TableCell>Date</TableCell>
                 </TableRow>
-              </TableHead>
+              </TableHead> */}
               <TableBody>
                 {originalTransactions.map((transaction, index) => (
                   <TableRow key={index}>
