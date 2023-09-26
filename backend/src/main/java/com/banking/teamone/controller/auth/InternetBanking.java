@@ -51,12 +51,12 @@ public class InternetBanking {
     @CrossOrigin
     public ResponseEntity<?>authenicateUser(@RequestBody LoginRequestIb loginRequest){
         try {
-            CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
+            CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());            System.out.println(user.getAccountNo());
              if (user != null) {
                   if((passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))&& (user.getLockTime()!=null)){
                         if (customerIbService.unlockWhenTimeExpired(user)) {
 //                            System.out.println("Your account has been unlocked. Please try to login again.");
-                            return new ResponseEntity<>("Your account has been unlocked. Please try to login again.",HttpStatus.OK);
+                            return new ResponseEntity<>("Your account has been unlocked. Please try to login again.",HttpStatus.UNAUTHORIZED);
                         }
 
                   }
@@ -74,24 +74,30 @@ public class InternetBanking {
             List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
             return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
         }catch (Exception e){
-//                System.out.println(e.getMessage());
                 CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
-//                System.out.println(user.toString());
                 if (user != null) {
-                   System.out.println(user.getIsActive()+" "+user.isAccountNonLocked());
+//                   System.out.println(user.getIsActive()+" "+user.isAccountNonLocked());
                     if (user.getIsActive() && user.isAccountNonLocked()) {
 //                        System.out.println(user.getFailedAttempt());
                         if (user.getFailedAttempt() < CustomerIbService.MAX_FAILED_ATTEMPTS - 1) {
                             customerIbService.increaseFailedAttempts(user);
                         } else {
                             customerIbService.lock(user);
-                            System.out.println("Your account has been locked due to 3 failed attempts."
-                                    + " It will be unlocked after 24 hours.");
+//                            System.out.println("Your account has been locked due to 3 failed attempts."
+//                                    + " It will be unlocked after 24 hours.");
                             return new ResponseEntity<>("Your Account has been locked due to 3 failed attempts it. it will be unlcoked after 24 hrs",HttpStatus.LOCKED);
                         }
                     }
+                    if(!user.getIsActive()){
+                        return new ResponseEntity<>("Your account is inactive",HttpStatus.LOCKED);
+
+
+                    }
+                    if(!user.isAccountNonLocked()){
+                        return new ResponseEntity<>("Your account is locked",HttpStatus.LOCKED);
+                    }
                 }
-            return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Incorrect credentials",HttpStatus.NOT_FOUND);
 
         }
 
