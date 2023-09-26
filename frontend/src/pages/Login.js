@@ -38,7 +38,13 @@ const Login = () => {
     if (validate()) {
       const response = await signIn(obj, url);
        console.log(response);
-     
+    
+      if (response && response.data) {
+        if(response.data == "Your Account has been locked due to 3 failed attempts it. it will be unlcoked after 24 hrs"){
+          isErrorUpdate(true);
+          setError("Your Account has been locked due to 3 failed attempts it. it will be unlcoked after 24 hrs");
+        }
+        
         if(response.data == "Your account has been unlocked. Please try to login again."){
           isErrorUpdate(true);
           setError("Your account has been unlocked. Please try to login again.");
@@ -47,8 +53,6 @@ const Login = () => {
           isErrorUpdate(true);
           setError("User not found");
         }
-    
-      if (response && response.data) {
         const { token, role, username } = response.data;
         console.log(token, role, username)
         setTokenWithExpiry(token, role, username);
