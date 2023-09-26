@@ -16,4 +16,7 @@ public interface CustomerInfoRepository extends JpaRepository<CustomerInfo,Integ
     @Query("select e from CustomerInfo e where e.firstName = :firstName")
     CustomerInfo findByFirstName(@Param("firstName") String firstName);
 
+
+    CustomerInfo findByAadharCardNo(String aadharCardNo);
+
 }
