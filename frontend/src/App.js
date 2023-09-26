@@ -9,7 +9,6 @@ import HomePage from "./pages/HomePage";
 import AdminServices from "./pages/AdminServices";
 import AdminNavbar from "./pages/AdminNavbar";
 import ApproveUsers from "./pages/ApproveUsers";
-// import { ProSidebarProvider } from "react-pro-sidebar";
 import {
   Context as UserContext,
   Provider as UserProvider,
@@ -39,7 +38,6 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </div>
-    // </ProSidebarProvider>
   );
 };
 

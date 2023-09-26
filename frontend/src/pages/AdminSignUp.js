@@ -55,6 +55,7 @@ const AdminSignIn = () => {
     console.log(response)
     if(response.data.token!=null){
         const { token, role, username } = response.data;
+        
         setTokenWithExpiry(token, username, role);
         console.log(role);
         //alert("Admin signin success"); 

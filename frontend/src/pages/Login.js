@@ -32,7 +32,6 @@ const Login = () => {
   let navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
   const handleSubmit = async (e) => {
-
     const obj = { username, password };
     const url = "http://localhost:8080/api/auth/signinIb";
     e.preventDefault();

@@ -110,7 +110,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function AdminNavbar() {
   // const theme = useTheme();
   const [open, setOpen] = React.useState(false);   
-  const {token,role,username,isTokenValid}=useToken();
+  const {token,role,username,isTokenValid,clearToken}=useToken();
   const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -143,19 +143,19 @@ export default function AdminNavbar() {
     }
   });
   const selectedtheme = mode === "dark" ? darkTheme : lightTheme; 
-  useEffect(()=>{
-    if(username!=null){
-      const authorizedFlag = username.trim()=="ROLE_ADMIN";    
-    console.log("Role:"+role);
-    console.log("Username:"+username)
-    console.log(username.trim()=="ROLE_ADMIN")
-    }
-    else{
-      alert("Kindly log in to view this page");
-      console.log("Navigating...")
-      navigate('/Admin');
-  }
-  },[])  
+  // useEffect(()=>{
+  //   if(username!=null){
+  //     const authorizedFlag = username.trim()=="ROLE_ADMIN";    
+  //   console.log("Role:"+role);
+  //   console.log("Username:"+username)
+  //   console.log(username.trim()=="ROLE_ADMIN")
+  //   }
+  //   else{
+  //     alert("Kindly log in to view this page");
+  //     console.log("Navigating...")
+  //     navigate('/Admin');
+  // }
+  // },[])  
  
     return (   
       <ThemeProvider theme={selectedtheme}>
@@ -260,7 +260,13 @@ export default function AdminNavbar() {
                               justifyContent: 'center',
                           }}
                           >
-          <NavLink to=""><Button onClick={handleLogout}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
+          <NavLink to=""><Button onClick={()=>{
+          clearToken()
+          navigate("/Admin");
+          window.location.reload();
+          
+         
+        }}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
                       
           </ListItemIcon>
           <ListItemText>Logout</ListItemText>

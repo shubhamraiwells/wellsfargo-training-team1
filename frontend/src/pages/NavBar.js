@@ -33,9 +33,10 @@ import {
     useState, 
     }  from 'react';
 import { Switch } from "@mui/material/";
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useToken } from '../context/TokenContext';
+// import {useNavigate} from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -108,9 +109,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Navbar() {
+  const navigate=useNavigate();
   // const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+const {clearToken}=useToken();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -325,12 +327,17 @@ Services
                             justifyContent: 'center',
                         }}
                         >
-        <NavLink to=""><Button onClick={handleLogout}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
-                    
+        <NavLink to=""><Button onClick={()=>{
+          clearToken()
+          navigate("/");
+          window.location.reload();
+          
+         
+        }}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
+                  
         </ListItemIcon>
         <ListItemText>Logout</ListItemText>
-        
-        </ListItemButton>
+        </ListItemButton >
               </ListItem>
         </List>
        
