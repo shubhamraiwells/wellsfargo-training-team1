@@ -17,6 +17,6 @@ public interface CustomerInfoRepository extends JpaRepository<CustomerInfo,Integ
     CustomerInfo findByFirstName(@Param("firstName") String firstName);
 
 
-    CustomerInfo findByAadharCardNo(String aadharCardNo);
+    CustomerInfo findById(String id);
 
 }
