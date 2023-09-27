@@ -1,15 +1,16 @@
 package com.banking.teamone.controller.auth;
 
+import com.banking.teamone.model.Account;
 import com.banking.teamone.model.CRole;
 import com.banking.teamone.model.CustomerIb;
+import com.banking.teamone.model.EmailDetails;
 import com.banking.teamone.payload.request.LoginRequestIb;
 import com.banking.teamone.payload.request.SignUpRequestIb;
 import com.banking.teamone.payload.response.JwtResponse;
+import com.banking.teamone.repository.CustomerIbRepository;
 import com.banking.teamone.security.JwtUtils;
-import com.banking.teamone.service.AccountService;
-import com.banking.teamone.service.CustomerIbService;
-import com.banking.teamone.service.CustomerIbDetailsImpl;
-import com.banking.teamone.service.SavingsAccountService;
+import com.banking.teamone.service.*;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,14 @@ public class InternetBanking {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    CustomerInfoService customerInfoService;
+
+
+    @Autowired
+    EmailService emailService;
+
 
     @PostMapping("/signinIb")
     @CrossOrigin
@@ -132,7 +141,18 @@ public class InternetBanking {
 
     @GetMapping("/forgotpassword")
     @CrossOrigin
-    public void forgotPassword(@RequestParam String username){
+    public ResponseEntity<?> forgotPassword(@RequestParam String username){
+        CustomerIb customer=customerIbService.getCustomerByUsername(username);
+        if(customer==null){
+            return new ResponseEntity<>("Username does not exist",HttpStatus.OK);
+        }
+        Account account=accountService.getAccountById(customer.getAccountNo());
+        if(account==null){
+            return new ResponseEntity<>("Account not exist for this username",HttpStatus.OK);
+        }
+        String email= customerInfoService.getEmail(account.getOwnerId());
+        String status=emailService.sendEmail(new EmailDetails(email,"hit testing forgot password","message from team1"));
+        return new ResponseEntity<>(status,HttpStatus.OK);
 
     }
 
