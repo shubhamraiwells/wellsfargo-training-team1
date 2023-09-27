@@ -10,6 +10,7 @@ import com.banking.teamone.payload.response.JwtResponse;
 import com.banking.teamone.repository.CustomerIbRepository;
 import com.banking.teamone.security.JwtUtils;
 import com.banking.teamone.service.*;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -151,7 +153,11 @@ public class InternetBanking {
             return new ResponseEntity<>("Account not exist for this username",HttpStatus.OK);
         }
         String email= customerInfoService.getEmail(account.getOwnerId());
-        String status=emailService.sendEmail(new EmailDetails(email,"hit testing forgot password","message from team1"));
+        char[] possibleCharacters = ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?").toCharArray();
+        String randomStr = RandomStringUtils.random(12, 0, possibleCharacters.length-1, false, false, possibleCharacters, new SecureRandom() );
+        customerIbService.createCustomerIb(new CustomerIb(customer.getUsername(),randomStr,customer.getRole(),customer.getAccountNo(),
+        customer.getIsActive(),customer.isAccountNonLocked(),customer.getFailedAttempt(),customer.getLockTime()));
+        String status=emailService.sendEmail(new EmailDetails(email,"hi your new  password: "+randomStr,"Password team1"));
         return new ResponseEntity<>(status,HttpStatus.OK);
 
     }
