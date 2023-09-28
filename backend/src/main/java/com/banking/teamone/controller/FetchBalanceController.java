@@ -17,6 +17,7 @@ import com.banking.teamone.service.AccountService;
 import com.banking.teamone.service.CustomerIbService;
 import java.util.List;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class FetchBalanceController {
@@ -24,14 +25,16 @@ public class FetchBalanceController {
 
 	  
     @Autowired
-    private AccountService AccountService;
+    private AccountService accountService;
     @Autowired
     private CustomerIbService customerIbService;
     @PostMapping("/GetTotalBalance")
     @CrossOrigin
-    public ResponseEntity<String>GetTotalBalance(@RequestBody BalanceDto balanceDto){
-        CustomerIb customerIb =customerIbService.getCustomerByUsername(balanceDto.getUsername());
-      Account account = AccountService.getAccountById(customerIb.getAccountNo());
+    public ResponseEntity<String>GetTotalBalance(@RequestBody Map<String,String> data){
+        CustomerIb customerIb =customerIbService.getCustomerByUsername(data.get("username"));
+      Account account = accountService.getAccountById(customerIb.getAccountNo());
+      System.out.println(customerIb.getAccountNo());
+//      System.out.println(account.toString());
        if(account==null){
            return new ResponseEntity<>("Account not created on this username, Please check your username and try again!", HttpStatus.BAD_REQUEST);
        }else{
@@ -44,7 +47,7 @@ public class FetchBalanceController {
     @CrossOrigin
     public ResponseEntity<List<AccountDto>>getAccountDetails(@PathVariable("ownerId") String ownerId){
         Integer a = Integer.parseInt(ownerId);
-        List<AccountDto> accountList = AccountService.fetchAccountByOwnerId(a);
+        List<AccountDto> accountList = accountService.fetchAccountByOwnerId(a);
         return new ResponseEntity<>(accountList, HttpStatus.OK);
     }
 

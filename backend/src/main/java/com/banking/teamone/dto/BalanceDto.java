@@ -12,9 +12,9 @@ import lombok.Setter;
 public class BalanceDto {
 
 	private String username;
-	    private String  acc_no;
-	   
-	    private String accountType;
+//	    private String  acc_no;
+//
+//	    private String accountType;
 
 }
 

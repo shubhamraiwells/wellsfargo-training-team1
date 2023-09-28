@@ -63,6 +63,11 @@ const UserRequestsTable = (props) =>{
         performOperation(requests[index].accountNo, false);
         modifyTable(index);
       }
+      const handleRequestApprove = (index) =>{
+        console.log("Index:"+index);
+        performOperation(requests[index].accountNo, true);
+        modifyTable(index);
+      }
       const closeRequest = () =>{
         setOpenView(false);
       }
@@ -99,7 +104,7 @@ const UserRequestsTable = (props) =>{
               <StyledTableCell  style={{textAlign:"center"}}>{request.accountType}</StyledTableCell>
               <StyledTableCell  style={{textAlign:"center"}}>{request.customerId}</StyledTableCell>
               <StyledTableCell  style={{textAlign:"center"}} onClick={()=>{setModalProp(request); viewRequest();}} ><Button size="small" variant="contained" style={{backgroundColor:"blue"}}>View</Button></StyledTableCell>
-              <StyledTableCell  style={{textAlign:"center"}} onClick={()=>{handleRequest(index)}} ><Button size="small" variant="contained" style={{backgroundColor:"green"}}>Approve</Button></StyledTableCell>
+              <StyledTableCell  style={{textAlign:"center"}} onClick={()=>{handleRequestApprove(index)}} ><Button size="small" variant="contained" style={{backgroundColor:"green"}}>Approve</Button></StyledTableCell>
               <StyledTableCell  style={{textAlign:"center"}}onClick={()=>{handleRequest(index)}} ><Button size="small" variant="contained" style={{backgroundColor:"red"}}>Reject</Button></StyledTableCell>
               
             </StyledTableRow>

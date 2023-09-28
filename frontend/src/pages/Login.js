@@ -14,7 +14,7 @@ import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 import { Context } from "../context/AuthContext";
 import NavBar from "./NavBar";
-import { useNavigate,Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useToken } from "../context/TokenContext";
 //const userNameRegex=/^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 //const passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
@@ -26,26 +26,39 @@ const Login = () => {
   const [password, passwordUpdate] = useState("");
   const [isusernameEmpty, isusernameEmptyUpdate] = useState(false);
   const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
+  const [error, setError] = useState('');
+  const [isError, isErrorUpdate] = useState(false);
   // console.log(jwtDecode('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaHViaGFtcmFpIiwiaWF0IjoxNjk0NjE4OTgxLCJleHAiOjE2OTQ2MjM5ODF9.9vQkEkTPfGsK72afYPIpQm59ar3L9Ah2Kuq4kRJAeVo'));
   let navigate = useNavigate();
-  const [redirect,setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState(false);
   const handleSubmit = async (e) => {
     const obj = { username, password };
     const url = "http://localhost:8080/api/auth/signinIb";
     e.preventDefault();
     if (validate()) {
-      const response = await signIn(obj, url);
-       console.log(response);
-      if (response && response.data) {
-        const { token, role, username } = response.data;
-        console.log(token, role, username)
-        setTokenWithExpiry(token, role, username);
-        setRedirect(true);
-      } else {
-        console.log("unauthorized");
+      
+      try {
+        var response= await apiCall(url,"POST",obj,null);
+        if (response.status === 200) {
+
+          if (response && response.data) {
+            const { token, role, username } = response.data;
+            console.log(token, role, username)
+            setTokenWithExpiry(token, role, username);
+            isErrorUpdate(false);
+            setRedirect(true);
+          }
+        }
+      } catch (error) {
+        // console.log(error.response.data)
+        isErrorUpdate(true);
+      setError(error.response.data)
+    
       }
     } else {
-      alert("Not logged in, some fields are empty");
+      isErrorUpdate(true);
+      setError("Not logged in, some fields are empty");
+
     }
   };
   const validate = () => {
@@ -66,7 +79,7 @@ const Login = () => {
   };
   return (
     <div className="container">
-        {redirect && <Navigate to='/Services'/>}
+      {redirect && <Navigate to='/Services' />}
       <NavBar />
       <Container maxWidth="sm" className="container" style={{ marginTop: "10%" }} >
         <Box
@@ -114,7 +127,7 @@ const Login = () => {
               error={isusernameEmpty}
             />
             <p
-              style={{ color: "red", textAlign: "left", marginTop: 2 }}
+              style={{ color: "red", textAlign: "left", marginTop: 2, fontStyle: "italic", fontSize: 12 }}
               hidden={isusernameEmpty ? false : true}
             >
               username cannot be empty!
@@ -143,7 +156,7 @@ const Login = () => {
               error={ispasswordEmpty}
             />
             <p
-              style={{ color: "red", textAlign: "left", marginTop: 2 }}
+              style={{ color: "red", textAlign: "left", marginTop: 2, fontStyle: "italic", fontSize: 12 }}
               hidden={ispasswordEmpty ? false : true}
             >
               Password cannot be empty!
@@ -180,8 +193,12 @@ const Login = () => {
                 >
                   {"Don't have an account? Sign Up"}
                 </Link>
+
               </Grid>
+
             </Grid>
+            <Typography style={{ color: "red", marginTop: 2, fontStyle: "italic", fontSize: 12, textAlign: 'center' }} hidden={isError ? false : true} id="modal-modal-description" sx={{ mt: 2 }} dangerouslySetInnerHTML={{ __html: error }} />
+
           </Box>
         </Box>
       </Container>

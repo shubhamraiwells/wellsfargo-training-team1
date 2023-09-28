@@ -33,8 +33,10 @@ import {
     useState, 
     }  from 'react';
 import { Switch } from "@mui/material/";
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useToken } from '../context/TokenContext';
+// import {useNavigate} from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -67,6 +69,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
+
+
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -105,9 +109,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Navbar() {
+  const navigate=useNavigate();
   // const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+const {clearToken}=useToken();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -139,7 +144,7 @@ export default function Navbar() {
   });
   // const selectedTheme = mode === "dark" ? darkTheme : lightTheme;
   const selectedtheme = mode === "dark" ? darkTheme : lightTheme;
- 
+  const {token,role,username,isTokenValid}=useToken();
    return (
     <ThemeProvider theme={selectedtheme}>
     <Box sx={{ display: 'flex' }}>
@@ -167,7 +172,14 @@ export default function Navbar() {
                 </Typography>
             
             </Box>
-           
+            {/* <Box display='flex' flexGrow={1} style={{textAlign:"right"}}> */}
+                
+                {/* <Assessment className={classes.icon} /> */}
+                {isTokenValid() ?<Typography variant ="h6" noWrap component="div" style={{textAlign:"right"}}>
+                   Welcome {username}
+                </Typography>:<div/>}
+            
+            {/* </Box> */}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -315,12 +327,17 @@ Services
                             justifyContent: 'center',
                         }}
                         >
-        <NavLink to=""><Button onClick={handleLogout}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
-                    
+        <NavLink to=""><Button onClick={()=>{
+          clearToken()
+          navigate("/");
+          window.location.reload();
+          
+         
+        }}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
+                  
         </ListItemIcon>
         <ListItemText>Logout</ListItemText>
-        
-        </ListItemButton>
+        </ListItemButton >
               </ListItem>
         </List>
        

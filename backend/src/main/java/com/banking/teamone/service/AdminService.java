@@ -50,11 +50,13 @@ public class AdminService {
         try {
             String accountNo = approveBankAccountModel.getAccountNo();
             Boolean approvalRequest = approveBankAccountModel.getApproveAccount();
+//            System.out.println(approvalRequest);
             AccountRequest accountRequest = accountRequestRepository.findById(accountNo).orElse(null);
             assert accountRequest != null;
             CustomerInfo customer = customerInfoRepository.findById(accountRequest.getOwnerId()).orElse(null);
+//           System.
             assert customer != null;
-
+//System.out.println(customer.getId());
             if (approvalRequest) {
                 Account account = Account.builder()
                         .id(accountNo)

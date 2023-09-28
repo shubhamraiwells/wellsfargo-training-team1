@@ -18,14 +18,32 @@ import {useNavigate} from "react-router-dom"
 const AdminSignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');  
+  const [isusernameEmpty, isusernameEmptyUpdate] = useState(false);
+  const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
+  const [error,setError] = useState('');
+  const [isError, isErrorUpdate] = useState(false);
+
   const { setTokenWithExpiry } = useToken();  
   const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
+    if (e.target.value == "" || e.target.value === null) {
+      isusernameEmptyUpdate(true);
+    } else {
+      isusernameEmptyUpdate(false);
+    }
+    console.log(isusernameEmpty);
     setUsername(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
+    
+    if (e.target.value == "" || e.target.value === null) {
+      ispasswordEmptyUpdate(true);
+    } else {
+      ispasswordEmptyUpdate(false);
+    }
+    console.log(ispasswordEmpty);
     setPassword(e.target.value);
   };
 
@@ -54,14 +72,17 @@ const AdminSignIn = () => {
     console.log(response)
     if(response.data.token!=null){
         const { token, role, username } = response.data;
+        
         setTokenWithExpiry(token, username, role);
         console.log(role);
         showNotification('Admin signin success', 'success')
+        isErrorUpdate(false);
         // alert("Admin signin success");
         navigate("/Admin/Home");
    }else{
       showNotification('Do not have admin access', 'error')
-        // alert("do not have admin access")
+      isErrorUpdate(true);
+      setError("Admin access denied");
     }
 
   };
@@ -92,7 +113,14 @@ const AdminSignIn = () => {
                 value={username}
                 onChange={handleUsernameChange}
                 required
+                error={isusernameEmpty}
               />
+              <p
+              style={{ color: "red", textAlign: "left", marginTop: 2,fontStyle:"italic",fontSize:12}}
+              hidden={isusernameEmpty ? false : true}
+            >
+              username cannot be empty!
+            </p>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -103,7 +131,14 @@ const AdminSignIn = () => {
                 value={password}
                 onChange={handlePasswordChange}
                 required
+                error={ispasswordEmpty}
               />
+              <p
+              style={{ color: "red", textAlign: "left", marginTop: 2,fontStyle:"italic",fontSize:12}}
+              hidden={ispasswordEmpty ? false : true}
+            >
+              Password cannot be empty!
+            </p>
             </Grid>
           </Grid>
           <Button
@@ -117,6 +152,8 @@ const AdminSignIn = () => {
           >
             Sign In
           </Button>
+          <Typography style={{ color: "red", textAlign: "left", marginTop: 2,fontStyle:"italic",fontSize:12,textAlign:'center' }} hidden={isError ? false : true} id="modal-modal-description" sx={{ mt: 2 }} dangerouslySetInnerHTML={{ __html: error }}/>
+            
         </form>
       </Paper>
     </Container>

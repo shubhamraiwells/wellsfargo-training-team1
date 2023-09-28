@@ -9,8 +9,7 @@ import com.banking.teamone.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,10 +40,22 @@ public class TransactionService {
 
 
    public List<TransactionDto> getAllTransactionByAccountNo(String accountNo){
+       HashMap<Integer,TransactionDto>storage=new HashMap<>();
         List<TransactionDto>transactionFrom= transactionRepository.findAllByFromAccountNo(accountNo).stream().map(el->new TransactionDto(el.getId(),el.getFromAccountNo(),el.getToAccountNo(),el.getTransactionAmount(),el.getTransactionDate())).collect(Collectors.toList());
         List<TransactionDto>transactionTo= transactionRepository.findAllByToAccountNo(accountNo).stream().map(el->new TransactionDto(el.getId(),el.getFromAccountNo(),el.getToAccountNo(),el.getTransactionAmount(),el.getTransactionDate())).collect(Collectors.toList());
-      transactionFrom.addAll(transactionTo);
-      return transactionFrom;
+//      transactionFrom.addAll(transactionTo);
+       List<TransactionDto>finalres=new ArrayList<>();
+       for(TransactionDto tdto:transactionFrom){
+           storage.putIfAbsent(tdto.getId(), tdto);
+       }
+       for(TransactionDto tdto:transactionTo){
+           storage.putIfAbsent(tdto.getId(), tdto);
+       }
+       for(Map.Entry<Integer,TransactionDto>el:storage.entrySet()){
+//           System.out.println(el.getKey().getFromAccountNo());
+           finalres.add(el.getValue());
+       }
+      return finalres;
    }
 
 
@@ -59,14 +70,14 @@ public class TransactionService {
            if(!accFrom.getIsActive() || !toAccount.getIsActive()){
                return "Some of the accounts are not active";
            }
-           if(accFrom.getTotalBalance().compareTo(transactionRequest.getTransactionAmount())>0){
+//           if(accFrom.getTotalBalance().compareTo(transactionRequest.getTransactionAmount())>0){
                accFrom.setTotalBalance(accFrom.getTotalBalance().subtract(transactionRequest.getTransactionAmount()));
                toAccount.setTotalBalance(toAccount.getTotalBalance().add(transactionRequest.getTransactionAmount()));
                accountService.createAccount(accFrom);
                accountService.createAccount(toAccount);
                transactionRepository.save(converter.transactionRequestToTransaction(transactionRequest));
            return "Transactions performed successfully";
-           }
+//           }
 
        }
       return "Transaction failed unsufficient balance";

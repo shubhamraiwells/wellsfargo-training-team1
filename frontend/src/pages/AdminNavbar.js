@@ -29,15 +29,15 @@ import ApprovalIcon from '@mui/icons-material/Approval';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonIcon from '@mui/icons-material/Person';
 import HailIcon from '@mui/icons-material/Hail';
-import { 
-    useState, 
-    }  from 'react';
+import {
+  useState,
+} from 'react';
 import { Switch } from "@mui/material/";
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useToken } from "../context/TokenContext";
 
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useEffect } from 'react';
 const drawerWidth = 240;
 
@@ -109,8 +109,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function AdminNavbar() {
   // const theme = useTheme();
-  const [open, setOpen] = React.useState(false);   
-  const {token,role,username,isTokenValid}=useToken();
+  const [open, setOpen] = React.useState(false);
+  const { token, role, username, isTokenValid, clearToken } = useToken();
   const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -120,7 +120,7 @@ export default function AdminNavbar() {
     setOpen(false);
   };
 
-  const handleLogout = () =>{
+  const handleLogout = () => {
     alert("Logged out");
   }
   const [mode, setMode] = useState("light");
@@ -130,10 +130,10 @@ export default function AdminNavbar() {
       background: {
         default: "hsl(230, 8%, 71%)"
       },
-      color:"#FFFFFF"
+      color: "#FFFFFF"
     }
   });
-  
+
   const lightTheme = createTheme({
     palette: {
       type: "light",
@@ -142,22 +142,11 @@ export default function AdminNavbar() {
       }
     }
   });
-  const selectedtheme = mode === "dark" ? darkTheme : lightTheme; 
-  useEffect(()=>{
-    if(username!=null){
-      const authorizedFlag = username.trim()=="ROLE_ADMIN";    
-    console.log("Role:"+role);
-    console.log("Username:"+username)
-    console.log(username.trim()=="ROLE_ADMIN")
-    }
-    else{
-      alert("Kindly log in to view this page");
-      console.log("Navigating...")
-      navigate('/Admin');
-  }
-  },[])  
-    return (   
-      <ThemeProvider theme={selectedtheme}>
+  const selectedtheme = mode === "dark" ? darkTheme : lightTheme;
+
+
+  return (
+    username != null ? <ThemeProvider theme={selectedtheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="fixed" open={open} style={{ background: "#101073" }}>
@@ -175,15 +164,17 @@ export default function AdminNavbar() {
               <MenuIcon />
             </IconButton>
             {/* Box helps to only right-flush Dark/Bright Button */}
-              <Box display='flex' flexGrow={1}>
-                  
-                  {/* <Assessment className={classes.icon} /> */}
-                  <Typography variant ="h6" noWrap component="div" >
-                    Admin Dashboard WF
-                  </Typography>
-              
-              </Box>
-            
+            <Box display='flex' flexGrow={1}>
+
+              {/* <Assessment className={classes.icon} /> */}
+              <Typography variant="h6" noWrap component="div" >
+                Admin Dashboard WF
+              </Typography>
+
+            </Box>
+            {isTokenValid() ? <Typography variant="h6" noWrap component="div" style={{ textAlign: "right" }}>
+              Welcome {role}
+            </Typography> : <div />}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -193,83 +184,89 @@ export default function AdminNavbar() {
             </IconButton>
           </DrawerHeader>
           <Divider />
-              <List>
-                <ListItem disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
                   sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
                   }}
                 >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-  <NavLink to="/Admin/ApproveUsers"><Button><ApprovalIcon style={{color:"black"}}/></Button></NavLink> 
-                
-  </ListItemIcon>
-  <ListItemText><NavLink to="/" style={{textDecoration:'None',color:'black'}}>
-  Admin Approval
-        </NavLink></ListItemText>
-  
-  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'block' }}>
-                      <ListItemButton
-                          sx={{
-                          minHeight: 48,
-                          justifyContent: open ? 'initial' : 'center',
-                          px: 2.5,
-                          }}
-                      >
-                          <ListItemIcon
-                          sx={{
-                              minWidth: 0,
-                              mr: open ? 3 : 'auto',
-                              justifyContent: 'center',
-                          }}
-                          >
-          <NavLink to="/Admin/SearchUsers"><Button><ManageSearchIcon style={{color:"black"}}/></Button></NavLink> 
-                      
-          </ListItemIcon>
-          <ListItemText><NavLink to="/AdminSearchUsers" style={{textDecoration:'None',color:'black'}}>
-            Search Users
-              </NavLink></ListItemText>
-          
-          </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'block' }}>
-                      <ListItemButton
-                          sx={{
-                          minHeight: 48,
-                          justifyContent: open ? 'initial' : 'center',
-                          px: 2.5,
-                          }}
-                      >
-                          <ListItemIcon
-                          sx={{
-                              minWidth: 0,
-                              mr: open ? 3 : 'auto',
-                              justifyContent: 'center',
-                          }}
-                          >
-          <NavLink to=""><Button onClick={handleLogout}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
-                      
-          </ListItemIcon>
-          <ListItemText>Logout</ListItemText>
-          
-          </ListItemButton>
-                </ListItem>
-              </List>
-        
+                  <NavLink to="/Admin/ApproveUsers"><Button><ApprovalIcon style={{ color: "black" }} /></Button></NavLink>
+
+                </ListItemIcon>
+                <ListItemText><NavLink to="/" style={{ textDecoration: 'None', color: 'black' }}>
+                  Admin Approval
+                </NavLink></ListItemText>
+
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <NavLink to="/Admin/SearchUsers"><Button><ManageSearchIcon style={{ color: "black" }} /></Button></NavLink>
+
+                </ListItemIcon>
+                <ListItemText><NavLink to="/AdminSearchUsers" style={{ textDecoration: 'None', color: 'black' }}>
+                  Search Users
+                </NavLink></ListItemText>
+
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <NavLink to=""><Button onClick={() => {
+                    clearToken()
+                    navigate("/Admin");
+                    window.location.reload();
+
+
+                  }}><LogoutIcon style={{ color: "black" }} /></Button></NavLink>
+
+                </ListItemIcon>
+                <ListItemText>Logout</ListItemText>
+
+              </ListItemButton>
+            </ListItem>
+          </List>
+
           <Divider />
         </Drawer>
       </Box>
-      </ThemeProvider>
-    ); 
- 
+    </ThemeProvider> : <div><h1>Unauthorized</h1></div>
+  );
+
 }
