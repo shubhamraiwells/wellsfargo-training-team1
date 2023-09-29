@@ -45,7 +45,7 @@ export default function Features(props) {
 const [balAmt, setBalAmt] = useState(0);
 const checkBal = async() =>{
 
-  const url = "http://localhost:8080/GetTotalBalance";
+  const url = `${process.env.REACT_APP_DEVELOPMENT_URL}/GetTotalBalance`;
   const obj = {"username":props.username};
   //const temp_token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTYXR5YVNyZWVOYXJheWFuYW4yIiwiaWF0IjoxNjk1MDQ4NjA1LCJleHAiOjE2OTUwNTM2MDV9.2W_Neg49PEphekn-zjDjwMpBc8x9LXAQweSZYnr1fj0";
   console.log("Token:"+props.token);

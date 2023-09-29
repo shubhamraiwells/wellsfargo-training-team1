@@ -85,7 +85,7 @@ public class AdminFunctionality {
     public ResponseEntity<?> getAllCustomers(Integer ownerId){
         try{
             CustomerInfo cus =savingsAccountService.getAllCustomers(ownerId);
-            System.out.println(cus);
+//            System.out.println(cus);
             return new ResponseEntity<>(savingsAccountService.getAllCustomers(ownerId),HttpStatus.OK);
 
         }catch (Exception e){

@@ -38,7 +38,7 @@ public class EmailService  {
             javaMailSender.send(mailMessage);
             return "Mail Sent successfully";
         }catch(Exception e){
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
             return "Error while sending Mail";
         }
     }

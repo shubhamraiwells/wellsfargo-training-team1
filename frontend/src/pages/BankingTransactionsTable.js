@@ -72,7 +72,7 @@ const BankingTransactionsTable = (props) => {
     }
     (async () => {
       if(username!=null){
-      const res = await apiCall('http://localhost:8080/api/transactions/getTransactionsByUsername?username=' + username, "GET", {}, token);
+      const res = await apiCall(`${process.env.REACT_APP_DEVELOPMENT_URL}/api/transactions/getTransactionsByUsername?username=` + username, "GET", {}, token);
       console.log(res)
       setDummyData(res.data)
       }

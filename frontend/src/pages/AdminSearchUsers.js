@@ -84,13 +84,15 @@ export default function AdminSearchUsers() {
   }
   const handleSwitch = async (accountNo) => {
     handleToggle(userStates, accountNo);
-    const url = `http://localhost:8080/api/admin/deactivateUser?accountNo=${accountNo}`;
+    // const url = `http://localhost:8080/api/admin/deactivateUser?accountNo=${accountNo}`;
+    const url = `${process.env.REACT_APP_DEVELOPMENT_URL}/api/admin/deactivateUser?accountNo=${accountNo}`;
     const response = await apiCall(url, "GET", null, token)
     console.log(response)
   }
   const handleChange = async (accountNo) => {
     setOpen1(true);
-    const url = `http://localhost:8080/api/transactions/getTransactions?accountNo=${accountNo}`;
+    // const url = `http://localhost:8080/api/transactions/getTransactions?accountNo=${accountNo}`;
+    const url = `${process.env.REACT_APP_DEVELOPMENT_URL}/api/transactions/getTransactions?accountNo=${accountNo}`;
 
     try {
       console.log(accountNo);
@@ -117,7 +119,7 @@ export default function AdminSearchUsers() {
 
   const handleChangeCustomer = async (ownerId) => {
     setOpen2(true);
-    const url = `http://localhost:8080/api/admin/getAllCustomers?ownerId=${ownerId}`;
+    const url = `${process.env.REACT_APP_DEVELOPMENT_URL}/api/admin/getAllCustomers?ownerId=${ownerId}`;
 
     try {
       console.log(ownerId);

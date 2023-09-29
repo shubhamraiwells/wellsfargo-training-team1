@@ -14,6 +14,7 @@ import com.banking.teamone.service.SavingsAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,35 +52,35 @@ public class AdminController {
     @Autowired
     private AccountRequestService accountRequestService;
 
-    @PostMapping("/signUpAdmin")
+  @PostMapping("/signUpAdmin")
     ResponseEntity<String>createAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
-        try{
+       try{
 
             return new ResponseEntity<>(adminService.createAdmin(adminSignUpDto.getUsername(),passwordEncoder.encode(adminSignUpDto.getPassword())),HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>("Some exception occured", HttpStatus.OK);
-        }
-    }
+       }catch (Exception e){
+         return new ResponseEntity<>("Some exception occured", HttpStatus.OK);
+       }
+  }
 
-    @PostMapping("/signinAdmin")
-    ResponseEntity<?>getAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
-        try{
+  @PostMapping("/signinAdmin")
+  ResponseEntity<?>getAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
+    try{
 
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    adminSignUpDto.getUsername(),adminSignUpDto.getPassword()
-            ));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtTokenAdmin(authentication);
+      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+              adminSignUpDto.getUsername(),adminSignUpDto.getPassword()
+      ));
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+      String jwt = jwtUtils.generateJwtTokenAdmin(authentication);
 //System.out.println(jwt);
-            AdminDetailImpl customerIbDetails= (AdminDetailImpl) authentication.getPrincipal();
-            List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-            return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
+      AdminDetailImpl customerIbDetails= (AdminDetailImpl) authentication.getPrincipal();
+      List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+      return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
 
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return new ResponseEntity<>("some exception occured",HttpStatus.OK);
-        }
+    }catch (Exception e){
+//      System.out.println(e.getMessage());
+      return new ResponseEntity<>("some exception occured",HttpStatus.OK);
     }
+  }
 
     @PostMapping("/fetchUsers")
     @CrossOrigin
@@ -89,6 +90,7 @@ public class AdminController {
     }
     @PostMapping("/search")
     @CrossOrigin
+
     public ResponseEntity<?>search(@RequestBody String firstName) {
         CustomerInfo customerInfo1 = savingsAccountService.getCustomerByFirstName(firstName);
         if (customerInfo1 == null) {
@@ -100,6 +102,7 @@ public class AdminController {
 
     @GetMapping("/getPendingRequests")
     @CrossOrigin
+
     ResponseEntity<List<PendingRequestModel>> getPendingRequests() {
         List<PendingRequestModel> pendingRequestList = accountRequestService.getAllPendingRequests();
         return new ResponseEntity<>(pendingRequestList, HttpStatus.OK);
@@ -107,8 +110,17 @@ public class AdminController {
 
     @PostMapping("/approveBankAccount")
     @CrossOrigin
+
     ResponseEntity<String> approveBankAccount(@RequestBody ApproveBankAccountModel approveBankAccountModel) {
 
         return new ResponseEntity<>(adminService.approveBankAccount(approveBankAccountModel), HttpStatus.OK);
     }
+
+
+
+
+
+
+
+
 }

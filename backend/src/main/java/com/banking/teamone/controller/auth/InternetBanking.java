@@ -85,6 +85,7 @@ public class InternetBanking {
             List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
             return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
         }catch (Exception e){
+//            System.out.println(e.getMessage());
                 CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
                 if (user != null) {
 //                   System.out.println(user.getIsActive()+" "+user.isAccountNonLocked());
@@ -94,8 +95,7 @@ public class InternetBanking {
                             customerIbService.increaseFailedAttempts(user);
                         } else {
                             customerIbService.lock(user);
-//                            System.out.println("Your account has been locked due to 3 failed attempts."
-//                                    + " It will be unlocked after 24 hours.");
+
                             return new ResponseEntity<>("Your Account has been locked due to 3 failed attempts it. it will be unlcoked after 24 hrs",HttpStatus.LOCKED);
                         }
                     }
@@ -153,9 +153,9 @@ public class InternetBanking {
             return new ResponseEntity<>("Account not exist for this username",HttpStatus.OK);
         }
         String email= customerInfoService.getEmail(account.getOwnerId());
-        char[] possibleCharacters = ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?").toCharArray();
+        char[] possibleCharacters = ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_").toCharArray();
         String randomStr = RandomStringUtils.random(12, 0, possibleCharacters.length-1, false, false, possibleCharacters, new SecureRandom() );
-        customerIbService.createCustomerIb(new CustomerIb(customer.getUsername(),randomStr,customer.getRole(),customer.getAccountNo(),
+        customerIbService.createCustomerIb(new CustomerIb(customer.getUsername(),passwordEncoder.encode(randomStr),customer.getRole(),customer.getAccountNo(),
         customer.getIsActive(),customer.isAccountNonLocked(),customer.getFailedAttempt(),customer.getLockTime()));
         String status=emailService.sendEmail(new EmailDetails(email,"hi your new  password: "+randomStr,"Password team1"));
         return new ResponseEntity<>(status,HttpStatus.OK);

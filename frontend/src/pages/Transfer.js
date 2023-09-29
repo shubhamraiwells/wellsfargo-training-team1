@@ -23,7 +23,7 @@ const Transfer = ({ onApiCall, isOpen, onClose, accountNumbers, onTransfer }) =>
  
     try {
    
-    const res=await apiCall("http://localhost:8080/api/transactions/createTransaction","POST",{
+    const res=await apiCall(`${process.env.REACT_APP_DEVELOPMENT_URL}/api/transactions/createTransaction`,"POST",{
       username,
       toAccountNo,
       amount

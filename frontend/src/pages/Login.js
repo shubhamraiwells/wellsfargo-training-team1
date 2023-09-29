@@ -178,7 +178,7 @@ const Login = () => {
             <Grid container>
               <Grid item>
                 <Link
-                  href="#"
+                  href="/forgotpassword"
                   variant="body2"
                   style={{ textDecoration: "none" }}
                 >

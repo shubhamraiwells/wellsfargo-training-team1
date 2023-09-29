@@ -53,7 +53,7 @@ const [redirectLogin,setRedirectLogin] = useState(false);
   const [error,setError] = useState('');
   const [isError, isErrorUpdate] = useState(false);
   const handleSubmit = async (e) => {
-    const url = "http://localhost:8080/api/auth/signup";
+    const url = `${process.env.REACT_APP_DEVELOPMENT_URL}/api/auth/signup`;
     e.preventDefault();
     const checkUsername = userNameRegex.test(formData.username);
     const checkPassword = passwordRegex.test(formData.password);

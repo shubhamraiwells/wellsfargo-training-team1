@@ -18,6 +18,7 @@ import Services from "./pages/Services";
 import Navbar from "./pages/NavBar";
 import AdminSignIn from "./pages/AdminSignUp";
 import AdminSearchUsers from "./pages/AdminSearchUsers";
+import ForgotPassword from "./pages/ForgotPassword";
 const App = () => {
   return (
     // <ProSidebarProvider>
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/User/Home" element={<Navbar/>}></Route>
           <Route path='/Admin/ApproveUsers' element={<ApproveUsers/>}></Route>
           <Route path="/Admin" element={<AdminSignIn/>}></Route>
+          <Route path="/forgotpassword" element={<ForgotPassword/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

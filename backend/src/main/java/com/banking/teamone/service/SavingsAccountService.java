@@ -55,9 +55,9 @@ public class SavingsAccountService {
 
         accountRequestService.createAccount(accountRequest);
         List<CustomerInfo> customerInfoList = new ArrayList<>();
-        System.out.println("Size of List:"+customerInfoList.size());
+//        System.out.println("Size of List:"+customerInfoList.size());
         customerInfoList = customerInfoRepository.findAll();
-        System.out.println("Size of List:"+customerInfoList.size());
+//        System.out.println("Size of List:"+customerInfoList.size());
         return "Account generated successfully";
     }
     public String generateUniqueNo(){

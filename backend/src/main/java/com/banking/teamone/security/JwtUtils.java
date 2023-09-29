@@ -52,7 +52,7 @@ public class JwtUtils {
     public boolean validateJwtToken(String authToken){
 
         try{
-            System.out.println("Printing token in "+authToken);
+//            System.out.println("Printing token in "+authToken);
            Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken);
            return true;
         }catch(MalformedJwtException e){

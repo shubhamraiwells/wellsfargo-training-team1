@@ -24,7 +24,7 @@ const Withdrawal = ({onApiCall, isOpen, onClose, accountNumbers, onWithdraw}) =>
     setIsLoading(true);
     try {
    
-    const res=await apiCall("http://localhost:8080/api/transactions/withdrawl","POST",{
+    const res=await apiCall(`${process.env.REACT_APP_DEVELOPMENT_URL}/api/transactions/withdrawl`,"POST",{
       username,
       amount
     },token)

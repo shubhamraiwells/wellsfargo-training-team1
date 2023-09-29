@@ -33,7 +33,7 @@ public class FetchBalanceController {
     public ResponseEntity<String>GetTotalBalance(@RequestBody Map<String,String> data){
         CustomerIb customerIb =customerIbService.getCustomerByUsername(data.get("username"));
       Account account = accountService.getAccountById(customerIb.getAccountNo());
-      System.out.println(customerIb.getAccountNo());
+//      System.out.println(customerIb.getAccountNo());
 //      System.out.println(account.toString());
        if(account==null){
            return new ResponseEntity<>("Account not created on this username, Please check your username and try again!", HttpStatus.BAD_REQUEST);
