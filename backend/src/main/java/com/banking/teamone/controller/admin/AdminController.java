@@ -51,35 +51,35 @@ public class AdminController {
     @Autowired
     private AccountRequestService accountRequestService;
 
-  @PostMapping("/signUpAdmin")
+    @PostMapping("/signUpAdmin")
     ResponseEntity<String>createAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
-       try{
+        try{
 
             return new ResponseEntity<>(adminService.createAdmin(adminSignUpDto.getUsername(),passwordEncoder.encode(adminSignUpDto.getPassword())),HttpStatus.OK);
-       }catch (Exception e){
-         return new ResponseEntity<>("Some exception occured", HttpStatus.OK);
-       }
-  }
-
-  @PostMapping("/signinAdmin")
-  ResponseEntity<?>getAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
-    try{
-
-      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-              adminSignUpDto.getUsername(),adminSignUpDto.getPassword()
-      ));
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-      String jwt = jwtUtils.generateJwtTokenAdmin(authentication);
-//System.out.println(jwt);
-      AdminDetailImpl customerIbDetails= (AdminDetailImpl) authentication.getPrincipal();
-      List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-      return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
-
-    }catch (Exception e){
-      System.out.println(e.getMessage());
-      return new ResponseEntity<>("some exception occured",HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Some exception occured", HttpStatus.OK);
+        }
     }
-  }
+
+    @PostMapping("/signinAdmin")
+    ResponseEntity<?>getAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
+        try{
+
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    adminSignUpDto.getUsername(),adminSignUpDto.getPassword()
+            ));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtTokenAdmin(authentication);
+//System.out.println(jwt);
+            AdminDetailImpl customerIbDetails= (AdminDetailImpl) authentication.getPrincipal();
+            List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+            return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("some exception occured",HttpStatus.OK);
+        }
+    }
 
     @PostMapping("/fetchUsers")
     @CrossOrigin
@@ -111,12 +111,4 @@ public class AdminController {
 
         return new ResponseEntity<>(adminService.approveBankAccount(approveBankAccountModel), HttpStatus.OK);
     }
-
-
-
-
-
-
-
-
 }

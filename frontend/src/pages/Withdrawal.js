@@ -10,16 +10,18 @@ import { useToken } from '../context/TokenContext';
 import './Withdrawal.css';
 import apiCall from '../apiCall/apiCall';
 
-const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
+const Withdrawal = ({onApiCall, isOpen, onClose, accountNumbers, onWithdraw}) => {
   const {token,role,username,isTokenValid}=useToken()
   const [selectedAccount, setSelectedAccount] = useState('');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationSeverity, setNotificatinSeverity] = useState('');
+  const delay = ms => new Promise(res => setTimeout(res, ms));
 
   const handleWithdraw = async () => {
     setIsLoading(true);
-
- 
     try {
    
     const res=await apiCall("http://localhost:8080/api/transactions/withdrawl","POST",{
@@ -27,10 +29,12 @@ const Withdrawal = ({ isOpen, onClose, accountNumbers, onWithdraw }) => {
       amount
     },token)
 
+    onApiCall(res.data, 'success')
   
-      alert(res.data)
       onWithdraw();
     } catch (error) {
+
+      onApiCall(error.response.data, 'error')
       console.error('Error:', error);
     }
 

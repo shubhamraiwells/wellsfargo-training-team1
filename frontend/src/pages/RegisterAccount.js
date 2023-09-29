@@ -30,6 +30,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Navigate } from "react-router-dom";
+import Notification from "./Notification";
 export default function RegisterAccount() {
 
   const [redirect,setRedirect] = useState(false);
@@ -101,6 +102,22 @@ export default function RegisterAccount() {
     p: 4,
   };
 
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationSeverity, setNotificationSeverity] = useState('success'); // Default severity
+
+  const handleNotificationClose = () => {
+    setNotificationOpen(false);
+  };
+
+  // Function to trigger the notification
+  const showNotification = (message, severity) => {
+    setNotificationMessage(message);
+    setNotificationSeverity(severity);
+    setNotificationOpen(true);
+  };
+
+
   const handleSubmit = async (event) => {
 
     event.preventDefault();
@@ -117,7 +134,8 @@ export default function RegisterAccount() {
       setTimeout(()=>setRedirect(true),5000)
     }
       else{
-        alert("Some issue with registration, please try again");
+        showNotification('Some issue with registration, please try again', 'error');
+        // alert("Some issue with registration, please try again");
       }
     }
     else {
@@ -192,10 +210,13 @@ export default function RegisterAccount() {
       <Container component="main" maxWidth="md" className="container" style={{ marginTop: "10%" }}>
 
         <div className="App-header">
-
-
-
         </div>
+        <Notification
+        open={notificationOpen}
+        message={notificationMessage}
+        severity={notificationSeverity}
+        onClose={handleNotificationClose}
+      />
 
         <Box
 
@@ -817,4 +838,3 @@ export default function RegisterAccount() {
   );
 
 }
-

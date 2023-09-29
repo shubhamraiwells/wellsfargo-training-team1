@@ -3,6 +3,7 @@ package com.banking.teamone.controller.transactions;
 
 import com.banking.teamone.dto.TransactionDto;
 import com.banking.teamone.dto.TransactionRequestDto;
+import com.banking.teamone.exception.BankAccountExceptions;
 import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.model.TransType;
 import com.banking.teamone.service.CustomerIbService;
@@ -32,12 +33,8 @@ public class TransactionsController {
     @Autowired
     private  TransactionService transactionService;
 
-
-
-
     @Autowired
     private CustomerIbService customerIbService;
-
 
     @Autowired
     private AccountService accountService;
@@ -53,6 +50,9 @@ public class TransactionsController {
     @Secured({"ROLE_USER","ROLE_ADMIN"})
     public ResponseEntity<List<TransactionDto>>getAllTransactionsByUsername(@RequestParam String username){
         CustomerIb customer=customerIbService.getCustomerByUsername(username);
+        if(customer == null) {
+            throw new BankAccountExceptions.BankAccountNotFoundException();
+        }
         List<TransactionDto> res=null;
         if(customer!=null) {
             res = transactionService.getAllTransactionByAccountNo(customer.getAccountNo());
@@ -71,102 +71,93 @@ public class TransactionsController {
 
     @PostMapping("/createTransaction")
     @Secured({"ROLE_USER","ROLE_ADMIN"})
-    public ResponseEntity<String>createTransaction(@RequestBody Map<String, String> transferBody){
-        try{
-
-            BigDecimal transactionAmount = new BigDecimal(transferBody.get("amount"));
-            if(transactionAmount.compareTo(new BigDecimal(0))<0){
-                return new ResponseEntity<>("Transaction amount can't be negative",HttpStatus.OK);
-            }
-            String username = transferBody.get("username");
-            CustomerIb customer=customerIbService.getCustomerByUsername(username);
-            String fromAccountNo=customer.getAccountNo();
-            String toAccountNumber = transferBody.get("toAccountNo");
-            Account fromAccount=accountService.getAccountById(fromAccountNo);
-            Account toAccount = accountService.getAccountById(toAccountNumber);
-            if(Objects.equals(fromAccountNo, toAccountNumber)){
-                return new ResponseEntity<>("both account can't be same",HttpStatus.OK);
-            }
-            if(toAccount.getIsActive() && fromAccount.getIsActive()) {
-                if(fromAccount.getTotalBalance().compareTo(transactionAmount) > 0) {
+    public ResponseEntity<String>createTransaction(@RequestBody Map<String, String> transferBody) {
+        BigDecimal transactionAmount = new BigDecimal(transferBody.get("amount"));
+        String username = transferBody.get("username");
+        if(transactionAmount.compareTo(new BigDecimal(0))<=0){
+            throw new BankAccountExceptions.InvalidAmountException();
+        }
+        CustomerIb customer = customerIbService.getCustomerByUsername(username);
+        String fromAccountNo = customer.getAccountNo();
+        String toAccountNumber = transferBody.get("toAccountNo");
+        Account fromAccount = accountService.getAccountById(fromAccountNo);
+        Account toAccount = accountService.getAccountById(toAccountNumber);
+        if(fromAccount == null || toAccount == null) {
+            throw new BankAccountExceptions.BankAccountNotFoundException();
+        }
+        if (toAccount.getIsActive() && fromAccount.getIsActive()) {
+            if (fromAccount.getTotalBalance().compareTo(transactionAmount) > 0) {
+                try {
                     TransactionRequestDto transaction = TransactionRequestDto.builder()
                             .fromAccountNo(fromAccountNo)
                             .toAccountNo(toAccountNumber)
                             .transactionAmount(transactionAmount).transType(TransType.TRANSFER)
                             .build();
                     transactionService.createTransaction(transaction);
-                    return new ResponseEntity<>("Transaction Registered",HttpStatus.OK);
+                } catch (Exception e) {
+                    return new ResponseEntity<>("Error performing transaction", HttpStatus.BAD_REQUEST);
                 }
-                return new ResponseEntity<>("Unsufficient funds to transfer", HttpStatus.BAD_REQUEST);
+            } else {
+                throw new BankAccountExceptions.InsufficientFundsException();
             }
-            return new ResponseEntity<>("One of the accounts is not active", HttpStatus.BAD_REQUEST);
-        }catch(Exception e){
-            return new ResponseEntity<>("Error performing transaction",HttpStatus.BAD_REQUEST);
+        } else {
+            throw new BankAccountExceptions.AccountBlockedOrInactiveException();
         }
+        return new ResponseEntity<>("Transaction Registered", HttpStatus.OK);
     }
 
     @PostMapping("/withdrawl")
     @Secured("ROLE_USER")
     public ResponseEntity<String>withdrawamount(@RequestBody Map<String,String> withDrawBody){
-        try{
-            String username=withDrawBody.get("username");
-            BigDecimal amount=new BigDecimal(withDrawBody.get("amount"));
-            if(amount.compareTo(new BigDecimal(0))<=0){
-                return new ResponseEntity<>("withdraw amount can't be negative or zero",HttpStatus.OK);
-            }
-            CustomerIb customer=customerIbService.getCustomerByUsername(username);
-            String accountNo=customer.getAccountNo();
-         Account account=accountService.getAccountById(accountNo);
-
-         if(account.getIsActive()) {
-             if (account.getTotalBalance().compareTo(amount) > 0  ) {
-                 transactionService.createTransaction(new TransactionRequestDto(accountNo,accountNo,amount.negate(),TransType.SELF_WITHDRAW));
-                 accountService.createAccount(new Account(accountNo, account.getAccountType(), account.getOwnerId(), account.getIsActive(), account.getAccountActivationDate(), account.getTotalBalance().subtract(amount)));
-                 return new ResponseEntity<>("Transaction Registered", HttpStatus.OK);
-             }
-             return new ResponseEntity<>("Unsufficient fund to withdraw", HttpStatus.OK);
-         }
-         return new ResponseEntity<>("Account is blocked or inactive",HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity<>("Error performing withdrawl",HttpStatus.BAD_REQUEST);
+        String username=withDrawBody.get("username");
+        BigDecimal amount=new BigDecimal(withDrawBody.get("amount"));
+        if(amount.compareTo(new BigDecimal(0))<=0){
+            throw new BankAccountExceptions.InvalidAmountException();
         }
+        CustomerIb customer=customerIbService.getCustomerByUsername(username);
+        String accountNo=customer.getAccountNo();
+        Account account=accountService.getAccountById(accountNo);
+        if(account.getIsActive()) {
+            if (account.getTotalBalance().compareTo(amount) > 0  ) {
+                try {
+                    transactionService.createTransaction(new TransactionRequestDto(accountNo,accountNo,amount.negate(),TransType.SELF_WITHDRAW));
+                    accountService.createAccount(new Account(accountNo, account.getAccountType(), account.getOwnerId(), account.getIsActive(), account.getAccountActivationDate(), account.getTotalBalance().subtract(amount)));
+                }catch(Exception e){
+                    return new ResponseEntity<>("Error performing withdrawl",HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                throw new BankAccountExceptions.InsufficientFundsException();
+            }
+        } else {
+            throw new BankAccountExceptions.AccountBlockedOrInactiveException();
+        }
+        return new ResponseEntity<>("Withdrawal successful", HttpStatus.OK);
     }
 
 
     @PostMapping("/deposit")
     @Secured("ROLE_USER")
     public ResponseEntity<String>depositAmount(@RequestBody Map<String,String> withDrawBody){
-        try{
-            String username=withDrawBody.get("username");
-            BigDecimal amount=new BigDecimal(withDrawBody.get("amount"));
-            CustomerIb customer=customerIbService.getCustomerByUsername(username);
-            if(amount.compareTo(new BigDecimal(0))<=0){
-                return new ResponseEntity<>("deposit amount can't be negative",HttpStatus.OK);
-            }
-            String accountNo=customer.getAccountNo();
-            Account account=accountService.getAccountById(accountNo);
-            if(account.getIsActive()) {
-//                if (account.getTotalBalance().compareTo(amount) > 0) {
-                transactionService.createTransaction(new TransactionRequestDto(accountNo,accountNo,amount, TransType.SELF_DEPOSIT));
-
-                accountService.createAccount(new Account(accountNo, account.getAccountType(), account.getOwnerId(), account.getIsActive(), account.getAccountActivationDate(), account.getTotalBalance().add(amount)));
-                    return new ResponseEntity<>("Amount deposited", HttpStatus.OK);
-//                }
-//                return new ResponseEntity<>("Unsufficient fund to withdraw", HttpStatus.OK);
-            }
-            return new ResponseEntity<>("Account is deactivated",HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity<>("Error performing deposit",HttpStatus.BAD_REQUEST);
+        String username=withDrawBody.get("username");
+        BigDecimal amount=new BigDecimal(withDrawBody.get("amount"));
+        CustomerIb customer=customerIbService.getCustomerByUsername(username);
+        if(amount.compareTo(new BigDecimal(0))<=0){
+            throw new BankAccountExceptions.InvalidAmountException();
         }
+        String accountNo=customer.getAccountNo();
+        Account account=accountService.getAccountById(accountNo);
+        if(account.getIsActive()) {
+            try {
+                transactionService.createTransaction(new TransactionRequestDto(accountNo, accountNo, amount, TransType.SELF_DEPOSIT));
+                accountService.createAccount(new Account(accountNo, account.getAccountType(), account.getOwnerId(), account.getIsActive(), account.getAccountActivationDate(), account.getTotalBalance().add(amount)));
+
+            } catch (Exception e) {
+                return new ResponseEntity<>("Error performing deposit",HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            throw new BankAccountExceptions.AccountBlockedOrInactiveException();
+        }
+        return new ResponseEntity<>("Deposit Successful", HttpStatus.OK);
     }
-
-
-
-
-
-
-
-
-
 
 }

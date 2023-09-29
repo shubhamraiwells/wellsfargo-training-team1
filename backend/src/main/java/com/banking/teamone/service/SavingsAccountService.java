@@ -2,6 +2,7 @@ package com.banking.teamone.service;
 
 import com.banking.teamone.converter.CustomerConverter;
 import com.banking.teamone.dto.CustomerInfoRequestModel;
+import com.banking.teamone.exception.DatabaseExceptions;
 import com.banking.teamone.model.*;
 import com.banking.teamone.model.Account;
 import com.banking.teamone.model.CustomerInfo;
@@ -41,11 +42,11 @@ public class SavingsAccountService {
         String accNo="aa";
         accNo = generateUniqueNo();
         CustomerInfo customerInfo = customerConverter.customerInfoRequestModelToCustomerInfo(customerInfoRequestModel);
-        if(!checkInfo(customerInfo))
-            return "An account with the given Aadhar Number already exists";
-        CustomerInfo createdCust= customerInfoRepository.save(customerInfo);
-
-        //CREATING ACCOUNT
+        if(!checkInfo(customerInfo)) {
+            throw new DatabaseExceptions.AadharCardRegisteredException();
+        }
+       CustomerInfo createdCust= customerInfoRepository.save(customerInfo);
+       //CREATING ACCOUNT
         AccountRequest accountRequest = AccountRequest.builder()
                 .id(accNo)
                 .accountType(createdCust.getAccountType())

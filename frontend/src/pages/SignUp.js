@@ -15,6 +15,7 @@ import apiCall from "../apiCall/apiCall";
 import { Context } from "../context/AuthContext";
 
 import NavBar from "./NavBar";
+import Notification from "./Notification";
 const userNameRegex = /^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
@@ -32,6 +33,23 @@ const [redirectLogin,setRedirectLogin] = useState(false);
   const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
   const [isTypingUsername, isTypingUsernameUpdate] = useState(false);
   const [isTypingPassword, isTypingPasswordUpdate] = useState(false);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationSeverity, setNotificationSeverity] = useState('success'); // Default severity
+
+  const handleNotificationClose = () => {
+    setNotificationOpen(false);
+  };
+
+  // Function to trigger the notification
+  const showNotification = (message, severity) => {
+    setNotificationMessage(message);
+    setNotificationSeverity(severity);
+    setNotificationOpen(true);
+  };
+
+
   const [error,setError] = useState('');
   const [isError, isErrorUpdate] = useState(false);
   const handleSubmit = async (e) => {
@@ -66,9 +84,9 @@ if(result.status === 200){
  
 }
 else{
+  showNotification("Some issue in signing up", 'error')
   isErrorUpdate(true);
-  setError("Some issue in signing up");
-     
+  setError("Some issue in signing up");     
 }
 
     } else {
@@ -84,6 +102,8 @@ else{
       if (checkAccountNo === false) {
         res = res.concat("invalid account number");
       }
+      showNotification(res, 'error')
+      // alert(res);
     isErrorUpdate(true);
     setError(res);
     }
@@ -94,6 +114,13 @@ else{
     <div className="container">
       {redirectLogin && <Navigate to='/Login'/>}
       <NavBar />
+      <Notification
+        open={notificationOpen}
+        message={notificationMessage}
+        severity={notificationSeverity}
+        onClose={handleNotificationClose}
+      />
+
       <Container maxWidth="sm" className="container" style={{ marginTop: "10%" }} >
         <Box
           sx={{
