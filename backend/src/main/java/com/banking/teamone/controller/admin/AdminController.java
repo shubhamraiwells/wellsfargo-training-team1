@@ -4,6 +4,7 @@ package com.banking.teamone.controller.admin;
 import com.banking.teamone.dto.*;
 import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.model.CustomerInfo;
+import com.banking.teamone.security.AuthTokenFilter;
 import com.banking.teamone.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,12 +53,16 @@ public class AdminController {
     @Autowired
     private AccountRequestService accountRequestService;
 
-  @PostMapping("/signUpAdmin")
+    private static final Logger logger= LoggerFactory.getLogger(AuthTokenFilter.class);
+
+
+    @PostMapping("/signUpAdmin")
     ResponseEntity<String>createAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
        try{
 
             return new ResponseEntity<>(adminService.createAdmin(adminSignUpDto.getUsername(),passwordEncoder.encode(adminSignUpDto.getPassword())),HttpStatus.OK);
        }catch (Exception e){
+           logger.info("Exception in sign up admin: "+e.getMessage());
          return new ResponseEntity<>("Some exception occured", HttpStatus.OK);
        }
   }
@@ -65,19 +70,17 @@ public class AdminController {
   @PostMapping("/signinAdmin")
   ResponseEntity<?>getAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
     try{
-
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
               adminSignUpDto.getUsername(),adminSignUpDto.getPassword()
       ));
       SecurityContextHolder.getContext().setAuthentication(authentication);
       String jwt = jwtUtils.generateJwtTokenAdmin(authentication);
-//System.out.println(jwt);
+
       AdminDetailImpl customerIbDetails= (AdminDetailImpl) authentication.getPrincipal();
       List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
       return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
-
     }catch (Exception e){
-//      System.out.println(e.getMessage());
+        logger.info("Exception in sign in admin: "+e.getMessage());
       return new ResponseEntity<>("some exception occured",HttpStatus.OK);
     }
   }
@@ -104,17 +107,26 @@ public class AdminController {
     @CrossOrigin
 
     ResponseEntity<List<PendingRequestModel>> getPendingRequests() {
-        List<PendingRequestModel> pendingRequestList = accountRequestService.getAllPendingRequests();
-        return new ResponseEntity<>(pendingRequestList, HttpStatus.OK);
+        try {
+            List<PendingRequestModel> pendingRequestList = accountRequestService.getAllPendingRequests();
+            return new ResponseEntity<>(pendingRequestList, HttpStatus.OK);
+        }catch (Exception e){
+            logger.info("Exception in getpendingrequest: "+e.getMessage());
+            return new ResponseEntity<>(null,HttpStatus.OK);
+        }
     }
 
     @PostMapping("/approveBankAccount")
     @CrossOrigin
 
     ResponseEntity<String> approveBankAccount(@RequestBody ApproveBankAccountModel approveBankAccountModel) {
-
-        return new ResponseEntity<>(adminService.approveBankAccount(approveBankAccountModel), HttpStatus.OK);
-    }
+        try {
+            return new ResponseEntity<>(adminService.approveBankAccount(approveBankAccountModel), HttpStatus.OK);
+        }catch(Exception e){
+            logger.info("Exception in approveBankAccount: "+e.getMessage());
+            return new ResponseEntity<>(null,HttpStatus.OK);
+        }
+        }
 
 
 

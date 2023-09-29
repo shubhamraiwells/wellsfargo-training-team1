@@ -8,10 +8,13 @@ import com.banking.teamone.payload.request.LoginRequestIb;
 import com.banking.teamone.payload.request.SignUpRequestIb;
 import com.banking.teamone.payload.response.JwtResponse;
 import com.banking.teamone.repository.CustomerIbRepository;
+import com.banking.teamone.security.AuthTokenFilter;
 import com.banking.teamone.security.JwtUtils;
 import com.banking.teamone.service.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.coyote.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +61,9 @@ public class InternetBanking {
     EmailService emailService;
 
 
+    private static final Logger logger= LoggerFactory.getLogger(AuthTokenFilter.class);
+
+
     @PostMapping("/signinIb")
     @CrossOrigin
     public ResponseEntity<?>authenicateUser(@RequestBody LoginRequestIb loginRequest){
@@ -85,8 +91,8 @@ public class InternetBanking {
             List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
             return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
         }catch (Exception e){
-//            System.out.println(e.getMessage());
-                CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
+
+            CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
                 if (user != null) {
 //                   System.out.println(user.getIsActive()+" "+user.isAccountNonLocked());
                     if (user.getIsActive() && user.isAccountNonLocked()) {

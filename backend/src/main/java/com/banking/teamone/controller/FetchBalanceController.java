@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import com.banking.teamone.dto.AccountDto;
 import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.dto.AccountDto;
+import com.banking.teamone.security.AuthTokenFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +24,8 @@ import java.util.Map;
 
 @RestController
 public class FetchBalanceController {
-	
+
+    private static final Logger logger= LoggerFactory.getLogger(AuthTokenFilter.class);
 
 	  
     @Autowired

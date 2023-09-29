@@ -6,12 +6,15 @@ import com.banking.teamone.dto.TransactionRequestDto;
 import com.banking.teamone.exception.BankAccountExceptions;
 import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.model.TransType;
+import com.banking.teamone.security.AuthTokenFilter;
 import com.banking.teamone.service.CustomerIbService;
 import com.banking.teamone.model.Account;
 import com.banking.teamone.model.CustomerIb;
 import com.banking.teamone.service.AccountService;
 import com.banking.teamone.service.CustomerIbService;
 import com.banking.teamone.service.TransactionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -38,6 +41,10 @@ public class TransactionsController {
 
     @Autowired
     private AccountService accountService;
+
+    private static final Logger logger= LoggerFactory.getLogger(AuthTokenFilter.class);
+
+
 
     @GetMapping("/getTransactions")
     @Secured({"ROLE_USER","ROLE_ADMIN"})
