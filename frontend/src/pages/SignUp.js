@@ -13,15 +13,16 @@ import Container from "@mui/material/Container";
 import Home from "./Home.js";
 import apiCall from "../apiCall/apiCall";
 import { Context } from "../context/AuthContext";
-
 import NavBar from "./NavBar";
 import Notification from "./Notification";
+import { useToken } from "../context/TokenContext";
 const userNameRegex = /^(?!.*\.\.)(?!.*\.$)[A-Za-z0-9_.]{8,20}$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
 
 export default function SignUp() {
 const [redirectLogin,setRedirectLogin] = useState(false);
+const { setTokenWithExpiry,token, role, isTokenValid } = useToken();
   const { signUp } = useContext(Context)
   const [formData, setFormData] = useState({
     username: "",
@@ -86,7 +87,7 @@ if(result.status === 200){
 else{
   showNotification("Some issue in signing up", 'error')
   isErrorUpdate(true);
-  setError("Some issue in signing up");     
+  setError("Some issue in signing up");
 }
 
     } else {
@@ -113,6 +114,7 @@ else{
 
     <div className="container">
       {redirectLogin && <Navigate to='/Login'/>}
+      {role==='ROLE_USER' && <Navigate to='/Services' />}
       <NavBar />
       <Notification
         open={notificationOpen}

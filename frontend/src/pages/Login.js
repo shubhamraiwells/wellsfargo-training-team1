@@ -21,7 +21,7 @@ import { useToken } from "../context/TokenContext";
 
 const Login = () => {
   const { signIn } = useContext(Context);
-  const { setTokenWithExpiry } = useToken();
+  const { setTokenWithExpiry,token, role, isTokenValid } = useToken();
   const [username, usernameUpdate] = useState("");
   const [password, passwordUpdate] = useState("");
   const [isusernameEmpty, isusernameEmptyUpdate] = useState(false);
@@ -33,7 +33,7 @@ const Login = () => {
   const [redirect, setRedirect] = useState(false);
   const handleSubmit = async (e) => {
     const obj = { username, password };
-    const url = "http://localhost:8080/api/auth/signinIb";
+    const url = `${process.env.REACT_APP_DEVELOPMENT_URL}/api/auth/signinIb`;
     e.preventDefault();
     if (validate()) {
       
@@ -50,7 +50,7 @@ const Login = () => {
           }
         }
       } catch (error) {
-        // console.log(error.response.data)
+        console.log(error)
         isErrorUpdate(true);
       setError(error.response.data)
     
@@ -80,6 +80,7 @@ const Login = () => {
   return (
     <div className="container">
       {redirect && <Navigate to='/Services' />}
+      {role==='ROLE_USER' && <Navigate to='/Services' />}
       <NavBar />
       <Container maxWidth="sm" className="container" style={{ marginTop: "10%" }} >
         <Box

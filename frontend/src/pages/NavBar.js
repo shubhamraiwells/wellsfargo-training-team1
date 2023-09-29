@@ -29,11 +29,11 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonIcon from '@mui/icons-material/Person';
 import HailIcon from '@mui/icons-material/Hail';
-import { 
-    useState, 
-    }  from 'react';
+import {
+  useState,
+} from 'react';
 import { Switch } from "@mui/material/";
-import {NavLink, useNavigate} from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useToken } from '../context/TokenContext';
 // import {useNavigate} from 'react-router-dom';
@@ -109,10 +109,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Navbar() {
-  const navigate=useNavigate();
+
+  const navigate = useNavigate();
   // const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-const {clearToken}=useToken();
+  const { clearToken } = useToken();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -120,7 +121,7 @@ const {clearToken}=useToken();
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const handleLogout = () =>{
+  const handleLogout = () => {
     alert("Logged out");
   }
   const [mode, setMode] = useState("light");
@@ -130,10 +131,10 @@ const {clearToken}=useToken();
       background: {
         default: "hsl(230, 8%, 71%)"
       },
-      color:"#FFFFFF"
+      color: "#FFFFFF"
     }
   });
-  
+
   const lightTheme = createTheme({
     palette: {
       type: "light",
@@ -144,53 +145,53 @@ const {clearToken}=useToken();
   });
   // const selectedTheme = mode === "dark" ? darkTheme : lightTheme;
   const selectedtheme = mode === "dark" ? darkTheme : lightTheme;
-  const {token,role,username,isTokenValid}=useToken();
-   return (
+  const { token, role, username, isTokenValid } = useToken();
+  return (
     <ThemeProvider theme={selectedtheme}>
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open} style={{ background: "#101073" }}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          {/* Box helps to only right-flush Dark/Bright Button */}
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open} style={{ background: "#101073" }}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: 'none' }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            {/* Box helps to only right-flush Dark/Bright Button */}
             <Box display='flex' flexGrow={1}>
-                
-                {/* <Assessment className={classes.icon} /> */}
-                <Typography variant ="h6" noWrap component="div" >
-                   WF Net Banking
-                </Typography>
-            
+
+              {/* <Assessment className={classes.icon} /> */}
+              <Typography variant="h6" noWrap component="div" >
+                WF Net Banking
+              </Typography>
+
             </Box>
             {/* <Box display='flex' flexGrow={1} style={{textAlign:"right"}}> */}
-                
-                {/* <Assessment className={classes.icon} /> */}
-                {isTokenValid() ?<Typography variant ="h6" noWrap component="div" style={{textAlign:"right"}}>
-                   Welcome {username}
-                </Typography>:<div/>}
-            
+
+            {/* <Assessment className={classes.icon} /> */}
+            {isTokenValid() ? <Typography variant="h6" noWrap component="div" style={{ textAlign: "right" }}>
+              Welcome {username}
+            </Typography> : <div />}
+
             {/* </Box> */}
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {selectedtheme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-                <List>
-        <ListItem disablePadding sx={{ display: 'block' }}>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {selectedtheme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -205,15 +206,92 @@ const {clearToken}=useToken();
                     justifyContent: 'center',
                   }}
                 >
- <NavLink to="/"><Button><HomeIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/" style={{textDecoration:'None',color:'black'}}>
-Home
-      </NavLink></ListItemText>
- 
- </ListItemButton>
+                  <NavLink to="/"><Button><HomeIcon style={{ color: "black" }} /></Button></NavLink>
+
+                </ListItemIcon>
+                <ListItemText><NavLink to="/" style={{ textDecoration: 'None', color: 'black' }}>
+                  Home
+                </NavLink></ListItemText>
+
+              </ListItemButton>
             </ListItem>
+
+            {token === null && <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <NavLink to="/RegisterAccount"><Button><AccountBalanceIcon style={{ color: "black" }} /></Button></NavLink>
+
+                </ListItemIcon>
+
+                <ListItemText><NavLink to="/RegisterAccount" style={{ textDecoration: 'None', color: 'black' }}>
+                  Open Account
+                </NavLink></ListItemText>
+
+              </ListItemButton>
+            </ListItem>
+            }
+            {token === null && <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <NavLink to="/SignUp"><Button><PersonAddIcon style={{ color: "black" }} /></Button></NavLink>
+
+                </ListItemIcon>
+
+                <ListItemText><NavLink to="/SignUp" style={{ textDecoration: 'None', color: 'black' }}>
+                  SignUp
+                </NavLink></ListItemText>
+
+              </ListItemButton>
+            </ListItem>
+            }
+
+            {token === null && <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+
+                  }}
+                >
+                  <NavLink to="/Login"><Button><PersonIcon style={{ color: "black" }} /></Button></NavLink>
+
+                </ListItemIcon>
+                <ListItemText><NavLink to="/Login" style={{ textDecoration: 'None', color: 'black' }}>
+                  Login
+                </NavLink></ListItemText>
+              </ListItemButton>
+            </ListItem>}
 
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
@@ -230,14 +308,14 @@ Home
                     justifyContent: 'center',
                   }}
                 >
- <NavLink to="/RegisterAccount"><Button><AccountBalanceIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/RegisterAccount" style={{textDecoration:'None',color:'black'}}>
- Open Account
-      </NavLink></ListItemText>
- 
- </ListItemButton>
+                  <NavLink to="/Services"><Button><HailIcon style={{ color: "black" }} /></Button></NavLink>
+
+                </ListItemIcon>
+                <ListItemText><NavLink to="/Services" style={{ textDecoration: 'None', color: 'black' }}>
+                  Services
+                </NavLink></ListItemText>
+
+              </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
@@ -254,96 +332,23 @@ Home
                     justifyContent: 'center',
                   }}
                 >
-      <NavLink to="/SignUp"><Button><PersonAddIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/SignUp" style={{textDecoration:'None',color:'black'}}>
- SignUp
-      </NavLink></ListItemText> 
-               
-              </ListItemButton>
+                  <NavLink to=""><Button onClick={() => {
+                    clearToken()
+                    navigate("/");
+                    window.location.reload();
+
+
+                  }}><LogoutIcon style={{ color: "black" }} /></Button></NavLink>
+
+                </ListItemIcon>
+                <ListItemText>Logout</ListItemText>
+              </ListItemButton >
             </ListItem>
-            
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                 
-                  }}
-                >
-             <NavLink to="/Login"><Button><PersonIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/Login" style={{textDecoration:'None',color:'black'}}>
- Login
-      </NavLink></ListItemText>
-              </ListItemButton>
-            </ListItem>
-             
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
- <NavLink to="/Services"><Button><HailIcon style={{color:"black"}}/></Button></NavLink> 
-               
- </ListItemIcon>
- <ListItemText><NavLink to="/Services" style={{textDecoration:'None',color:'black'}}>
-Services
-      </NavLink></ListItemText>
- 
- </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-                    <ListItemButton
-                        sx={{
-                        minHeight: 48,
-                        justifyContent: open ? 'initial' : 'center',
-                        px: 2.5,
-                        }}
-                    >
-                        <ListItemIcon
-                        sx={{
-                            minWidth: 0,
-                            mr: open ? 3 : 'auto',
-                            justifyContent: 'center',
-                        }}
-                        >
-        <NavLink to=""><Button onClick={()=>{
-          clearToken()
-          navigate("/");
-          window.location.reload();
-          
-         
-        }}><LogoutIcon style={{color:"black"}}/></Button></NavLink> 
-                  
-        </ListItemIcon>
-        <ListItemText>Logout</ListItemText>
-        </ListItemButton >
-              </ListItem>
-        </List>
-       
-         <Divider />
-      </Drawer>
-    </Box>
+          </List>
+
+          <Divider />
+        </Drawer>
+      </Box>
     </ThemeProvider>
   );
 }

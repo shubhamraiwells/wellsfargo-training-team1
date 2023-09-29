@@ -155,7 +155,7 @@ export default function AdminSearchUsers() {
 
     const fetchData = async () => {
       try {
-        const response = await apiCall("http://localhost:8080/api/admin/getAllAccounts", "GET", null, token);
+        const response = await apiCall(`${process.env.REACT_APP_DEVELOPMENT_URL}/api/admin/getAllAccounts`, "GET", null, token);
         const responseData = response.data;
         console.log(responseData);
 
