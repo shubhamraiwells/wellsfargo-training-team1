@@ -27,7 +27,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#101073",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -89,8 +89,8 @@ const UserRequestsTable = (props) =>{
             <StyledTableCell >Account Type</StyledTableCell>
             <StyledTableCell></StyledTableCell>
             <StyledTableCell ></StyledTableCell>
-            <StyledTableCell  style={{backgroundColor:"black"}}></StyledTableCell>
-            <StyledTableCell  style={{backgroundColor:"black"}}></StyledTableCell>
+            <StyledTableCell  style={{backgroundColor:"#101073"}}></StyledTableCell>
+            <StyledTableCell  style={{backgroundColor:"#101073"}}></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -118,7 +118,7 @@ const UserRequestsTable = (props) =>{
             <Box>
                 <div style={{display:"flex",flexDirection:"column", alignItems:"center"}}>
                 <RequestDetails customer={modalProp}/>
-                <Button size="large" variant='contained' onClick={closeRequest} style={{width:"5%", marginLeft:"12%", marginTop:"2%"}}><DangerousIcon/></Button>
+                <Button size="large" variant='contained' onClick={closeRequest} style={{width:"5%", marginLeft:"5%", marginTop:"2%"}}><DangerousIcon/></Button>
                 </div>
             </Box>
     </Modal>
