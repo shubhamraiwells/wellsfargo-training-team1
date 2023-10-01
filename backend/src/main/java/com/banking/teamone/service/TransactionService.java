@@ -23,14 +23,28 @@ public class TransactionService {
     @Autowired
     private AccountService accountService;
 
-   public TransactionDto getTransactionById(Integer Id){
+    /**
+     * Get a transaction by its unique identifier.
+     *
+     * @param Id The unique identifier of the transaction.
+     * @return A TransactionDto object representing the transaction if found, or null if not found.
+     */
+
+    public TransactionDto getTransactionById(Integer Id){
         Transaction transaction=transactionRepository.findById(Id).isPresent()?transactionRepository.findById(Id).get():null;
         assert transaction != null;
         return new TransactionDto(transaction.getId(),transaction.getFromAccountNo(),transaction.getToAccountNo(),transaction.getTransactionAmount(),transaction.getTransactionDate());
 
     }
 
-   public TransactionDto getTransactionByAccountNo(String accountNo){
+    /**
+     * Get a transaction by its associated account number.
+     *
+     * @param accountNo The account number associated with the transaction.
+     * @return A TransactionDto object representing the transaction if found, or null if not found.
+     */
+
+    public TransactionDto getTransactionByAccountNo(String accountNo){
         Transaction transaction=transactionRepository.findByFromAccountNo(accountNo)!=null?transactionRepository.findByFromAccountNo(accountNo):null;
         assert transaction != null;
         return new TransactionDto(transaction.getId(),transaction.getFromAccountNo(),transaction.getToAccountNo(),transaction.getTransactionAmount(),transaction.getTransactionDate());
@@ -38,6 +52,12 @@ public class TransactionService {
     }
 
 
+    /**
+     * Get all transactions associated with a specific account number.
+     *
+     * @param accountNo The account number to retrieve transactions for.
+     * @return A list of TransactionDto objects representing the transactions.
+     */
 
    public List<TransactionDto> getAllTransactionByAccountNo(String accountNo){
        HashMap<Integer,TransactionDto>storage=new HashMap<>();
@@ -61,6 +81,12 @@ public class TransactionService {
 
 
 
+    /**
+     * Create a new transaction between two accounts.
+     *
+     * @param transactionRequest The TransactionRequestDto containing the transaction details.
+     * @return A message indicating the result of the transaction creation.
+     */
 
   public String createTransaction(TransactionRequestDto transactionRequest){
       Account accFrom= accountService.getAccountById(transactionRequest.getFromAccountNo());
@@ -85,7 +111,14 @@ public class TransactionService {
 
 
   }
-  public List<Transaction>getAllTransactions(){
+
+    /**
+     * Get a list of all transactions.
+     *
+     * @return A list of Transaction objects representing all transactions.
+     */
+
+    public List<Transaction>getAllTransactions(){
        return transactionRepository.findAll();
   }
 }

@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class LoginController {
-Logger logger= LoggerFactory.getLogger(LoginController.class);
+private static final Logger logger= LoggerFactory.getLogger(LoginController.class);
 
-  
+
     @Autowired
     private CustomerIbService customerIbService;
 
     @PostMapping("/loginIbAccount")
     @CrossOrigin
     public ResponseEntity<String>loginIbAccount(@RequestBody LoginRequestModel loginRequestModel){
-    
+
     	CustomerIb customerIb =customerIbService.getCustomerByUsername(loginRequestModel.getUsername());
-     
+
        if(customerIb==null){
            return new ResponseEntity<>("username not registered", HttpStatus.BAD_REQUEST);
        }else{

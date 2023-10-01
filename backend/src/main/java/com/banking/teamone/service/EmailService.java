@@ -25,7 +25,12 @@ public class EmailService  {
     private String sender;
 
 
-
+    /**
+     * Sends an email using the provided EmailDetails object.
+     *
+     * @param details The EmailDetails object containing recipient, subject, and message body.
+     * @return A message indicating the result of the email sending operation.
+     */
 
     public String sendEmail(EmailDetails details) {
         try{
@@ -36,9 +41,12 @@ public class EmailService  {
             mailMessage.setSubject(details.getSubject());
 
             javaMailSender.send(mailMessage);
+            // Return success message if the email is sent successfully
+
             return "Mail Sent successfully";
         }catch(Exception e){
-//            System.out.println(e.getMessage());
+            // Return an error message if there's an exception while sending the email
+
             return "Error while sending Mail";
         }
     }

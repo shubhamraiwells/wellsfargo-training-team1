@@ -173,7 +173,7 @@ export default function AdminNavbar() {
 
             </Box>
             {isTokenValid() ? <Typography variant="h6" noWrap component="div" style={{ textAlign: "right" }}>
-              Welcome {role}
+              Welcome {username}
             </Typography> : <div />}
           </Toolbar>
         </AppBar>

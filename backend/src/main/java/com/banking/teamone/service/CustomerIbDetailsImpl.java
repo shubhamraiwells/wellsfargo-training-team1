@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
+//customer ib details class to provide custome ib details to spring security
 @Getter
 @Setter
 //@AllArgsConstructor
@@ -39,6 +41,8 @@ public class CustomerIbDetailsImpl implements UserDetails {
 
     private Collection<?extends GrantedAuthority> authorities;
 
+    // Static factory method to create a CustomerIbDetailsImpl object from a CustomerIb object
+
     public static CustomerIbDetailsImpl build(CustomerIb customerIb){
 
         List<GrantedAuthority>authorities= new ArrayList<>();
@@ -46,6 +50,7 @@ public class CustomerIbDetailsImpl implements UserDetails {
         return new CustomerIbDetailsImpl(customerIb,customerIb.getUsername(),customerIb.getPassword(),authorities);
     }
 
+    // Implementation of UserDetails interface methods
 
 
     @Override

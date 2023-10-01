@@ -11,10 +11,10 @@ import {
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import apiCall from '../apiCall/apiCall';
-import { useToken } from '../context/TokenContext';
 import AdminNavbar from "./AdminNavbar";
 import Notification from './Notification';
-import {useNavigate} from "react-router-dom"
+import { useNavigate, Navigate } from "react-router-dom";
+import { useToken } from "../context/TokenContext";
 const AdminSignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');  
@@ -22,11 +22,11 @@ const AdminSignIn = () => {
   const [ispasswordEmpty, ispasswordEmptyUpdate] = useState(false);
   const [error,setError] = useState('');
   const [isError, isErrorUpdate] = useState(false);
-
-  const { setTokenWithExpiry } = useToken();  
+  const { setTokenWithExpiry,token, role, isTokenValid}=useToken();
   const navigate = useNavigate();
-
+//  console.log(role)
   const handleUsernameChange = (e) => {
+    // console.log(username)
     if (e.target.value == "" || e.target.value === null) {
       isusernameEmptyUpdate(true);
     } else {
@@ -73,7 +73,7 @@ const AdminSignIn = () => {
     if(response.data.token!=null){
         const { token, role, username } = response.data;
         
-        setTokenWithExpiry(token, username, role);
+        setTokenWithExpiry(token, role, username);
         console.log(role);
         showNotification('Admin signin success', 'success')
         isErrorUpdate(false);
@@ -84,10 +84,12 @@ const AdminSignIn = () => {
       isErrorUpdate(true);
       setError("Admin access denied");
     }
-
+  
   };
 
   return (
+    <div className="container">
+    {role==='ROLE_ADMIN' && <Navigate to='/ADMIN/Home' />}
     <Container component="main" maxWidth="xs" style={{marginTop:"10%"}} spacing={3}>
       <CssBaseline />
       <Notification
@@ -157,6 +159,7 @@ const AdminSignIn = () => {
         </form>
       </Paper>
     </Container>
+    </div>
   );
 };
 

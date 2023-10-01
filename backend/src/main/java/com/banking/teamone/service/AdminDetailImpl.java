@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
+//this class implements spring security userdetails and provide admindetails for authentication
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,12 +31,15 @@ public class AdminDetailImpl implements UserDetails {
     private Collection<?extends GrantedAuthority> authorities;
 
 
+    //function to build admindetails object from admin data
     public static AdminDetailImpl build(Admin admin){
         List<GrantedAuthority> authorities= new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(admin.getRole().name()));
         return new AdminDetailImpl(admin.getUsername(),admin.getPassword(),authorities);
     }
 
+
+    //getting all granted authority of user
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

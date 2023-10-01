@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping("/api/savingAccount")
 public class SavingsAccountController {
 
-    private static final Logger logger= LoggerFactory.getLogger(AuthTokenFilter.class);
+    private static final Logger logger= LoggerFactory.getLogger(SavingsAccountController.class);
 
 
     @Autowired

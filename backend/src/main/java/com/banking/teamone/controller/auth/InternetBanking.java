@@ -61,7 +61,7 @@ public class InternetBanking {
     EmailService emailService;
 
 
-    private static final Logger logger= LoggerFactory.getLogger(AuthTokenFilter.class);
+    private static final Logger logger= LoggerFactory.getLogger(InternetBanking.class);
 
 
     @PostMapping("/signinIb")
@@ -72,12 +72,14 @@ public class InternetBanking {
              if (user != null) {
                   if((passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))&& (user.getLockTime()!=null)){
                         if (customerIbService.unlockWhenTimeExpired(user)) {
+                            logger.info("unlocking the user account");
 //                            System.out.println("Your account has been unlocked. Please try to login again.");
                             return new ResponseEntity<>("Your account has been unlocked. Please try to login again.",HttpStatus.UNAUTHORIZED);
                         }
 
                   }
             }else{
+                 logger.info("User not found in authenticate user");
                  return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
              }
 
@@ -91,15 +93,15 @@ public class InternetBanking {
             List<String> roles=customerIbDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
             return ResponseEntity.ok(new JwtResponse(jwt,customerIbDetails.getUsername(),roles.get(0)));
         }catch (Exception e){
-
+           logger.info("Exception occured in authenticating user: "+e.getMessage());
             CustomerIb user = customerIbService.getCustomerByUsername(loginRequest.getUsername());
                 if (user != null) {
-//                   System.out.println(user.getIsActive()+" "+user.isAccountNonLocked());
                     if (user.getIsActive() && user.isAccountNonLocked()) {
-//                        System.out.println(user.getFailedAttempt());
                         if (user.getFailedAttempt() < CustomerIbService.MAX_FAILED_ATTEMPTS - 1) {
+                             logger.info("Increasing the number of failed attempts "+e.getMessage());
                             customerIbService.increaseFailedAttempts(user);
                         } else {
+                            logger.info("locking the user account");
                             customerIbService.lock(user);
 
                             return new ResponseEntity<>("Your Account has been locked due to 3 failed attempts it. it will be unlcoked after 24 hrs",HttpStatus.LOCKED);
@@ -123,28 +125,32 @@ public class InternetBanking {
     @PostMapping("/signup")
     @CrossOrigin
     public ResponseEntity<String>registeredUser(@RequestBody SignUpRequestIb signUpRequestIb){
-       String username=signUpRequestIb.getUsername();
-       String password=signUpRequestIb.getPassword();
-       String accountNo=signUpRequestIb.getAccountNo();
-        if(customerIbService.getCustomerByUsername(username)!=null){
-            return new ResponseEntity<>("Username is already taken", HttpStatus.OK);
+        try {
+            String username = signUpRequestIb.getUsername();
+            String password = signUpRequestIb.getPassword();
+            String accountNo = signUpRequestIb.getAccountNo();
+            if (customerIbService.getCustomerByUsername(username) != null) {
+                return new ResponseEntity<>("Username is already taken", HttpStatus.OK);
+            }
+            if (customerIbService.getCustomerByAccountNo(accountNo) != null) {
+                return new ResponseEntity<>("Account already registered", HttpStatus.OK);
+            }
+            if (accountService.getAccountById(accountNo) == null) {
+                return new ResponseEntity<>("Account number does not exist", HttpStatus.OK);
+            }
+            CustomerIb customerIb = new CustomerIb();
+            customerIb.setUsername(username);
+            customerIb.setAccountNo(accountNo);
+            customerIb.setPassword(passwordEncoder.encode(password));
+            customerIb.setRole(CRole.ROLE_USER);
+            customerIb.setIsActive(true);
+            customerIb.setAccountNonLocked(true);
+            customerIbService.createCustomerIb(customerIb);
+            return new ResponseEntity<>("User Created successfully", HttpStatus.OK);
+        }catch (Exception e){
+            logger.info("Exception occured in registering user: "+e.getMessage());
+            return new ResponseEntity<>("Exception in registering internet banking user"+e.getMessage(),HttpStatus.OK);
         }
-        if(customerIbService.getCustomerByAccountNo(accountNo)!=null){
-            return new ResponseEntity<>("Account already registered",HttpStatus.OK);
-        }
-        if(accountService.getAccountById(accountNo)==null){
-            return new ResponseEntity<>("Account number does not exist",HttpStatus.OK);
-        }
-        CustomerIb customerIb= new CustomerIb();
-        customerIb.setUsername(username);
-        customerIb.setAccountNo(accountNo);
-        customerIb.setPassword(passwordEncoder.encode(password));
-        customerIb.setRole(CRole.ROLE_USER);
-        customerIb.setIsActive(true);
-        customerIb.setAccountNonLocked(true);
-        customerIbService.createCustomerIb(customerIb);
-        return new ResponseEntity<>("User Created successfully",HttpStatus.OK);
-
     }
 
     @GetMapping("/forgotpassword")

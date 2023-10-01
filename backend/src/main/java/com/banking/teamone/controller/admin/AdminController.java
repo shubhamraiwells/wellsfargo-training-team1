@@ -53,8 +53,14 @@ public class AdminController {
     @Autowired
     private AccountRequestService accountRequestService;
 
-    private static final Logger logger= LoggerFactory.getLogger(AuthTokenFilter.class);
+    private static final Logger logger= LoggerFactory.getLogger(AdminController.class);
 
+    /**
+     * Endpoint for creating a new admin user.
+     *
+     * @param adminSignUpDto The AdminSignUpDto containing admin user details.
+     * @return A ResponseEntity with a message indicating the result of the admin creation.
+     */
 
     @PostMapping("/signUpAdmin")
     ResponseEntity<String>createAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
@@ -67,6 +73,12 @@ public class AdminController {
        }
   }
 
+    /**
+     * Endpoint for authenticating and signing in an admin user.
+     *
+     * @param adminSignUpDto The AdminSignUpDto containing admin user login credentials.
+     * @return A ResponseEntity with a JWT token and user details if login is successful.
+     */
   @PostMapping("/signinAdmin")
   ResponseEntity<?>getAdmin(@RequestBody AdminSignUpDto adminSignUpDto){
     try{
@@ -85,12 +97,24 @@ public class AdminController {
     }
   }
 
+    /**
+     * Endpoint for fetching all users.
+     *
+     * @return A ResponseEntity with a list of users.
+     */
     @PostMapping("/fetchUsers")
     @CrossOrigin
     public ResponseEntity<List<?>>fetchAllUsers(){
         List<?> customerInfo1=savingsAccountService.getAllCustomersBySpecificColumn();
         return new ResponseEntity<>(customerInfo1,HttpStatus.OK);
     }
+
+    /**
+     * Endpoint for searching for a user by first name.
+     *
+     * @param firstName The first name to search for.
+     * @return A ResponseEntity with the user information if found, or an error message if not found.
+     */
     @PostMapping("/search")
     @CrossOrigin
 
@@ -103,6 +127,11 @@ public class AdminController {
         }
     }
 
+    /**
+     * Endpoint for getting all pending account requests.
+     *
+     * @return A ResponseEntity with a list of pending account requests.
+     */
     @GetMapping("/getPendingRequests")
     @CrossOrigin
 
@@ -116,6 +145,12 @@ public class AdminController {
         }
     }
 
+    /**
+     * Endpoint for approving a bank account request.
+     *
+     * @param approveBankAccountModel The model containing information about the account request to approve.
+     * @return A ResponseEntity with a message indicating the result of the approval.
+     */
     @PostMapping("/approveBankAccount")
     @CrossOrigin
 

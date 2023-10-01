@@ -27,35 +27,29 @@ public class InternetBankingController {
 
 
 
-//    @PostMapping("/createIbAccount")
-//    @CrossOrigin
-//    public ResponseEntity<String> createIbAccount(@RequestBody CustomerIbRequestModel customerIbRequestModel) {
-//        CustomerIb customerIb1 = customerIbService.getCustomerByUsername(customerIbRequestModel.getUsername());
-//        CustomerIb customerIb2 = customerIbService.getCustomerByAccountNo(customerIbRequestModel.getAccountNo());
-//        if (customerIb1 != null || customerIb2 != null) {
-//            return new ResponseEntity<>("username or account number already registered", HttpStatus.OK);
-//        } else {
-//            try {
-//                customerIbService.createCustomerIb(customerIbRequestModel);
-//            } catch (Exception e) {
-//                logger.error(e.getMessage());
-//                return new ResponseEntity<>("Something went wrong check your details", HttpStatus.BAD_REQUEST);
-//            }
-//            return new ResponseEntity<>("User registered for Internet banking", HttpStatus.CREATED);
-//        }
-//    }
+
 
     @GetMapping("/getIbAccountByUsername")
     @CrossOrigin
     public ResponseEntity<CustomerIb>getAccountIbByUsername(@RequestParam String username){
-        CustomerIb customerIb=customerIbService.getCustomerByUsername(username);
-        return new ResponseEntity<>(customerIb,HttpStatus.OK);
+        try {
+            CustomerIb customerIb = customerIbService.getCustomerByUsername(username);
+            return new ResponseEntity<>(customerIb, HttpStatus.OK);
+        }catch (Exception e){
+            logger.info("Exception occured while get account ib by username: "+e.getMessage());
+            return new ResponseEntity<>(null,HttpStatus.OK);
+        }
     }
 
     @GetMapping("/getIbAccountByAccountNo")
     @CrossOrigin
     public ResponseEntity<CustomerIb>getAccountIbByAccountNo(@RequestParam String accountNo){
-        CustomerIb customerIb=customerIbService.getCustomerByAccountNo(accountNo);
-        return new ResponseEntity<>(customerIb,HttpStatus.OK);
+        try {
+            CustomerIb customerIb = customerIbService.getCustomerByAccountNo(accountNo);
+            return new ResponseEntity<>(customerIb, HttpStatus.OK);
+        }catch (Exception e){
+            logger.info("Exception occured while getting internet banking account by account no");
+            return new ResponseEntity<>(null,HttpStatus.OK);
+        }
     }
 }

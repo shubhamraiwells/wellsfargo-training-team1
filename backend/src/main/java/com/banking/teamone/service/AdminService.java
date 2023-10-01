@@ -45,18 +45,20 @@ public class AdminService {
 
     }
 
-
+//function to approve bank account
     public String approveBankAccount(ApproveBankAccountModel approveBankAccountModel) {
         try {
+
             String accountNo = approveBankAccountModel.getAccountNo();
             Boolean approvalRequest = approveBankAccountModel.getApproveAccount();
-//            System.out.println(approvalRequest);
+            //check if account approval request exist or not
             AccountRequest accountRequest = accountRequestRepository.findById(accountNo).orElse(null);
+            //checking accountrequest exists and not null
             assert accountRequest != null;
+            //getting customerinfo by owner id
             CustomerInfo customer = customerInfoRepository.findById(accountRequest.getOwnerId()).orElse(null);
-//           System.
             assert customer != null;
-//System.out.println(customer.getId());
+            //if approval request is there
             if (approvalRequest) {
                 Account account = Account.builder()
                         .id(accountNo)
@@ -66,11 +68,12 @@ public class AdminService {
                         .isActive(true)
                         .totalBalance(BigDecimal.ZERO)
                         .build();
-
+               //remove from request and create account
                 accountRequestRepository.delete(accountRequest);
                 accountRepository.save(account);
                 return ("Bank account approved successfully");
             } else {
+                //called the rejection handler of bank account
                 return rejectBankAccount(accountRequest, customer);
             }
         } catch (Exception ex) {

@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
     @Service
-public class AccountService {
+   public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -37,6 +37,8 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
+
+    //getting all account by owner id
     public List<AccountDto> fetchAccountByOwnerId(Integer ownerId){
         Collection<Account> accountList = accountRepository.findByOwnerId(ownerId);
         return accountList.stream().filter(Objects::nonNull).map(x-> accountConverter.AccountToAccountDto(x)).collect(Collectors.toList());

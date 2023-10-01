@@ -28,11 +28,15 @@ public class AccountRequestService {
         return accountRequestRepository.save(object);
     }
 
+
+    //method to get all pending account activation requests for customer internet banking
     public List<PendingRequestModel> getAllPendingRequests() {
         List<AccountRequest> accountRequestList = accountRequestRepository.findAll();
         List<PendingRequestModel> pendingRequestModelList= new ArrayList<PendingRequestModel>();
+        //iterating over all request in our list
         for(AccountRequest account : accountRequestList) {
             Integer id = account.getOwnerId();
+            //checking if customerinfo exists or not
             CustomerInfo customerInfo = customerInfoRepository.findById(id).orElse(null);
             if(customerInfo!=null) {
                 pendingRequestModelList.add(accountConverter.createPendingRequestModel(customerInfo, account.getId()));
