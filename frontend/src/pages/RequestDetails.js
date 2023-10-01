@@ -11,7 +11,7 @@ import {
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: "#101073",
       color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
@@ -36,7 +36,7 @@ export default function RequestDetails(props){
     console.log(request);
     return(     
        
-        <TableContainer component={Paper} className="TableContainer"  sx={{ maxWidth: 1500 , maxHeight:400}}>  
+        <TableContainer component={Paper} className="TableContainer"  sx={{ maxWidth: 1300 , maxHeight:400, marginTop:"10%"}}>  
         <Table  aria-label="customized table" data={request}>
       <TableHead style={{textAlign:"right"}}>
         <StyledTableRow>
