@@ -116,6 +116,9 @@ public class TransactionsController {
             CustomerIb customer = customerIbService.getCustomerByUsername(username);
             String fromAccountNo = customer.getAccountNo();
             String toAccountNumber = transferBody.get("toAccountNo");
+            if(fromAccountNo.compareTo(toAccountNumber)==0){
+                return new ResponseEntity<>("you can't transfer to your current account choose deposit",HttpStatus.OK);
+            }
 
             // Retrieve the accounts involved in the transaction
 
