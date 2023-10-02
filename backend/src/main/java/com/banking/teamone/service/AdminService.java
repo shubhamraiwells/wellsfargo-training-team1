@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Email;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -29,7 +30,8 @@ public class AdminService {
     @Autowired
     private AccountRepository accountRepository;
 
-
+    @Autowired
+    private EmailService emailService;
 
     public String createAdmin(String username,String password){
        CustomerIb customerIb= customerIbService.getCustomerByUsername(username);
@@ -50,6 +52,7 @@ public class AdminService {
         try {
 
             String accountNo = approveBankAccountModel.getAccountNo();
+
             Boolean approvalRequest = approveBankAccountModel.getApproveAccount();
             //check if account approval request exist or not
             AccountRequest accountRequest = accountRequestRepository.findById(accountNo).orElse(null);
@@ -58,6 +61,7 @@ public class AdminService {
             //getting customerinfo by owner id
             CustomerInfo customer = customerInfoRepository.findById(accountRequest.getOwnerId()).orElse(null);
             assert customer != null;
+            String email=customer.getEmailId();
             //if approval request is there
             if (approvalRequest) {
                 Account account = Account.builder()
@@ -71,6 +75,11 @@ public class AdminService {
                //remove from request and create account
                 accountRequestRepository.delete(accountRequest);
                 accountRepository.save(account);
+                EmailDetails emailDetails=new EmailDetails();
+                emailDetails.setMsgBody("Your account is active with accountno: "+accountNo);
+                emailDetails.setRecipient(email);
+                emailDetails.setSubject("Account number from shubham rai");
+                emailService.sendEmail(emailDetails);
                 return ("Bank account approved successfully");
             } else {
                 //called the rejection handler of bank account
