@@ -134,6 +134,7 @@ public class CustomerIbServiceTest {
         CustomerIb customerIb = new CustomerIb();
         customerIb.setUsername("john_doe");
         customerIb.setFailedAttempt(3);
+        customerIb.setAccountNonLocked(false);
 
         // Lock time is not expired
         long currentTimeInMillis = System.currentTimeMillis();

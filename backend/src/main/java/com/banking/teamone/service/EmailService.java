@@ -2,10 +2,13 @@ package com.banking.teamone.service;
 
 
 
+import com.banking.teamone.controller.InternetBankingController;
 import com.banking.teamone.model.EmailDetails;
 import com.banking.teamone.repository.EmailRepo;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService  {
+    Logger logger = LoggerFactory.getLogger(EmailService.class);
 
 
     @Autowired
@@ -46,7 +50,7 @@ public class EmailService  {
             return "Mail Sent successfully";
         }catch(Exception e){
             // Return an error message if there's an exception while sending the email
-
+            logger.info("Exception occured while sending the email: "+e.getMessage());
             return "Error while sending Mail";
         }
     }

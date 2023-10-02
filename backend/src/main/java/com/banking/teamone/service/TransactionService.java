@@ -92,18 +92,19 @@ public class TransactionService {
       Account accFrom= accountService.getAccountById(transactionRequest.getFromAccountNo());
    Account toAccount=    accountService.getAccountById(transactionRequest.getToAccountNo());
 
+
        if(accFrom!=null && toAccount !=null){
            if(!accFrom.getIsActive() || !toAccount.getIsActive()){
                return "Some of the accounts are not active";
            }
-//           if(accFrom.getTotalBalance().compareTo(transactionRequest.getTransactionAmount())>0){
+           if(accFrom.getTotalBalance().compareTo(transactionRequest.getTransactionAmount())>0){
                accFrom.setTotalBalance(accFrom.getTotalBalance().subtract(transactionRequest.getTransactionAmount()));
                toAccount.setTotalBalance(toAccount.getTotalBalance().add(transactionRequest.getTransactionAmount()));
                accountService.createAccount(accFrom);
                accountService.createAccount(toAccount);
                transactionRepository.save(converter.transactionRequestToTransaction(transactionRequest));
            return "Transactions performed successfully";
-//           }
+     }
 
        }
       return "Transaction failed unsufficient balance";
