@@ -97,14 +97,14 @@ public class TransactionService {
            if(!accFrom.getIsActive() || !toAccount.getIsActive()){
                return "Some of the accounts are not active";
            }
-           if(accFrom.getTotalBalance().compareTo(transactionRequest.getTransactionAmount())>0){
+//           if(accFrom.getTotalBalance().compareTo(transactionRequest.getTransactionAmount())>0){
                accFrom.setTotalBalance(accFrom.getTotalBalance().subtract(transactionRequest.getTransactionAmount()));
                toAccount.setTotalBalance(toAccount.getTotalBalance().add(transactionRequest.getTransactionAmount()));
                accountService.createAccount(accFrom);
                accountService.createAccount(toAccount);
                transactionRepository.save(converter.transactionRequestToTransaction(transactionRequest));
            return "Transactions performed successfully";
-     }
+//     }
 
        }
       return "Transaction failed unsufficient balance";
